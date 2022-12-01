@@ -1,9 +1,13 @@
 import React from 'react';
 import "../App.css";
+import Navbar from './Navbar';
 
 export const SearchPage = () => {
     return (
-        <h1>Search</h1>
+        <div>
+            <Navbar />
+            <h1>Search</h1>
+        </div>
     );
 }
 
