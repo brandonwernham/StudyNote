@@ -1,17 +1,18 @@
 import React from 'react';
-import "../App.css";
+import "./LoginPage.css";
 import Navbar from './Navbar';
 
 export const LoginPage = () => {
     return (
         <div>
-            <Navbar />
-            <h1>Login Page</h1>
+            <div>
+                <Navbar />
+            </div>
+            <h1 className='login-title'>Login Page</h1>
             <br></br>
             <br></br>
             <br></br>
-            <div align="center">
-                <div>
+            <div className='login-form'>
                 <form>
                     <label for="username">Username: </label>
                     <input type="text" id="username" name="username"></input>
@@ -27,7 +28,6 @@ export const LoginPage = () => {
                     <br></br>
                     <input type="submit" value="Register"></input>
                 </form>
-                </div>
             </div>
         </div>
     );

@@ -1,0 +1,9 @@
+.login-title {
+    display: flex;
+    justify-content: center;
+}
+
+.login-form {
+    display: flex;
+    justify-content: center;
+}

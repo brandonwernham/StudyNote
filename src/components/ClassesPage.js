@@ -1,12 +1,16 @@
 import React from 'react';
-import "../App.css";
+import "./ClassesPage.css";
 import Navbar from './Navbar';
 
 export const ClassesPage = () => {
     return (
         <div>
-            <Navbar />
-            <h1>Classes</h1>
+            <div>
+                <Navbar />
+            </div>
+            <div>
+                <h1 className='classes-title'>Classes</h1>
+            </div>
         </div>
     );
 }

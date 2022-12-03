@@ -1,12 +1,16 @@
 import React from 'react';
-import "../App.css";
+import "./GroupsPage.css";
 import Navbar from './Navbar';
 
 export const GroupsPage = () => {
     return (
         <div>
-            <Navbar />
-            <h1>Groups</h1>
+            <div>
+                <Navbar />
+            </div>
+            <div>
+                <h1 className='groups-title'>Groups</h1>
+            </div>
         </div>
     );
 }
