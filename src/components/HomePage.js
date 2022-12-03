@@ -1,23 +1,27 @@
 import React from 'react';
-import "../App.css";
+import "./HomePage.css";
 import Navbar from './Navbar';
 
 export const HomePage = () => {
     return (
         <div>
-            <Navbar />
-            <br></br>
-            <br></br>
-            <div align="center">
-                <h2>Welcome back, PLACEHOLDER!</h2>
-                <h4>What would you like to accomplish?</h4>
-                <br></br>
+            <div>
+                <Navbar />
             </div>
-            <div class="row" align="center">
+            <div>
+                <br></br>
+                <br></br>
                 <div>
-                    <img src={require("./../images/view_classes.png")} alt="View Classes" width="400px" style={{padding: '50px'}}></img>
-                    <img src={require("./../images/browse_notes.png")} alt="View Classes" width="400px" style={{padding: '50px'}}></img>
-                    <img src={require("./../images/ask_question.png")} alt="View Classes" width="400px" style={{padding: '50px'}}></img>
+                    <h2 className='welcome-text'>Welcome back, PLACEHOLDER!</h2>
+                    <h4 className='accomplish-text'>What would you like to accomplish?</h4>
+                    <br></br>
+                </div>
+                <div className='row'>
+                    <div>
+                        <img src={require("./../images/view_classes.png")} alt="View Classes" width="400px" style={{padding: '50px'}}></img>
+                        <img src={require("./../images/browse_notes.png")} alt="View Classes" width="400px" style={{padding: '50px'}}></img>
+                        <img src={require("./../images/ask_question.png")} alt="View Classes" width="400px" style={{padding: '50px'}}></img>
+                    </div>
                 </div>
             </div>
         </div>
