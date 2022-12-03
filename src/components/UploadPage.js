@@ -22,7 +22,6 @@ export const UploadPage = () => {
 
 //test button
 function addTestUser(){
-    //database.query("INSERT INTO UserInfo (User_ID, Username, UserPassword) VALUES (2, FTM, FTMPassword)");
     console.log("user added");
 }
 
