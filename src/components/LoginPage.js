@@ -12,22 +12,21 @@ export const LoginPage = () => {
             <br></br>
             <br></br>
             <br></br>
-            <div className='login-form'>
+            <div className='login-form' align='center'>
                 <form>
                     <label for="username">Username: </label>
                     <input type="text" id="username" name="username"></input>
                     <br></br>
+                    <br></br>
                     <label for="password">Password:</label>
                     <input type="password" id="password" name="password"></input>
-                    <br></br>
-                    <br></br>
-                    <input type="submit" value="Submit"></input>
-                    <br></br>
-                    <br></br>
-                    <br></br>
-                    <br></br>
-                    <input type="submit" value="Register"></input>
                 </form>
+            </div>
+            <br></br>
+            <br></br>
+            <div className='form-button' align='center'>
+                <button type='submit' name='login'>Log In</button>
+                <button type='submit' name='register'>Register</button>
             </div>
         </div>
     );
