@@ -7,3 +7,28 @@
     display: flex;
     justify-content: center;
 }
+
+input[type=text], input[type=password] {
+    padding: 6px;
+    margin-top: 8px;
+    margin-left: 10px;
+    font-size: 17px;
+    border: none;
+    width: 150px;
+}
+  
+.form-button button{
+    padding: 6px;
+    margin-top: 8px;
+    margin-right: 16px;
+    margin-left: 10px;
+    background: rgb(255, 94, 0);
+    color: #fff;
+    font-size: 17px;
+    border: none;
+    cursor: pointer;
+}
+
+.container button:hover {
+background: rgb(78, 29, 0);;
+}
