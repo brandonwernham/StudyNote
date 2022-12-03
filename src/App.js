@@ -4,6 +4,7 @@ import SearchPage from './components/SearchPage';
 import ClassesPage from './components/ClassesPage';
 import GroupsPage from './components/GroupsPage';
 import UploadPage from './components/UploadPage';
+import LoginPage from './components/LoginPage';
 
 function App() {
     return (
@@ -13,6 +14,7 @@ function App() {
             <Route path='classes' element={<ClassesPage />}></Route>
             <Route path='groups' element={<GroupsPage />}></Route>
             <Route path='upload' element={<UploadPage />}></Route>
+            <Route path='login' element={<LoginPage />}></Route>
         </Routes>
     );
 }
