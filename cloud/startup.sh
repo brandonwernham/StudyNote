@@ -5,4 +5,4 @@
 # @reboot /home/ubuntu/startup.sh
 
 cd /var/www/StudyNote && git pull
-/usr/bin/screen -S studynote -dm cd /var/www/StudyNote && npm run start
+screen -S studynote -dm bash -c 'cd /var/www/StudyNote/Client; npm start'
