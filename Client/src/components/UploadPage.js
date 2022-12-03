@@ -1,7 +1,6 @@
 import React from 'react';
 import "./UploadPage.css";
 import Navbar from './Navbar';
-import database from '../database/dbConfig';
 
 
 export const UploadPage = () => {
