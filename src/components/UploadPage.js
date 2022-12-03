@@ -1,12 +1,16 @@
 import React from 'react';
-import "../App.css";
+import "./UploadPage.css";
 import Navbar from './Navbar';
 
 export const UploadPage = () => {
     return (
         <div>
-            <Navbar />
-            <h1>Upload</h1>
+            <div>
+                <Navbar />
+            </div>
+            <div>
+               <h1 className='upload-title'>Upload A File</h1> 
+            </div>
         </div>
     );
 }
