@@ -24,9 +24,8 @@ export const UploadPage = () => {
 //test button
 function addTestUser(){
     Axios.post("http://localhost:3001/api/insert", {
-        User_ID: 2, 
-        Username: "FTM",
-        UserPassword: "FTMPassword"
+        Email: "testuser2@gmail.com",
+        UserPassword: "testuser2password"
     }).then(() => {
         console.log("success")
     })

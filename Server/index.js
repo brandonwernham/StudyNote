@@ -17,12 +17,11 @@ app.use(express.json());
 app.use(bodyParser.urlencoded({extended: true}));
 
 app.post("/api/insert", (req, res) => {
-    const User_ID = req.body.User_ID;
-    const Username = req.body.Username;
+    const Email = req.body.Email;
     const UserPassword = req.body.UserPassword;
 
-    const sqlInsert = "INSERT INTO UserInfo (User_ID, Username, UserPassword) VALUES (?,?,?)"
-    database.query(sqlInsert, [User_ID, Username, UserPassword], (err, result) => {
+    const sqlInsert = "INSERT INTO UserInfo (Email, UserPassword) VALUES (?,?)"
+    database.query(sqlInsert, [Email, UserPassword], (err, result) => {
         console.log(err);
     })    
 });
