@@ -1,6 +1,8 @@
 import React from 'react';
+import Axios from 'axios';
 import "./UploadPage.css";
 import Navbar from './Navbar';
+
 
 
 export const UploadPage = () => {
@@ -21,7 +23,13 @@ export const UploadPage = () => {
 
 //test button
 function addTestUser(){
-    console.log("user added");
+    Axios.post("http://localhost:3001/api/insert", {
+        User_ID: 2, 
+        Username: "FTM",
+        UserPassword: "FTMPassword"
+    }).then(() => {
+        console.log("success")
+    })
 }
 
 
