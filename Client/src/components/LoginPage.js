@@ -10,24 +10,19 @@ export const LoginPage = () => {
             </div>
             <h1 className='login-title'>Login Page</h1>
             <br></br>
-            <br></br>
-            <br></br>
-            <div className='login-form' align='center'>
+            <div className='login-form'>
                 <form>
-                    <label for="username">Username: </label>
-                    <input type="text" id="username" name="username"></input>
+                    <input type="text" placeholder="Username" className='username' id='username'></input>
                     <br></br>
-                    <br></br>
-                    <label for="password">Password:</label>
-                    <input type="password" id="password" name="password"></input>
+                    <input type="password" placeholder="Password" className='password' id='password'></input>
                 </form>
             </div>
-            <br></br>
-            <br></br>
             <div className='form-button' align='center'>
-                <button type='submit' name='login'>Log In</button>
-                <button type='submit' name='register'>Register</button>
+                <button type='submit' name='login' className='login-button'>Log In</button>
+                <button type='submit' name='register' className='login-button'>Register</button>
             </div>
+            <br></br>
+            <h6 align="center">Don't have an account? Create one today!</h6>
         </div>
     );
 }

@@ -8,27 +8,36 @@
     justify-content: center;
 }
 
-input[type=text], input[type=password] {
+input[type=text].username {
     padding: 6px;
-    margin-top: 8px;
+    margin-top: px;
     margin-left: 10px;
     font-size: 17px;
     border: none;
-    width: 150px;
+    width: 200px;
+}
+
+input[type=password].password {
+    padding: 6px;
+    margin-top: px;
+    margin-left: 10px;
+    font-size: 17px;
+    border: none;
+    width: 200px;
 }
   
-.form-button button{
-    padding: 6px;
-    margin-top: 8px;
-    margin-right: 16px;
-    margin-left: 10px;
+.login-button {
+    padding: 10px;
+    margin-left: 15px;
+    margin-top: 50px;
     background: rgb(255, 94, 0);
     color: #fff;
     font-size: 17px;
     border: none;
     cursor: pointer;
+    width: 150px;
 }
 
-.container button:hover {
-background: rgb(78, 29, 0);;
+.login-button:hover {
+    background: rgb(78, 29, 0);
 }
