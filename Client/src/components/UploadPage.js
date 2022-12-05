@@ -2,10 +2,15 @@ import React from 'react';
 import Axios from 'axios';
 import "./UploadPage.css";
 import Navbar from './Navbar';
-
+import { useState } from 'react';
+import FileUpload from './FileUpload';
 
 
 export const UploadPage = () => {
+    const [files, setFiles] = useState([{
+        name: 'theFile.pdf'
+    }]);
+
     return (
         <div>
             <div>
@@ -17,14 +22,8 @@ export const UploadPage = () => {
             <div>
                 <button onClick = {addTestUser}>Add Test User</button>
             </div>
-            <div align='center'>
-                <form>
-                    <input type="file" id='uploadFile' name='uploadFile'></input>
-                    <br></br>
-                    <br></br>
-                    <br></br>
-                    <input type='submit' className='submit-button'></input>
-                </form>
+            <div className="file-upload">
+                <FileUpload files={files} setFiles={setFiles} />
             </div>
         </div>
     );
