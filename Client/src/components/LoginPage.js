@@ -25,7 +25,9 @@ export const LoginPage = () => {
         })
     };
     
-
+    const redirRegister = () => {
+        navigate("/register")
+    }
     return (
         <div>
             <div>
@@ -43,7 +45,7 @@ export const LoginPage = () => {
             <h5 align="center">{loginStatus}</h5>
             <div className='form-button' align='center'>
                 <button type='submit' name='login' className='login-button' onClick={submitLogin}>Log In</button>
-                <button type='submit' name='register' className='login-button'>Register</button>
+                <button name='register' className='login-button' onClick={redirRegister}>Register</button>
             </div>
             <br></br>
             <h6 align="center">Don't have an account? Create one today!</h6>

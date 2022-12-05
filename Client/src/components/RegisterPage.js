@@ -1,9 +1,9 @@
 import React, {useState, useEffect} from 'react';
 import Axios from 'axios';
-import "./SignUpPage.css";
+import "./RegisterPage.css";
 import Navbar from './Navbar';
 
-export const SignUpPage = () => {
+export const RegisterPage = () => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [userType, setUserType] = useState("");
@@ -15,7 +15,7 @@ export const SignUpPage = () => {
             password: password,
             userType: userType
         }).then(()=> {
-            console.log("user successfully signed up")
+            console.log("user successfully registered")
         })
     };
 
@@ -28,7 +28,7 @@ export const SignUpPage = () => {
                 <Navbar />
             </div>
             <div>
-               <h1 className='signup-title'>Sign Up</h1> 
+               <h1 className='register-title'>Register</h1> 
             </div>
             <div className = "form">
                 <div>
@@ -77,7 +77,7 @@ export const SignUpPage = () => {
                             }}
                         />
                     </div>
-                    <button onClick={submitSignUp}>Sign Up</button>
+                    <button onClick={submitSignUp}>Register</button>
                 </div>
 
             </div>
@@ -89,4 +89,4 @@ export const SignUpPage = () => {
 
 
 
-export default SignUpPage;
+export default RegisterPage;
