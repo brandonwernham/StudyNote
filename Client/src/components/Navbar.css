@@ -33,7 +33,7 @@ nav .container {
   margin-top: 10px;
 }
 
-nav input[type=text], input[type=password] {
+nav input[type=text], nav input[type=password] {
   padding: 6px;
   margin-top: 8px;
   margin-left: 10px;
