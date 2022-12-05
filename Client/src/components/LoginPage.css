@@ -10,7 +10,7 @@
 
 input[type=text].username {
     padding: 6px;
-    margin-top: px;
+    margin-top: 10px;
     margin-left: 10px;
     font-size: 17px;
     border: none;
@@ -19,7 +19,7 @@ input[type=text].username {
 
 input[type=password].password {
     padding: 6px;
-    margin-top: px;
+    margin-top: 10px;
     margin-left: 10px;
     font-size: 17px;
     border: none;
