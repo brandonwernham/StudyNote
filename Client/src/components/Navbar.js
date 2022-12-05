@@ -12,6 +12,7 @@ export default function Navbar() {
                 <form>
                     <input type="text" placeholder="Username"></input>
                     <input type="password" placeholder="Password"></input>
+                    <a href="/signup">Sign Up</a>
                     <button type="submit">Log In</button>
                 </form>
             </div>

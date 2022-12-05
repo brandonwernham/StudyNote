@@ -5,6 +5,7 @@ import ClassesPage from './components/ClassesPage';
 import GroupsPage from './components/GroupsPage';
 import UploadPage from './components/UploadPage';
 import LoginPage from './components/LoginPage';
+import SignUpPage from './components/SignUpPage';
 
 function App() {
     return (
@@ -15,6 +16,7 @@ function App() {
             <Route path='groups' element={<GroupsPage />}></Route>
             <Route path='upload' element={<UploadPage />}></Route>
             <Route path='login' element={<LoginPage />}></Route>
+            <Route path='signup' element={<SignUpPage />}></Route>
         </Routes>
     );
 }

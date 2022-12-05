@@ -1,0 +1,37 @@
+body {
+    margin: 0;
+    padding: 0;
+    background: url(../images/background.jpg);
+    background-size: cover;
+    font-weight: bold;
+    font-family: sans-serif;
+    color: white;
+}
+
+li p {
+    flex: 1;
+}
+
+li svg {
+    font-size: 25px;
+    margin-right: 20px;
+}
+
+
+
+.form {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(255, 94, 0, 0.226);
+    border: 3px dashed white;
+    width: 500px;
+    height: 500px;
+    flex-direction: column;
+}
+
+.form input{
+    margin: 10px;
+    width: 300px;
+    height: 25px;
+}
