@@ -9,7 +9,7 @@ export const SignUpPage = () => {
     const [userType, setUserType] = useState("");
 
     const submitSignUp = () => {
-        Axios.post("http://localhost:3001/api/insert", {
+        Axios.post("http://localhost:3001/api/signUp", {
             email: email,
             password: password,
             userType: userType

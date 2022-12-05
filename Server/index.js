@@ -18,12 +18,13 @@ app.use(bodyParser.urlencoded({extended: true}));
 
 
 //sign up 
-app.post("/api/insert", (req, res) => {
-    const Email = req.body.Email;
-    const UserPassword = req.body.UserPassword;
+app.post("/api/signUp", (req, res) => {
+    const email = req.body.email;
+    const password = req.body.password;
+    const userType = req.body.userType;
 
-    const sqlInsert = "INSERT INTO UserInfo (Email, UserPassword) VALUES (?,?)"
-    database.query(sqlInsert, [Email, UserPassword], (err, result) => {
+    const sqlInsert = "INSERT INTO UserInfo (Email, UserPassword, UserType) VALUES (?,?,?)"
+    database.query(sqlInsert, [email, password, userType], (err, result) => {
         console.log(err);
     })    
 });
