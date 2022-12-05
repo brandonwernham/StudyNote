@@ -28,8 +28,10 @@ server {
                 proxy_set_header X-Forwarded_For $proxy_add_x_forwarded_for;
         }
 
-        location /api {
-                rewrite /api/(.*) /$1 break;
+        location ^~ /api/ {
                 proxy_pass http://localhost:3001;
+                proxy_set_header Host $proxy_host;
+                proxy_set_header X-Real-IP $remote_addr;
+                proxy_set_header X-Forwarded_For $proxy_add_x_forwarded_for;
         }
 }
