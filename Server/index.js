@@ -29,6 +29,26 @@ app.post("/api/signUp", (req, res) => {
     })    
 });
 
+//login
+app.post("/api/login", (req, res) => {
+    const email = req.body.email;
+    const password = req.body.password;
+
+    const sqlInsert = "SELECT * FROM UserInfo WHERE Email = ? AND UserPassword = ?"
+    database.query(sqlInsert, [email, password], (err, result) => {
+        if (err){
+            res.send({err: err})
+        }
+        else if (result.length > 0){
+            res.send(result);
+        } else{
+            res.send({message: "User not found. Please ensure correct information is entered."})
+        }
+        
+    })    
+});
+
+
 // this is just a temporary backend simulating the file upload
 app.post("/api/upload", (req, res) => {
     setTimeout(() => {

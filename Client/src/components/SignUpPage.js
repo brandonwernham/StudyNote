@@ -8,13 +8,19 @@ export const SignUpPage = () => {
     const [password, setPassword] = useState("");
     const [userType, setUserType] = useState("");
 
+    //posts entered info from signup form to server and database
     const submitSignUp = () => {
         Axios.post("http://localhost:3001/api/signUp", {
             email: email,
             password: password,
             userType: userType
-        }).then(()=> {console.log("user successfully signed up")})
+        }).then(()=> {
+            console.log("user successfully signed up")
+        })
     };
+
+    //gets if user info exists in userbase
+
 
     return (
         <div>

@@ -23,9 +23,6 @@ export const UploadPage = () => {
             <div>
                <h1 className='upload-title'>Upload A File</h1> 
             </div>
-            <div>
-                <button onClick = {addTestUser}>Add Test User</button>
-            </div>
             <div className="file-upload">
                 <FileUpload files={files} setFiles={setFiles} removeFile={removeFile}/>
             </div>
@@ -36,15 +33,6 @@ export const UploadPage = () => {
     );
 }
 
-//test button
-function addTestUser(){
-    Axios.post("http://localhost:3001/api/insert", {
-        Email: "testuser2@gmail.com",
-        UserPassword: "testuser2password"
-    }).then(() => {
-        console.log("success")
-    })
-}
 
 
 
