@@ -1,4 +1,78 @@
-.classes-title {
+.header {
     display: flex;
-    justify-content: center;
+    justify-content: left;
+    padding: 10px;
+}
+
+.container-page {
+    width: 1200px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.content {
+    padding: 0px;
+}
+
+.classes {
+    width: 900px;
+    float: left;
+    /* border: 3px solid white; */
+    /* background-color: rgba(255, 94, 0, 0.226); */
+}
+
+.join-classes {
+    width: 300px;
+    float: right;
+    border: 3px solid white;
+    background-color: rgba(255, 94, 0, 0.226);
+    padding: 10px;
+}
+
+.footer {
+    clear: both;
+}
+
+input[type=text].class-input {
+    padding: 6px;
+    margin-top: 20px;
+    margin-left: 10px;
+    font-size: 17px;
+    border: none;
+    width: 200px;
+}
+
+.search-button {
+    padding: 6px;
+    margin-left: 10px;
+    margin-top: 20px;
+    margin-bottom: 10px;
+    background: rgb(255, 94, 0);
+    color: #fff;
+    font-size: 17px;
+    border: none;
+    cursor: pointer;
+    width: 150px;
+}
+
+.search-button:hover {
+    background: rgb(78, 29, 0);
+}
+
+table, th, td {
+    border: 1px solid black;
+    border-collapse: collapse;
+    padding: 20px;
+    color: white;
+}
+
+table, th {
+    border-color: rgb(255, 94, 0);
+    background-color: rgb(255, 94, 0, 0.1);
+}
+
+table, td {
+    border-color: grey;
+    background-color: rgba(128, 128, 128, 0.1);
+    font-weight: 5px;
 }
