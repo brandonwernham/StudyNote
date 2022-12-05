@@ -2,14 +2,37 @@ import React from "react";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus } from '@fortawesome/free-solid-svg-icons'
 import "./UploadPage.css";
+import axios from "axios";
 
-const FileUpload = ({files, setFiles}) => {
-    const uploadHandler = () => {}
+const FileUpload = ({files, setFiles, removeFile}) => {
+    const uploadHandler = (event) => {
+        const file = event.target.files[0];
+        file.isUploading = true;
+        setFiles([...files, file])
+
+        const formData = new FormData();
+        formData.append(
+            file.name,
+            file,
+            file.name
+        )
+
+        axios.post('http://localhost:3001/api/upload', formData)
+        .then((res) => {
+            file.isUploading = false;
+            setFiles([...files, file]);
+        })
+        .catch((err) => {
+            console.log(err);
+            removeFile(file.name);
+        })
+    }
+
     return (
         <>
             <div className="file-box">
                 <div className="file-input">
-                    <input className="the-input" type="file" />
+                    <input className="the-input" type="file" onChange={uploadHandler}/>
                     <button className="upload-button">
                         <i className="plus-icon">
                             <FontAwesomeIcon icon={faPlus} />

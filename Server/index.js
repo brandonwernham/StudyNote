@@ -26,6 +26,19 @@ app.post("/api/insert", (req, res) => {
     })    
 });
 
+// this is just a temporary backend simulating the file upload
+app.post("/api/upload", (req, res) => {
+    setTimeout(() => {
+        console.log('file has been uploaded');
+        return res.status(200).json({ result: true, msg: 'file has been uploaded'});
+    }, 3000);
+});
+
+app.delete("/api/upload", (req, res) => {
+    console.log("file was deleted");
+    return res.status(200).json({ result: true, msg: 'file was deleted'});
+});
+
 app.listen(3001, () => {
     console.log("running on port 3001");
 })

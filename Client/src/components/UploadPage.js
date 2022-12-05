@@ -4,12 +4,16 @@ import "./UploadPage.css";
 import Navbar from './Navbar';
 import { useState } from 'react';
 import FileUpload from './FileUpload';
-
+import FileList from './FileList';
 
 export const UploadPage = () => {
-    const [files, setFiles] = useState([{
-        name: 'theFile.pdf'
-    }]);
+    const [files, setFiles] = useState([]);
+
+    const removeFile = (filename) => {
+        setFiles(files.filter(file => file.name !== filename));
+    }
+
+    console.log(files);
 
     return (
         <div>
@@ -23,7 +27,10 @@ export const UploadPage = () => {
                 <button onClick = {addTestUser}>Add Test User</button>
             </div>
             <div className="file-upload">
-                <FileUpload files={files} setFiles={setFiles} />
+                <FileUpload files={files} setFiles={setFiles} removeFile={removeFile}/>
+            </div>
+            <div className='file-list-box'>
+                <FileList files={files} removeFile={removeFile} />
             </div>
         </div>
     );

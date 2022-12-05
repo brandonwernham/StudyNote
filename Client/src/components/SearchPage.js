@@ -14,7 +14,7 @@ export const SearchPage = () => {
                 <h3 className='search-slogan-2'>StudyNote has you covered!</h3>
                 <form className='search-form'>
                 <input type="text" placeholder="Find A Note..." className='searchbar' id='theInput'></input>
-                <button className='search-button' onClick={SearchNotes}>Search</button>
+                <button className='searchPage-search-button' onClick={SearchNotes}>Search</button>
                 </form>
             </div>
         </div>
