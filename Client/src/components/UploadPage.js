@@ -17,6 +17,15 @@ export const UploadPage = () => {
             <div>
                 <button onClick = {addTestUser}>Add Test User</button>
             </div>
+            <div align='center'>
+                <form>
+                    <input type="file" id='uploadFile' name='uploadFile'></input>
+                    <br></br>
+                    <br></br>
+                    <br></br>
+                    <input type='submit' className='submit-button'></input>
+                </form>
+            </div>
         </div>
     );
 }

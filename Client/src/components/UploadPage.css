@@ -17,3 +17,18 @@ body {
     display: flex;
     justify-content: left;
 }
+
+.submit-button {
+    padding: 10px;
+    margin-left: 15px;
+    margin-top: 50px;
+    background: rgb(255, 94, 0);
+    color: #fff;
+    font-size: 17px;
+    border: none;
+    cursor: pointer;
+}
+
+.submit-button:hover {
+    background: rgb(78, 29, 0);
+}
