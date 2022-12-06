@@ -1,5 +1,4 @@
 import React, {useState} from 'react';
-// import Axios from 'axios';
 import "./RegisterPage.css";
 import Navbar from './Navbar';
 
@@ -25,25 +24,7 @@ export const RegisterPage = () => {
         }).then(function(data) {
             console.log(data ? JSON.parse(data) : {}) //no idea what this does
         }).catch(error => console.error('Error: ', error));
-
-        /*Axios.defaults.headers.common['corsHeader'] = 'Access-Control-Allow-Origin';
-
-        let config = {
-            headers: {
-              corsHead: 'Access-Control-Allow-Origin',
-            }
-          }
-        Axios.post("https://studynote.ca/api/signUp", {
-            email: email,
-            password: password,
-            userType: userType
-        }, config).then(()=> {
-            console.log("user successfully registered")
-        })*/
     };
-
-    //gets if user info exists in userbase
-
 
     return (
         <div>
