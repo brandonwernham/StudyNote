@@ -27,47 +27,62 @@ export const RegisterPage = () => {
             <div>
                 <Navbar />
             </div>
-            <div>
-               <h1 className='register-title'>Register</h1> 
+            <div className='register-title'>
+                <h1>Create a StudyNote account today!</h1>
             </div>
             <div className = "form">
-                <div>
-                    <label>Email:</label>
+                <div className='form-box' align='center'>
+                    {/* EMAIL */}
+                    <label>Email: </label>
                     <input
+
+                        className='input-box'
                         type="text"
                         name="email"
                         onChange={(e) => {
                             setEmail(e.target.value);
                         }}
                     />
-                </div>
-                <div>
-                    <label>Password:</label>
+                    <br></br>
+                    {/* PASSWORD */}
+                    <label>Password: </label>
                     <input
+                        className='password-box'
                         type="password"
+                        id='passwordBox'
                         name="password"
                         onChange={(e) => {
                             setPassword(e.target.value);
                         }}
                     />
-                </div>
-                <div>
+                    <input
+                        type='checkbox' onChange={showPassword} className='show-password'>
+                    </input>
+                    <br></br>
+                    <br></br>
+                    <br></br>
+                    {/* USERTYPE */}
+                    <div className='user-type'>
+                        
                     <label>User Type:</label>
+                    </div>
+                    <row>
                     <div>
-                        <label for="student">Student</label>
-                        <input
+                        <label for="student" className='student-type'>Student</label>
+                        <input 
+                            className='student-type-button'
                             type="radio"
                             name="userType"
                             id="student"
                             value="student"
+                            checked='true'
                             onChange={(e) => {
                             setUserType(e.target.value);
                             }}
                         />
-                    </div>
-                    <div>
-                        <label for ="instructor">Instructor</label>
+                        <label for ="instructor" className='instructor-type'>Instructor</label>
                         <input
+                            className='instructor-type-button'
                             type="radio"
                             name="userType"
                             id="instructor"
@@ -77,16 +92,21 @@ export const RegisterPage = () => {
                             }}
                         />
                     </div>
-                    <button onClick={submitSignUp}>Register</button>
+                    </row>
+                    <button className='register-button' onClick={submitSignUp}>Register</button>
                 </div>
-
             </div>
         </div>
     );
 }
 
-
-
-
+function showPassword() {
+    var x = document.getElementById('passwordBox');
+    if (x.type === "password") {
+      x.type = "text";
+    } else {
+      x.type = "password";
+    }
+  }
 
 export default RegisterPage;

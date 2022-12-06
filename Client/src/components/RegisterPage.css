@@ -8,30 +8,84 @@ body {
     color: white;
 }
 
-li p {
-    flex: 1;
+.register-title {
+    display: flex;
+    justify-content: center;
+    padding: 10px;
 }
-
-li svg {
-    font-size: 25px;
-    margin-right: 20px;
-}
-
-
 
 .form {
     display: flex;
     justify-content: center;
-    align-items: center;
-    background-color: rgba(255, 94, 0, 0.226);
-    border: 3px dashed white;
-    width: 500px;
-    height: 500px;
-    flex-direction: column;
 }
 
-.form input{
+.form-box {
+    width: 500px;
+    border: 3px solid white;
+    background-color: rgba(255, 94, 0, 0.226);
+    padding: 10px;
+}
+
+.input-box {
+    padding: 6px;
+    margin-top: 20px;
+    margin-left: 10px;
+    font-size: 17px;
+    border: none;
+    width: 250px;
+}
+
+.password-box {
+    padding: 6px;
+    margin-top: 20px;
+    margin-left: 10px;
+    font-size: 17px;
+    border: none;
+    width: 250px;
+}
+
+.register-button {
+    padding: 6px;
+    margin-left: 10px;
+    margin-top: 20px;
+    margin-bottom: 10px;
+    background: rgb(255, 94, 0);
+    color: #fff;
+    font-size: 17px;
+    border: none;
+    cursor: pointer;
+    width: 150px;
+}
+
+.register-button:hover {
+    background: rgb(78, 29, 0);
+}
+
+.user-type {
+    padding: 6px;
+}
+
+.student-type {
+    font-style: italic;
+    padding: 6px;
+}
+
+.student-type-button {
+    padding: 6px;
+    margin-right: 20px;
+}
+
+.instructor-type {
+    font-style: italic;
+    padding: 6px;
+    margin-left: 20px;
+}
+
+.instructor-type-button {
+    padding: 6px;
+}
+
+.show-password {
+    padding: 6px;
     margin: 10px;
-    width: 300px;
-    height: 25px;
 }
