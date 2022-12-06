@@ -36,7 +36,7 @@ app.post("/api/signUp", (req, res) => {
             res.send({err: err}) //this will be returned when duplicate entry in database, among with other errrs.
         } else {
             console.log(result);
-            res.send({message: "User " + email + "added successfully"}) //sent to client
+            res.send({message: "User " + email + " added successfully"}) //sent to client
         }
     })
 });
