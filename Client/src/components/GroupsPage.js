@@ -18,6 +18,17 @@ export const GroupsPage = () => {
             }
         })
     }
+    const test = () =>{
+        Axios.get("https://studynote.ca/api/test", {
+        }).then((response)=> {
+            if (response.data.message){
+                setdbData(response.data.message)
+            }else{
+                setdbData(response.data);
+                console.log(response);
+            }
+        })
+    }
 
 
     return (
@@ -30,7 +41,7 @@ export const GroupsPage = () => {
             </div>
             <div>
                 <button onClick={showDB}>See DB</button>
-          
+                <button onClick={test}>Test</button>
             </div>
         </div>
     );
