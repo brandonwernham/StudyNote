@@ -12,7 +12,7 @@ export const LoginPage = () => {
 
     //posts entered info from signup form to server and database
     const submitLogin = () => {
-        Axios.post("http://localhost:3001/api/login", {
+        Axios.post("https://studynote.ca/api/login", {
             email: email,
             password: password,
         }).then((response)=> {
