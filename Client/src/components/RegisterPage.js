@@ -11,7 +11,7 @@ export const RegisterPage = () => {
     const submitSignUp = () => {
 
         // fetch POST request that should work, use as basis for future POST requests instead of axios
-        fetch('http://localhost:3001/api/signUp', {
+        fetch('/api/signUp', {
             method: 'POST', 
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify({
