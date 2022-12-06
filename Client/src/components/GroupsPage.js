@@ -41,7 +41,10 @@ export const GroupsPage = () => {
             </div>
             <div>
                 <button onClick={showDB}>See DB</button>
-                <button onClick={test}>Test</button>
+                
+            </div>
+            <div>
+            <button onClick={test}>Test</button>
             </div>
         </div>
     );
