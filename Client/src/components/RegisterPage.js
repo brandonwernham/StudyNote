@@ -10,7 +10,7 @@ export const RegisterPage = () => {
 
     //posts entered info from signup form to server and database
     const submitSignUp = () => {
-        Axios.post("https://studynote.ca/api/signUp", {
+        Axios.post("http://localhost:3001/api/signUp", {
             email: email,
             password: password,
             userType: userType

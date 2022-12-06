@@ -11,8 +11,10 @@ const database = mysql.createPool({
     database: "StudyNoteDB",
 });
 
+const cors = require("cors");
+app.options("*", cors({ origin: 'http://localhost:3000', optionsSuccessStatus: 200 }));
+app.use(cors({ origin: "http://localhost:3000", optionsSuccessStatus: 200 }));
 
-app.use(cors());
 app.use(express.json());
 app.use(bodyParser.urlencoded({extended: true}));
 
