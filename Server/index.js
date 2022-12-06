@@ -49,6 +49,21 @@ app.post("/api/login", (req, res) => {
 });
 
 
+app.get("/api/showDB", (req, res) => {
+
+    const sqlInsert = "SELECT * FROM UserInfo"
+    database.query(sqlInsert, (err, result) => {
+        if (err){
+            res.send({err: err})
+        }
+        else if (result.length > 0){
+            res.send(result);
+        } else{
+            res.send({message: "DB empty"})
+        }
+    })    
+});
+
 // this is just a temporary backend simulating the file upload
 app.post("/api/upload", (req, res) => {
     setTimeout(() => {
