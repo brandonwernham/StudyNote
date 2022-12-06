@@ -11,7 +11,7 @@ export const RegisterPage = () => {
     //posts entered info from signup form to server and database
     const submitSignUp = () => {
 
-        fetch('http://127.0.0.1:3001/api/signUp', {
+        fetch('https://studynote.ca/api/signUp', {
             method: 'POST', 
             body: JSON.stringify({
                 email: email,
@@ -19,7 +19,7 @@ export const RegisterPage = () => {
                 userType: userType
             })
         }).then(function(response) {
-            return response.json()
+            return response.json().catch((error) => console.log(error))
         }).then(function(data) {
             console.log(data)
         }).catch(error => console.error('Error: ', error));
