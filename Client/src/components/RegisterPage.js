@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState} from 'react';
 import Axios from 'axios';
 import "./RegisterPage.css";
 import Navbar from './Navbar';
