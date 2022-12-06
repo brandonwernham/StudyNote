@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import Axios from 'axios';
+// import Axios from 'axios';
 import "./RegisterPage.css";
 import Navbar from './Navbar';
 
@@ -11,7 +11,20 @@ export const RegisterPage = () => {
     //posts entered info from signup form to server and database
     const submitSignUp = () => {
 
-        Axios.defaults.headers.common['corsHeader'] = 'Access-Control-Allow-Origin';
+        fetch('http://127.0.0.1:3001/api/signUp', {
+            method: 'POST', 
+            body: ({
+                email: email,
+                password: password,
+                userType: userType
+            })
+        }).then(function(response) {
+            return response.json()
+        }).then(function(data) {
+            console.log(data)
+        }).catch(error => console.error('Error: ', error));
+
+        /*Axios.defaults.headers.common['corsHeader'] = 'Access-Control-Allow-Origin';
 
         let config = {
             headers: {
@@ -24,7 +37,7 @@ export const RegisterPage = () => {
             userType: userType
         }, config).then(()=> {
             console.log("user successfully registered")
-        })
+        })*/
     };
 
     //gets if user info exists in userbase
