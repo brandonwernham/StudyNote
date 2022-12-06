@@ -27,6 +27,7 @@ app.use(bodyParser.urlencoded({extended: true}));
 //sign up 
 app.post("/api/signUp", (req, res) => {
     const email = req.body.email;
+    console.log(email);
     const password = req.body.password;
     const userType = req.body.userType;
 
