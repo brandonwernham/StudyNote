@@ -13,7 +13,19 @@ export const SearchPage = () => {
                 <h2 className='search-slogan-1'>Missed a class? Struggling with certain concepts?</h2>
                 <h3 className='search-slogan-2'>StudyNote has you covered!</h3>
                 <form className='search-form'>
-                <input type="text" placeholder="Find A Note..." className='searchbar' id='theInput'></input>
+                <input type="text" placeholder='Type a "keyword" (ex: Artificial Intelligence, Biology, etc)' className='keyword-input' id='keyword'></input>
+                <input type="text" placeholder="Course Code" className='course-code-input' id='course-code'></input>
+                <select type='text' className='subject-dropdown' id='subject'>
+                    <option value="" disabled selected hidden>Subject</option>
+                    <option value="chem">CHEM</option>
+                    <option value="compsci">COMPSCI</option>
+                    <option value="geog">GEOG</option>
+                    <option value="law">LAW</option>
+                    <option value="math">MATH</option>
+                    <option value="pathol">PATHOL</option>
+                    <option value="se">SE</option>
+                    {/* FILL IN ALL SUBJECTS, USE SHORT FORM FOR CODES, SORT ALPHABETICALLY */}
+                </select>
                 <button className='searchPage-search-button' onClick={SearchNotes}>Search</button>
                 </form>
             </div>
@@ -22,7 +34,27 @@ export const SearchPage = () => {
 }
 
 function SearchNotes() {
-    var userInput = document.getElementById("theInput").value;
+    // GET KEYWORDS FROM THE BIG LINE
+    // BREAK THEIR ENTRIES INTO INDIVIDUAL WORDS
+    // SEARCH WORDS AND BRING UP ANY MATCHES
+
+    // GET COURSE CODE FROM THE SECOND INPUT BOX
+    // SEARCH COURSE CODE AND BRING UP ANY MATCHES
+    
+    // GET SUBJECT FROM DROP DOWN BOX
+    // SEARCH SUBJECT AND BRING UP ANY MATCHES
+
+    // IF MULTIPLE INPUTS ARE USED, SHOW RESULTS WHICH CONTAIN ALL 3
+
+
+
+
+
+
+    // outdated but still useful below
+
+    
+    var userInput = document.getElementById("keyword").value;
     
     // we need to search the note title and note tags to get accurate results
 

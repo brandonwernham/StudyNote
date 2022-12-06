@@ -10,6 +10,9 @@ const FileUpload = ({files, setFiles, removeFile}) => {
         file.isUploading = true;
         setFiles([...files, file])
 
+        this.setState({file: file});
+        console.log(files);
+
         const formData = new FormData();
         formData.append(
             file.name,
