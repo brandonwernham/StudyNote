@@ -13,6 +13,7 @@ export const RegisterPage = () => {
 
         fetch('https://studynote.ca/api/signUp', {
             method: 'POST', 
+            headers: {'Content-Type': 'application/json'},
             body: JSON.stringify({
                 email: email,
                 password: password,
