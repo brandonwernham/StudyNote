@@ -11,7 +11,7 @@ export const RegisterPage = () => {
     //posts entered info from signup form to server and database
     const submitSignUp = () => {
 
-        fetch('https://studynote.ca/api/signUp', {
+        fetch('http://localhost:3001/api/signUp', {
             method: 'POST', 
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify({
@@ -20,9 +20,9 @@ export const RegisterPage = () => {
                 userType: userType
             })
         }).then(function(response) {
-            return response.json()
+            return response.text()
         }).then(function(data) {
-            console.log(data)
+            console.log(data ? JSON.parse(data) : {})
         }).catch(error => console.error('Error: ', error));
 
         /*Axios.defaults.headers.common['corsHeader'] = 'Access-Control-Allow-Origin';

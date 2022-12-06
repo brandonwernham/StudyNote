@@ -35,7 +35,7 @@ app.post("/api/signUp", (req, res) => {
     database.query(sqlInsert, [email, password, userType], (err, result) => {
         res.send(result);
         console.log(err);
-    }).then(data => res.status(200).send(data)).catch(err => res.send(error))  
+    })
 });
 
 //login
