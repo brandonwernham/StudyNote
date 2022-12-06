@@ -13,11 +13,16 @@ export const RegisterPage = () => {
 
         Axios.defaults.headers.common['corsHeader'] = 'Access-Control-Allow-Origin';
 
+        let config = {
+            headers: {
+              corsHead: 'Access-Control-Allow-Origin',
+            }
+          }
         Axios.post("https://studynote.ca/api/signUp", {
             email: email,
             password: password,
             userType: userType
-        }).then(()=> {
+        }, config).then(()=> {
             console.log("user successfully registered")
         })
     };
