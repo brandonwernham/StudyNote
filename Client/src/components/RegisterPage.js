@@ -10,7 +10,10 @@ export const RegisterPage = () => {
 
     //posts entered info from signup form to server and database
     const submitSignUp = () => {
-        Axios.post("http://localhost:3001/api/signUp", {
+
+        Axios.defaults.headers.common['corsHeader'] = 'Access-Control-Allow-Origin';
+
+        Axios.post("https://studynote.ca/api/signUp", {
             email: email,
             password: password,
             userType: userType
