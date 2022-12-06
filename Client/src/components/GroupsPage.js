@@ -8,7 +8,7 @@ export const GroupsPage = () => {
 
 
     const showDB = () =>{
-        Axios.get("http://localhost:3001/api/showDB", {
+        Axios.get("https://studynote.ca/api/showDB", {
         }).then((response)=> {
             if (response.data.message){
                 setdbData(response.data.message)
