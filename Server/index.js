@@ -30,11 +30,17 @@ app.post("/api/signUp", (req, res) => {
     console.log(email);
     const password = req.body.password;
     const userType = req.body.userType;
+    console.log(email, password, userType);
 
     const sqlInsert = "INSERT INTO UserInfo (Email, UserPassword, UserType) VALUES (?,?,?)"
     database.query(sqlInsert, [email, password, userType], (err, result) => {
-        res.send(result);
-        console.log(err);
+        if (err) {
+            res.send({err: err})
+        } else if (result.length > 0) {
+            res.send(result);
+        } else {
+            res.send({message: "Unable to add user " + email})
+        }
     })
 });
 
