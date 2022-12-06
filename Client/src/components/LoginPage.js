@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState} from 'react';
 import Axios from 'axios';
 import "./LoginPage.css";
 import Navbar from './Navbar';
@@ -12,7 +12,7 @@ export const LoginPage = () => {
 
     //posts entered info from signup form to server and database
     const submitLogin = () => {
-        Axios.post("http://localhost:3001/api/login", {
+        Axios.post("https://studynote.ca/api/login", {
             email: email,
             password: password,
         }).then((response)=> {

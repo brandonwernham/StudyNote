@@ -17,7 +17,7 @@ const FileUpload = ({files, setFiles, removeFile}) => {
             file.name
         )
 
-        axios.post('http://localhost:3001/api/upload', formData)
+        axios.post('https://studynote.ca/api/upload', formData)
         .then((res) => {
             file.isUploading = false;
             setFiles([...files, file]);
