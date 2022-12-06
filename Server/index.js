@@ -27,19 +27,16 @@ app.use(bodyParser.urlencoded({extended: true}));
 //sign up 
 app.post("/api/signUp", (req, res) => {
     const email = req.body.email;
-    console.log(email);
     const password = req.body.password;
     const userType = req.body.userType;
-    console.log(email, password, userType);
 
     const sqlInsert = "INSERT INTO UserInfo (Email, UserPassword, UserType) VALUES (?,?,?)"
     database.query(sqlInsert, [email, password, userType], (err, result) => {
         if (err) {
-            res.send({err: err})
-        } else if (result.length > 0) {
-            res.send(result);
+            res.send({err: err}) //this will be returned when duplicate entry in database, among with other errrs.
         } else {
-            res.send({message: "Unable to add user " + email})
+            console.log(result);
+            res.send({message: "User " + email + "added successfully"}) //sent to client
         }
     })
 });

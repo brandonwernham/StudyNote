@@ -21,9 +21,9 @@ export const RegisterPage = () => {
                 userType: userType
             })
         }).then(function(response) {
-            return response.text()
+            return response.text() //message from server
         }).then(function(data) {
-            console.log(data ? JSON.parse(data) : {})
+            console.log(data ? JSON.parse(data) : {}) //no idea what this does
         }).catch(error => console.error('Error: ', error));
 
         /*Axios.defaults.headers.common['corsHeader'] = 'Access-Control-Allow-Origin';
@@ -98,7 +98,7 @@ export const RegisterPage = () => {
                             name="userType"
                             id="student"
                             value="student"
-                            checked='true'
+                            //checked='true'
                             onChange={(e) => {
                             setUserType(e.target.value);
                             }}
