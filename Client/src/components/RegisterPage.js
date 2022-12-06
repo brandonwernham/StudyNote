@@ -19,7 +19,7 @@ export const RegisterPage = () => {
                 userType: userType
             })
         }).then(function(response) {
-            return response.json().catch((error) => console.log(error))
+            return response.json()
         }).then(function(data) {
             console.log(data)
         }).catch(error => console.error('Error: ', error));

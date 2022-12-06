@@ -33,6 +33,7 @@ app.post("/api/signUp", (req, res) => {
 
     const sqlInsert = "INSERT INTO UserInfo (Email, UserPassword, UserType) VALUES (?,?,?)"
     database.query(sqlInsert, [email, password, userType], (err, result) => {
+        res.send(result);
         console.log(err);
     })    
 });
