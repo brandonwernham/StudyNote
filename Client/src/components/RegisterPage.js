@@ -17,12 +17,7 @@ export const RegisterPage = () => {
             password: password,
             userType: userType
         }).then((response)=> {
-            if (response.data.message){
-                setSignupData(response.data.message)
-            } else {
-                setSignupData(response.data);
-                console.log(response);
-            }
+            console.log(response.text());
         }).catch(error => console.error('Error: ', error));
 
         // fetch POST request that should work, use as basis for future POST requests instead of axios
