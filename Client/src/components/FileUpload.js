@@ -45,6 +45,11 @@ const FileUpload = ({files, setFiles, removeFile}) => {
                 </div>
                 <p className="support">Supported File Types:</p>
                 <p className="file-types">PDF, JPG, PNG</p>
+                <div>
+                    <p>Tags:</p>
+                    <input className="input-tags" type="text" placeholder="Keywords to Help Find Your Note"></input>
+                </div>
+                
             </div>
         </>
     );
