@@ -5,7 +5,7 @@ const bodyParser = require('body-parser');
 const cors = require('cors');
 
 const bcrypt = require('bcrypt-nodejs');
-const saltRounds = 1;
+const saltRounds = 10;
 
 const database = mysql.createPool({
     host: "localhost",
