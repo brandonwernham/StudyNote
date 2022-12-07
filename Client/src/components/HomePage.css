@@ -14,25 +14,46 @@
 }
 
 .view-classes-button {
-    
+    margin: 15px;
+    border: none;
+    background-color: rgb(255, 94, 0);
+    padding-top: 5px;
+}
+
+.view-classes-button:hover {
+    background-color: rgb(78, 29, 0);
 }
 
 .view-classes-image {
-    width: 400px;
+    width: 350px;
 }
 
 .browse-notes-button {
-    
+    margin: 15px;
+    border: none;
+    background-color: rgb(255, 94, 0);
+    padding-top: 5px;
+}
+
+.browse-notes-button:hover {
+    background-color: rgb(78, 29, 0);
 }
 
 .browse-notes-image {
-    width: 400px;
+    width: 350px;
 }
 
 .ask-question-button {
-    
+    margin: 15px;
+    border: none;
+    background-color: rgb(255, 94, 0);
+    padding-top: 5px;
+}
+
+.ask-question-button:hover {
+    background-color: rgb(78, 29, 0);
 }
 
 .ask-question-image {
-    width: 400px;
+    width: 350px;
 }
