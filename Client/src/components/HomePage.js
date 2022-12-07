@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import "./HomePage.css";
 import Navbar from './Navbar';
 import Axios from 'axios';
@@ -8,9 +8,13 @@ export const HomePage = () => {
 
     Axios.defaults.withCredentials = true;
 
+    const [loginStatus, setLoginStatus] = useState("");
+
     useEffect(() => {
         Axios.get("https://studynote.ca/api/login").then((response) => {
-            console.log(response);
+            if(response.data.loggedIn == true) {
+                setLoginStatus(response.data[0].Email);
+            }
         })
     }, []);
 
@@ -23,7 +27,7 @@ export const HomePage = () => {
                 <br></br>
                 <br></br>
                 <div>
-                    <h2 className='welcome-text'>Welcome back, PLACEHOLDER!</h2>
+                    <h2 className='welcome-text'>Welcome back {loginStatus}!</h2>
                     <h4 className='accomplish-text'>What would you like to accomplish?</h4>
                     <br></br>
                 </div>
