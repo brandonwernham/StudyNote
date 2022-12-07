@@ -29,7 +29,6 @@ export const UploadPage = () => {
             <div className='file-list-box'>
                 <FileList files={files} removeFile={removeFile} />
             </div>
-            <button>Upload</button>
         </div>
     );
 }

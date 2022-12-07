@@ -10,7 +10,6 @@ const FileUpload = ({files, setFiles, removeFile}) => {
         file.isUploading = true;
         setFiles([...files, file])
 
-        this.setState({file: file});
         console.log(files);
 
         const formData = new FormData();
@@ -53,6 +52,7 @@ const FileUpload = ({files, setFiles, removeFile}) => {
                     <p>Course Code *if applicable*:</p>
                     <input className="input-tags" type="text" placeholder="Course Code"></input>
                 </div>
+                <button className="submit-files-button">Submit</button>
             </div>
         </>
     );
