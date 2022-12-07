@@ -4,6 +4,9 @@ const mysql = require ('mysql');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 
+const bcrypt = require('bcrypt-nodejs');
+const saltRounds = 10;
+
 const database = mysql.createPool({
     host: "localhost",
     user: "server",
@@ -36,15 +39,22 @@ app.post("/api/signUp", (req, res) => {
     const password = req.body.password;
     const userType = req.body.userType;
 
-    const sqlInsert = "INSERT INTO UserInfo (Email, UserPassword, UserType) VALUES (?,?,?)"
-    database.query(sqlInsert, [email, password, userType], (err, result) => {
-        if (err) {
-            res.send({err: err}) //this will be returned when duplicate entry in database, among with other errrs.
-        } else {
-            console.log(result);
-            res.send({message: "User " + email + " added successfully"}) //sent to client
+    bcrypt.hash(password, saltRounds), (err, hash) => {
+
+        if(err) {
+            console.log(err);
         }
-    })
+        
+        const sqlInsert = "INSERT INTO UserInfo (Email, UserPassword, UserType) VALUES (?,?,?)"
+        database.query(sqlInsert, [email, hash, userType], (err, result) => {
+            if (err) {
+                res.send({err: err}) //this will be returned when duplicate entry in database, among with other errrs.
+            } else {
+                console.log(result);
+                res.send({message: "User " + email + " added successfully"}) //sent to client
+            }
+        })
+    }
 });
 
 //login
@@ -52,15 +62,21 @@ app.post("/api/login", (req, res) => {
     const email = req.body.email;
     const password = req.body.password;
 
-    const sqlInsert = "SELECT * FROM UserInfo WHERE Email = ? AND UserPassword = ?"
-    database.query(sqlInsert, [email, password], (err, result) => {
+    const sqlInsert = "SELECT * FROM UserInfo WHERE Email = ?"
+    database.query(sqlInsert, email, (err, result) => {
         if (err){
             res.send({err: err})
         }
         else if (result.length > 0){
-            res.send(result);
+            bcrypt.compare(password, result[0].password, (error, response) => {
+                if(response) {
+                    res.send(result)
+                } else {
+                    res.send({message: "Wrong username or password."})
+                }
+            }) 
         } else{
-            res.send({message: "User not found. Please ensure correct information is entered."})
+            res.send({message: "User not found."})
         }
         
     })    

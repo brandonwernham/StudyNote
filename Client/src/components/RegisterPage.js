@@ -20,7 +20,7 @@ export const RegisterPage = () => {
                 console.log(response);
             }).catch(error => console.error('Error: ', error));
         } else {
-            alert("Please select a user type!");
+            alert("Please select a user type.");
         }
     };
 
