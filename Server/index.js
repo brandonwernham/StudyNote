@@ -79,6 +79,14 @@ app.post("/api/login", (req, res) => {
     })    
 });
 
+app.get("/api/login", (req, res) => {
+    if(req.session.user) {
+        res.send({loggedIn: true, user: req.session.user});
+    } else {
+        res.send({loggedIn: false})
+    }
+});
+
 
 app.get("/api/showDB", (req, res) => {
 

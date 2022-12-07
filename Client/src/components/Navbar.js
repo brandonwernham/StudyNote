@@ -9,7 +9,7 @@ export default function Navbar() {
             <a href="/groups">GROUPS</a>
             <a href="/upload">UPLOAD</a>
             <div class="container">
-                <button type="submit" onClick="window.location.href='https://studynote.ca/login';">Log In/Register</button>
+                <a href="/login">LOGIN</a>
             </div>
         </nav>
     );

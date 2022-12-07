@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import "./HomePage.css";
 import Navbar from './Navbar';
+
 
 export const HomePage = () => {
     return (
