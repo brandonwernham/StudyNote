@@ -10,7 +10,7 @@ export default function Navbar() {
             <a href="/upload">UPLOAD</a>
             <div class="container">
                 <form>
-                    <button type="submit" onclick="location.href = '/login';">Log In/Register</button>
+                    <button type="submit" onclick="location.href = 'https://studynote.ca/login';">Log In/Register</button>
                 </form>
             </div>
         </nav>
