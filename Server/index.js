@@ -42,6 +42,7 @@ app.post("/api/signUp", (req, res) => {
     bcrypt.hash(password, saltRounds), (err, hash) => {
 
         if(err) {
+            res.send(err);
             console.log(err);
         }
         
