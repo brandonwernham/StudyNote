@@ -18,7 +18,7 @@ export const RegisterPage = () => {
                 userType: userType
             }).then((response)=> {
                 console.log(response);
-            }).catch(error => console.error('Error: ', error));
+            }).catch(error => console.log('Error: ', error.message));
         } else {
             alert("Please select a user type.");
         }
