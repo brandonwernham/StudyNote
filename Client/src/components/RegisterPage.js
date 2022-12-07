@@ -17,7 +17,7 @@ export const RegisterPage = () => {
             password: password,
             userType: userType
         }).then((response)=> {
-            console.log(response.text());
+            console.log(response);
         }).catch(error => console.error('Error: ', error));
 
         // fetch POST request that should work, use as basis for future POST requests instead of axios
