@@ -102,12 +102,12 @@ app.get("/api/test", (req, res) => {
     res.send({message: "the server is sending this message."})
 })
 
-// this is just a temporary backend simulating the file upload
 app.post("/api/upload", (req, res) => {
-    setTimeout(() => {
-        console.log('file has been uploaded');
-        return res.status(200).json({ result: true, msg: 'file has been uploaded'});
-    }, 3000);
+    const file = req.body.file
+    const sqlInsert = ""
+
+    console.log('file has been uploaded');
+    return res.status(200).json({ result: true, msg: 'file has been uploaded'});
 });
 
 app.delete("/api/upload", (req, res) => {
