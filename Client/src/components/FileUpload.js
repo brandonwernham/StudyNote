@@ -19,7 +19,7 @@ const FileUpload = ({files, setFiles, removeFile}) => {
         const formData = new FormData();
         formData.append("note", file)
 
-        axios.post('http://localhost:3001/api/upload', formData, { headers: {'Content-Type': 'multipart/form-data'}})
+        axios.post('https://studynote.ca/api/upload', formData, { headers: {'Content-Type': 'multipart/form-data'}})
         .then((res) => {
             console.log(res)
             file.isUploading = false;

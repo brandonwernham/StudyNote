@@ -5,14 +5,14 @@ import Axios from 'axios';
 
 export const SearchPage = () => {
     const [tags, setTags] = useState("");
-    const [imageURL, setImageUrl] = useState("http://localhost:3001/notes/placeholder.jpg");
+    const [imageURL, setImageUrl] = useState("https://studynote.ca/notes/placeholder.jpg");
 
     //redirects to page with first note in database
     const getNote = () => {
-        Axios.post("http://localhost:3001/api/getNote", {
+        Axios.post("https://studynote.ca/api/getNote", {
             tags: tags
         }).then((response)=> {
-            setImageUrl("http://localhost:3001/" + response.data);
+            setImageUrl("https://studynote.ca/" + response.data);
         }).catch(error => console.log('Error: ', error.message));
         
         
