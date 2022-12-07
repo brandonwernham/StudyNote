@@ -49,7 +49,10 @@ const FileUpload = ({files, setFiles, removeFile}) => {
                     <p>Tags:</p>
                     <input className="input-tags" type="text" placeholder="Keywords to Help Find Your Note"></input>
                 </div>
-                
+                <div>
+                    <p>Course Code *if applicable*:</p>
+                    <input className="input-tags" type="text" placeholder="Course Code"></input>
+                </div>
             </div>
         </>
     );
