@@ -64,6 +64,7 @@ app.post("/api/login", (req, res) => {
     const email = req.body.email;
     const password = req.body.password;
 
+    const sqlInsert = "SELECT * FROM UserInfo WHERE Email = ? AND UserPassword = ?"
     database.query(sqlInsert, [email, password], (err, result) => {
         if(err) {
             res.send({err: err})
