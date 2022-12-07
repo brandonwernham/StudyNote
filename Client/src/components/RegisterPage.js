@@ -11,29 +11,17 @@ export const RegisterPage = () => {
     //posts entered info from signup form to server and database
     const submitSignUp = () => {
 
-
-        Axios.post("https://studynote.ca/api/signUp", {
-            email: email,
-            password: password,
-            userType: userType
-        }).then((response)=> {
-            console.log(response);
-        }).catch(error => console.error('Error: ', error));
-
-        // fetch POST request that should work, use as basis for future POST requests instead of axios
-        /*fetch('/api/signUp', {
-            method: 'POST', 
-            headers: {'Content-Type': 'application/json'},
-            body: JSON.stringify({
+        if(userType == "student" || userType == "instructor") {
+            Axios.post("https://studynote.ca/api/signUp", {
                 email: email,
                 password: password,
                 userType: userType
-            })
-        }).then(function(response) {
-            return response.text() //message from server
-        }).then(function(data) {
-            console.log(data ? JSON.parse(data) : {}) //no idea what this does
-        }).catch(error => console.error('Error: ', error));*/
+            }).then((response)=> {
+                console.log(response);
+            }).catch(error => console.error('Error: ', error));
+        } else {
+            alert("Please select a user type!");
+        }
     };
 
     return (
