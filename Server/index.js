@@ -1,8 +1,10 @@
 const express = require('express');
 const app = express();
-const mysql = require ('mysql');
+const mysql = require('mysql');
 const bodyParser = require('body-parser');
 const cors = require('cors');
+const cookieParser = require('cookie-parser');
+const session = require('express-session');
 
 const database = mysql.createPool({
     host: "localhost",
@@ -16,7 +18,6 @@ var corsOption = {
     methods: ["GET", "POST"],
     credentials: true
 }
-
 app.use(cors(corsOption));
 
 app.use((req, res, next) => {
@@ -28,7 +29,17 @@ app.use((req, res, next) => {
 
 app.use(express.json());
 app.use(bodyParser.urlencoded({extended: true}));
+app.use(cookieParser());
 
+app.use(session({
+    key: "userId",
+    secret: "guessThis", 
+    resave: false,
+    saveUninitialized: false,
+    cookie: {
+        expires: 60 * 60 * 24 * 7,
+    },
+}));
 
 //sign up 
 app.post("/api/signUp", (req, res) => {
@@ -53,12 +64,13 @@ app.post("/api/login", (req, res) => {
     const password = req.body.password;
 
     database.query(sqlInsert, [email, password], (err, result) => {
-        if (err){
+        if(err) {
             res.send({err: err})
-        }
-        else if (result.length > 0){
+        } else if (result.length > 0) {
+            req.session.user = result;
+            console.log(req.session.user);
             res.send(result); 
-        } else{
+        } else {
             res.send({message: "User not found."})
         }
         
