@@ -18,9 +18,21 @@ export const HomePage = () => {
                 </div>
                 <div className='row'>
                     <div>
-                        <img src={require("./../images/view_classes.png")} alt="View Classes" width="400px" style={{padding: '50px'}}></img>
-                        <img src={require("./../images/browse_notes.png")} alt="View Classes" width="400px" style={{padding: '50px'}}></img>
-                        <img src={require("./../images/ask_question.png")} alt="View Classes" width="400px" style={{padding: '50px'}}></img>
+                        <button className='view-classes-button'>
+                            <img src={require("./../images/view_classes.png")} 
+                            alt="View Classes" className='view-classes-image'>
+                            </img> 
+                        </button>
+                        <button className='browse-notes-button'>
+                            <img src={require("./../images/browse_notes.png")} 
+                            alt="View Classes" className='browse-notes-image'>
+                            </img>
+                        </button>
+                        <button className='ask-question-button'>
+                            <img src={require("./../images/ask_question.png")} 
+                            alt="View Classes" className='ask-question-image'>
+                            </img>
+                        </button>
                     </div>
                 </div>
             </div>
