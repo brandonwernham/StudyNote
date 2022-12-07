@@ -18,6 +18,7 @@ export const LoginPage = () => {
         }).then((response)=> {
             if (response.data.message){
                 setLoginStatus(response.data.message)
+                console.log(response.data.message)
             }
             else{
                 navigate("/");
@@ -37,7 +38,7 @@ export const LoginPage = () => {
             <br></br>
             <div className='login-form'>
                 <form>
-                    <input type="text" placeholder="Username" className='username' id='username' onChange={(e) => {setEmail(e.target.value)}}></input>
+                    <input type="text" placeholder="Email" className='username' id='username' onChange={(e) => {setEmail(e.target.value)}}></input>
                     <br></br>
                     <input type="password" placeholder="Password" className='password' id='password' onChange={(e) => {setPassword(e.target.value)}}></input>
                 </form>

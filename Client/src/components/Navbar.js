@@ -10,10 +10,7 @@ export default function Navbar() {
             <a href="/upload">UPLOAD</a>
             <div class="container">
                 <form>
-                    <input type="text" placeholder="Username"></input>
-                    <input type="password" placeholder="Password"></input>
-                    <a href="/register">Register</a>
-                    <button type="submit">Log In</button>
+                    <button type="submit" onclick="location.href = '/login';">Log In/Register</button>
                 </form>
             </div>
         </nav>
