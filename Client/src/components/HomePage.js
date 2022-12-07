@@ -13,7 +13,7 @@ export const HomePage = () => {
     useEffect(() => {
         Axios.get("https://studynote.ca/api/login").then((response) => {
             if(response.data.loggedIn == true) {
-                setLoginStatus(response.data[0].user);
+                setLoginStatus(response.data.user[0].Email);
             }
         })
     }, []);
