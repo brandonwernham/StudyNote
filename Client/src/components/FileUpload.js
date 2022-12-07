@@ -2,7 +2,7 @@ import React from "react";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus } from '@fortawesome/free-solid-svg-icons'
 import "./UploadPage.css";
-import axios from "axios";
+import axios, { Axios } from "axios";
 
 const FileUpload = ({files, setFiles, removeFile}) => {
     const uploadHandler = (event) => {
@@ -10,7 +10,6 @@ const FileUpload = ({files, setFiles, removeFile}) => {
         file.isUploading = true;
         setFiles([...files, file])
 
-        this.setState({file: file});
         console.log(files);
 
         const formData = new FormData();
@@ -45,6 +44,15 @@ const FileUpload = ({files, setFiles, removeFile}) => {
                 </div>
                 <p className="support">Supported File Types:</p>
                 <p className="file-types">PDF, JPG, PNG</p>
+                <div>
+                    <p>Tags:</p>
+                    <input className="input-tags" type="text" placeholder="Keywords to Help Find Your Note"></input>
+                </div>
+                <div>
+                    <p>Course Code *if applicable*:</p>
+                    <input className="input-tags" type="text" placeholder="Course Code"></input>
+                </div>
+                <button className="submit-files-button" onClick={(e) => this.uploadHandler(e)}>Submit</button>
             </div>
         </>
     );
