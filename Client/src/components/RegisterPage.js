@@ -1,6 +1,7 @@
 import React, {useState} from 'react';
 import "./RegisterPage.css";
 import Navbar from './Navbar';
+import Axios from 'axios';
 
 export const RegisterPage = () => {
     const [email, setEmail] = useState("");
