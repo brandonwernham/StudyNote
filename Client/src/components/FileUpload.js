@@ -5,24 +5,24 @@ import "./UploadPage.css";
 import axios, { Axios } from "axios";
 
 const FileUpload = ({files, setFiles, removeFile}) => {
+
     const uploadHandler = (event) => {
         const file = event.target.files[0];
-        file.isUploading = true;
         setFiles([...files, file])
+    }
 
-        console.log(files);
+    const submitFiles = () => {
+        const file = files[0];
+        file.isUploading = true;
+        console.log(file);
 
         const formData = new FormData();
-        formData.append(
-            file.name,
-            file,
-            file.name
-        )
+        formData.append("note", file)
 
-        axios.post('https://studynote.ca/api/upload', formData)
+        axios.post('http://localhost:3001/api/upload', formData, { headers: {'Content-Type': 'multipart/form-data'}})
         .then((res) => {
+            console.log(res)
             file.isUploading = false;
-            setFiles([...files, file]);
         })
         .catch((err) => {
             console.log(err);
@@ -52,7 +52,7 @@ const FileUpload = ({files, setFiles, removeFile}) => {
                     <p>Course Code *if applicable*:</p>
                     <input className="input-tags" type="text" placeholder="Course Code"></input>
                 </div>
-                <button className="submit-files-button" onClick={(e) => this.uploadHandler(e)}>Submit</button>
+                <button className="submit-files-button" onClick={submitFiles}>Submit</button>
             </div>
         </>
     );

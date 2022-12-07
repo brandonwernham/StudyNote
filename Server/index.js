@@ -3,8 +3,9 @@ const app = express();
 const mysql = require ('mysql');
 const bodyParser = require('body-parser');
 const cors = require('cors');
-
+const multer = require('multer');
 const bcrypt = require('bcrypt-nodejs');
+const { json } = require('body-parser');
 const saltRounds = 10;
 
 const database = mysql.createPool({
@@ -103,19 +104,50 @@ app.get("/api/test", (req, res) => {
     res.send({message: "the server is sending this message."})
 })
 
-app.post("/api/upload", (req, res) => {
-    const file = req.body.file
-    const sqlInsert = "" // not sure how to store a file in the db
 
-    console.log('file has been uploaded');
-    return res.status(200).json({ result: true, msg: 'file has been uploaded'});
+//file uploading
+const upload = multer({dest: "notes/"});
+
+app.post("/api/upload", upload.single("note"), (req, res) => {
+    const filePath = req.file.path;
+
+    const sqlInsert = "INSERT INTO NotesTable (FilePath) VALUES (?)"
+    database.query(sqlInsert, [filePath], (err, result) => {
+        if (err) {
+            res.send({err: err}) //this will be returned when duplicate entry in database, among with other errrs.
+        } else {
+            console.log(result.insertId);
+            res.send({message: "Insert ID:  " + result.insertId}) //sent to client
+        }
+    })
 });
 
-app.delete("/api/upload", (req, res) => {
+
+
+app.post("/api/getNote", (req, res) => {
+    const tags = req.body.tags;
+
+    const sqlInsert = "SELECT FilePath FROM NotesTable WHERE FileID = ?"
+    database.query(sqlInsert, tags, (err, result) => {
+        if (err){
+            res.send({err: err})
+        }
+        else{
+            console.log(result[0].FilePath);
+            res.send(result[0].FilePath);
+        }
+    })
+});
+
+
+
+app.delete("/api/upload/delete", (req, res) => {
     console.log("file was deleted");
     return res.status(200).json({ result: true, msg: 'file was deleted'});
 });
 
+
+app.use('/notes', express.static('notes'))
 app.listen(3001, () => {
     console.log("running on port 3001");
 })

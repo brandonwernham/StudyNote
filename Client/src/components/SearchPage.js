@@ -1,8 +1,24 @@
-import React from 'react';
+import React, {useState} from 'react';
 import "./SearchPage.css";
 import Navbar from './Navbar';
+import Axios from 'axios';
 
 export const SearchPage = () => {
+    const [tags, setTags] = useState("");
+    const [imageURL, setImageUrl] = useState("http://localhost:3001/notes/placeholder.jpg");
+
+    //redirects to page with first note in database
+    const getNote = () => {
+        Axios.post("http://localhost:3001/api/getNote", {
+            tags: tags
+        }).then((response)=> {
+            setImageUrl("http://localhost:3001/" + response.data);
+        }).catch(error => console.log('Error: ', error.message));
+        
+        
+        
+    };
+
     return (
         <div>
             <div>
@@ -13,7 +29,7 @@ export const SearchPage = () => {
                 <h2 className='search-slogan-1'>Missed a class? Struggling with certain concepts?</h2>
                 <h3 className='search-slogan-2'>StudyNote has you covered!</h3>
                 <form className='search-form'>
-                <input type="text" placeholder='Type a "keyword" (ex: Artificial Intelligence, Biology, etc)' className='keyword-input' id='keyword'></input>
+                <input type="text" placeholder='Type a "keyword" (ex: Artificial Intelligence, Biology, etc)' className='keyword-input' id='keyword' onChange={(e) => {setTags(e.target.value)}}></input>
                 <input type="text" placeholder="Course Code" className='course-code-input' id='course-code'></input>
                 <select type='text' className='subject-dropdown' id='subject'>
                     <option value="" disabled selected hidden>Subject</option>
@@ -26,8 +42,9 @@ export const SearchPage = () => {
                     <option value="se">SE</option>
                     {/* FILL IN ALL SUBJECTS, USE SHORT FORM FOR CODES, SORT ALPHABETICALLY */}
                 </select>
-                <button className='searchPage-search-button' onClick={SearchNotes}>Search</button>
+                <button type ="button" className='searchPage-search-button' onClick={getNote}>Search</button>
                 </form>
+                <img src ={imageURL} style = {{width: 500, height: 500}}></img>
             </div>
         </div>
     );

@@ -13,7 +13,6 @@ export const UploadPage = () => {
         setFiles(files.filter(file => file.name !== filename));
     }
 
-    console.log(files);
 
     return (
         <div>

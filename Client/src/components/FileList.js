@@ -5,6 +5,7 @@ import axios from "axios";
 
 const FileList = ({files, removeFile}) => {
     const deleteFileHandler = (_name) => {
+        console.log(files);
         axios.delete(`https://studynote.ca/api/upload?name=${_name}`)
         .then((res) => removeFile(_name))
         .catch((err) => console.error(err))
