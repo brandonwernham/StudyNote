@@ -104,7 +104,7 @@ app.get("/api/test", (req, res) => {
 
 app.post("/api/upload", (req, res) => {
     const file = req.body.file
-    const sqlInsert = ""
+    const sqlInsert = "" // not sure how to store a file in the db
 
     console.log('file has been uploaded');
     return res.status(200).json({ result: true, msg: 'file has been uploaded'});
