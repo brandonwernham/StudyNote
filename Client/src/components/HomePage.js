@@ -1,9 +1,19 @@
 import React, { useEffect } from 'react';
 import "./HomePage.css";
 import Navbar from './Navbar';
+import Axios from 'axios';
 
 
 export const HomePage = () => {
+
+    Axios.defaults.withCredentials = true;
+
+    useEffect(() => {
+        Axios.get("https://studynote.ca/api/login").then((response) => {
+            console.log(response);
+        })
+    }, []);
+
     return (
         <div>
             <div>

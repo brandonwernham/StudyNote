@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState} from 'react';
 import Axios from 'axios';
 import "./LoginPage.css";
 import Navbar from './Navbar';
@@ -9,15 +9,6 @@ export const LoginPage = () => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [loginStatus, setLoginStatus] = useState("");
-
-
-    Axios.defaults.withCredentials = true;
-
-    useEffect(() => {
-        Axios.get("https://studynote.ca/api/login").then((response) => {
-            console.log(response);
-        })
-    }, []);
 
     //posts entered info from signup form to server and database
     const submitLogin = () => {
