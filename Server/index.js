@@ -5,6 +5,7 @@ const bodyParser = require('body-parser');
 const cors = require('cors');
 const cookieParser = require('cookie-parser');
 const session = require('express-session');
+const multer = require('multer');
 
 const database = mysql.createPool({
     host: "localhost",
