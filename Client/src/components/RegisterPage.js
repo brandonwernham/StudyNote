@@ -7,9 +7,15 @@ export const RegisterPage = () => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [userType, setUserType] = useState("");
+    const [invalidEmailError, setInvalidEmailError] = useState("");
 
     //posts entered info from signup form to server and database
     const submitSignUp = () => {
+        // Checks if email is valid
+        if (!isValidEmail(email)) {
+            setInvalidEmailError("Not a valid email");
+            return;
+        }
 
         if(userType == "student" || userType == "instructor") {
             Axios.post("https://studynote.ca/api/signUp", {
@@ -23,6 +29,10 @@ export const RegisterPage = () => {
             alert("Please select a user type.");
         }
     };
+
+    const isValidEmail = (email) => {
+        return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+    };   
 
     return (
         <div>
@@ -43,8 +53,10 @@ export const RegisterPage = () => {
                         name="email"
                         onChange={(e) => {
                             setEmail(e.target.value);
+                            setInvalidEmailError("")
                         }}
                     />
+                    <h5 align="center" style={{color: "red"}}>{invalidEmailError}</h5>
                     <br></br>
                     {/* PASSWORD */}
                     <label>Password: </label>
