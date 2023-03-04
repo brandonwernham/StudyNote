@@ -144,7 +144,7 @@ app.post("/api/getNote", (req, res) => {
 
 
 
-app.delete("/api/upload/delete", (req, res) => {
+app.delete("/api/upload", (req, res) => {
     console.log("file was deleted");
     return res.status(200).json({ result: true, msg: 'file was deleted'});
 });
