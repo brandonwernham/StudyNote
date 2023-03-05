@@ -17,8 +17,12 @@ const FileUpload = ({files, setFiles, removeFile}) => {
         console.log(file);
 
         const formData = new FormData();
-        formData.append("note", file)
 
+        formData.append("note_id", "123"); // Replace "123" with the desired note id
+        formData.append("note_name", "My Note"); // Replace "My Note" with the desired note name
+        formData.append("note", file);
+        formData.append("creator_id", "456"); // Replace "456" with the desired creator id
+        
         axios.post('https://studynote.ca/api/upload', formData, { headers: {'Content-Type': 'multipart/form-data'}})
         .then((res) => {
             console.log(res)
