@@ -39,7 +39,8 @@ body {
     color: var(--color-white);
     background-image: url(./images/bg.jpg);
     background-blend-mode: multiply;
-    background-size: cover;
+    background-size: 2200px;
+    background-repeat: no-repeat;
 }
 
 .container {
