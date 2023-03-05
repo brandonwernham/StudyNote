@@ -1,35 +1,39 @@
-* {
-  box-sizing: border-box;
+.navbar {
+  height: 5rem;
 }
 
-nav {
-  overflow: hidden;
-  background: #ff9100;
-  line-height: 40px;
-}
-
-nav a {
+.title {
   float: left;
-  display: block;
-  width: 90px;
+  font-size: 30pt;
+  margin-left: 1rem;
+  margin-right: 2rem;
+  margin-top: 1rem;
+}
+
+.pages {
+  display: grid;
+  grid-template-columns: repeat(4, 6rem);
+  float: left;
+  width: 2rem;
   color: rgb(255, 255, 255);
   text-align: center;
-  padding: 14px 0px;
+  padding: 2px 0px;
   text-decoration: none;
   font-size: 16px;
+  margin-top: 2rem;
 }
 
-nav a:hover {
-  background: #ff6600;
-}
-
-nav a.active {
-  background: black;
+.pages a.active {
+  box-shadow: 0 0 0 0.2px var(--color-primary);
+  outline: none;
+  border-radius: 10px;
 }
 
 nav .container {
   float: right;
-  margin-right: 10px;
+  width: auto;
+  margin-right: 2rem;
+  margin-top: 2rem;
 }
 
 nav input[type=text], nav input[type=password] {
@@ -56,9 +60,4 @@ nav input[type=text], nav input[type=password] {
 
 .container button:hover {
   background: rgb(78, 29, 0);
-}
-
-.title {
-  font-size: 200%;
-  width: 180px;
 }

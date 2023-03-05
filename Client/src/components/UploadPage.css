@@ -1,13 +1,3 @@
-body {
-    margin: 0;
-    padding: 0;
-    background: url(../images/background.jpg);
-    background-size: cover;
-    font-weight: bold;
-    font-family: sans-serif;
-    color: white;
-}
-
 li p {
     flex: 1;
 }

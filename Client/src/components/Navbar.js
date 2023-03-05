@@ -2,14 +2,17 @@ import "./Navbar.css";
 
 export default function Navbar() {
     return (
-        <nav>
-            <a class="active" href="/" className="title">StudyNote</a>
-            <a href="/search">SEARCH</a>
-            <a href="/classes">CLASSES</a>
-            <a href="/groups">GROUPS</a>
-            <a href="/upload">UPLOAD</a>
+        <nav className="navbar">
+            <a href="/" className="title">StudyNote</a>
+            <div className="pages">
+                <a class="active" href="/search">Search</a>
+                <a href="/classes">Classes</a>
+                <a href="/groups">Groups</a>
+                <a href="/upload">Upload</a>
+            </div>
+            
             <div class="container">
-                <a href="/login">LOGIN</a>
+                <a href="/login">Login</a>
             </div>
         </nav>
     );
