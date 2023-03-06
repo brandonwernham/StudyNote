@@ -15,24 +15,32 @@ const FileUpload = ({files, setFiles, removeFile}) => {
         const file = files[0];
         file.isUploading = true;
         console.log(file);
-
+      
+        const timestamp = Date.now();
+        const noteId = `${timestamp}`;
+        const noteName = `Note ${timestamp}`;
+        const creatorId = `creator_${timestamp}`;
+      
         const formData = new FormData();
-
-        formData.append("note_id", "123"); // Replace "123" with the desired note id
-        formData.append("note_name", "My Note"); // Replace "My Note" with the desired note name
+        formData.append("note_id", noteId);
+        formData.append("note_name", noteName);
         formData.append("note", file);
-        formData.append("creator_id", "456"); // Replace "456" with the desired creator id
-        
-        axios.post('https://studynote.ca/api/upload', formData, { headers: {'Content-Type': 'multipart/form-data'}})
-        .then((res) => {
-            console.log(res)
+        formData.append("creator_id", creatorId);
+      
+        axios
+          .post('https://studynote.ca/api/upload', formData, {
+            headers: { "Content-Type": "multipart/form-data" },
+          })
+          .then((res) => {
+            console.log(res);
             file.isUploading = false;
-        })
-        .catch((err) => {
+          })
+          .catch((err) => {
             console.log(err);
             removeFile(file.name);
-        })
-    }
+          });
+    };
+      
 
     return (
         <>
