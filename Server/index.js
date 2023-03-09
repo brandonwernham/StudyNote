@@ -48,7 +48,7 @@ app.post("/api/signUp", (req, res) => {
     const password = req.body.password;
     const userType = req.body.userType;
 
-    const sqlInsert = "INSERT INTO UserInfo (Email, UserPassword, UserType) VALUES (?,?,?)"
+    const sqlInsert = "INSERT INTO users (email, user_password, user_type) VALUES (?,?,?)"
     database.query(sqlInsert, [email, password, userType], (err, result) => {
         if(err) {
             res.send({err: err}) //this will be returned when duplicate entry in database, among with other errrs.
@@ -64,7 +64,7 @@ app.post("/api/login", (req, res) => {
     const email = req.body.email;
     const password = req.body.password;
 
-    const sqlInsert = "SELECT * FROM UserInfo WHERE Email = ? AND UserPassword = ?"
+    const sqlInsert = "SELECT * FROM users WHERE email = ? AND user_password = ?"
     database.query(sqlInsert, [email, password], (err, result) => {
         if(err) {
             res.send({err: err})
@@ -90,7 +90,7 @@ app.get("/api/login", (req, res) => {
 
 app.get("/api/showDB", (req, res) => {
 
-    const sqlInsert = "SELECT * FROM UserInfo"
+    const sqlInsert = "SELECT * FROM users"
     database.query(sqlInsert, (err, result) => {
         if (err){
             res.send({err: err})
@@ -111,22 +111,11 @@ app.get("/api/test", (req, res) => {
 //file uploading
 const upload = multer({dest: "notes/"});
 
-// This is just a temporary way of uploading notes, I will have to figure out
-// creating unique ids and such for each note uploaded
-// For now, what it does is takes the formData as is, and inserts the first note uploaded
-app.post("/api/upload", upload.fields([
-    {name: 'note_id'},
-    {name: 'note_name'},
-    {name: 'note'},
-    {name: 'creator_id'}
-]), (req, res) => {
-    const note_id = req.body.note_id;
-    const note_name = req.body.note_name;
-    const file_path = req.files.note[0].path;
-    const creator_id = req.body.creator_id;
+app.post("/api/upload", upload.single("note"), (req, res) => {
+    const filePath = req.file.path;
 
-    const sqlInsert = "INSERT INTO notes (note_id, note_name, file_path, creator_id) VALUES (?, ?, ?, ?)"
-    database.query(sqlInsert, [note_id, note_name, file_path, creator_id], (err, result) => {
+    const sqlInsert = "INSERT INTO notes (file_path) VALUES (?)"
+    database.query(sqlInsert, [filePath], (err, result) => {
         if (err) {
             res.send({err: err}) //this will be returned when duplicate entry in database, among with other errrs.
         } else {
@@ -141,7 +130,7 @@ app.post("/api/upload", upload.fields([
 app.post("/api/getNote", (req, res) => {
     const tags = req.body.tags;
 
-    const sqlInsert = "SELECT FilePath FROM NotesTable WHERE FileID = ?"
+    const sqlInsert = "SELECT file_path FROM notes WHERE note_id = ?"
     database.query(sqlInsert, tags, (err, result) => {
         if (err){
             res.send({err: err})
@@ -155,7 +144,7 @@ app.post("/api/getNote", (req, res) => {
 
 
 
-app.delete("/api/upload", (req, res) => {
+app.delete("/api/upload/delete", (req, res) => {
     console.log("file was deleted");
     return res.status(200).json({ result: true, msg: 'file was deleted'});
 });
