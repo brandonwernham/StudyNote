@@ -128,15 +128,15 @@ const upload = multer({dest: "notes/"});
 // creating unique ids and such for each note uploaded
 // For now, what it does is takes the formData as is, and inserts the first note uploaded
 app.post("/api/upload", upload.fields([
-    {name: 'note_id'},
     {name: 'note_name'},
     {name: 'note'},
-    {name: 'creator_id'}
+    {name: 'creator_id'},
+    {name: 'tags'}
 ]), (req, res) => {
-    const note_id = req.body.note_id;
     const note_name = req.body.note_name;
     const file_path = req.files.note[0].path;
     const creator_id = req.body.creator_id;
+    const tags = req.body.tags;
 
     const sqlInsert = "INSERT INTO notes (note_id, note_name, file_path, creator_id) VALUES (?, ?, ?, ?)"
     database.query(sqlInsert, [note_id, note_name, file_path, creator_id], (err, result) => {
@@ -145,6 +145,7 @@ app.post("/api/upload", upload.fields([
         } else {
             console.log(result.insertId);
             res.send({message: "Insert ID:  " + result.insertId}) //sent to client
+            res.send({message: "Tags:  " + tags}) //sent to client
         }
     })
 });
