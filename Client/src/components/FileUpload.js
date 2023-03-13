@@ -17,6 +17,7 @@ const FileUpload = ({files, setFiles, removeFile}) => {
         const file = files[0];
         file.isUploading = true;
         console.log(file);
+        console.log(tags)
       
         const timestamp = Date.now();
         const noteName = `Note ${timestamp}`;
@@ -29,6 +30,7 @@ const FileUpload = ({files, setFiles, removeFile}) => {
         formData.append("tags", tags);
       
         console.log(formData.tags)
+        
 
         axios
           .post('https://studynote.ca/api/upload', formData, {
