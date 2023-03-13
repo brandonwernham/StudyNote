@@ -28,6 +28,8 @@ const FileUpload = ({files, setFiles, removeFile}) => {
         formData.append("creator_id", creatorId);
         formData.append("tags", tags);
       
+        console.log(formData.tags)
+
         axios
           .post('https://studynote.ca/api/upload', formData, {
             headers: { "Content-Type": "multipart/form-data" },
