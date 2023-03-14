@@ -18,21 +18,8 @@ export const GroupsPage = () => {
             }
         })
     }
-    const test = () =>{
-        Axios.get("https://studynote.ca/api/test", {
-        }).then((response)=> {
-            if (response.data.message){
-                console.log(response);
-                setdbData(response.data.message)
-            }else{
-                setdbData(response.data);
-                console.log(response);
-            }
-        })
-    }
-
-    const showNotes = () =>{
-        Axios.get("https://studynote.ca/api/getNote", {
+    const showAllNotes = () =>{
+        Axios.get("https://studynote.ca/api/showAllNotes", {
         }).then((response)=> {
             if (response.data.message){
                 console.log(response);
@@ -61,7 +48,7 @@ export const GroupsPage = () => {
             <button onClick={test}>Test</button>
             </div>
             <div>
-            <button onClick={showNotes}>Show Notes</button>
+            <button onClick={showAllNotes}>Show Notes</button>
             </div>
         </div>
     );
