@@ -15,13 +15,14 @@ const FileUpload = ({files, setFiles, removeFile}) => {
     }
 
     const submitFiles = () => {
-        const file = files[0];
+        const file = files[0]; //this line needs to be changed eventually for multi file uploads
         file.isUploading = true;
         console.log(file);
         console.log(tags);
+        console.log(file.name)
       
         const timestamp = Date.now();
-        const noteName = `Note ${timestamp}`;
+        const noteName = file.name;
         const creatorId = `creator_${timestamp}`;
       
         const formData = new FormData();
