@@ -117,7 +117,7 @@ app.get("/api/test", (req, res) => {
         }
     })    
 
-    database.query("SELECT * FROM notes_tags", (err, result) => {
+    database.query("SELECT * FROM note_tags", (err, result) => {
         if (err){
             res.send({err: err})
         }
