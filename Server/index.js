@@ -155,13 +155,12 @@ app.post("/api/upload", upload.single("note"), (req, res) => {
             console.log(result.insertId);
             res.send({message: "Insert ID:  " + result.insertId}) //sent to client
             noteID = result.insertId;
-            res.send({message: "Tags:  " + tags}) //sent to client
         }
     })
 
     //tags
     var tagsArr = tags.split(",")
-    tagsArr.foreach(element => {
+    tagsArr.forEach(element => {
         element.trim();
 
         const sqlTagsQuery = "SELECT * FROM tags WHERE tag_name = ?"
@@ -169,7 +168,7 @@ app.post("/api/upload", upload.single("note"), (req, res) => {
             if (err) {
                 res.send({err: err}) 
             } else {
-                if (result.length() == 0){
+                if (result.length == 0){
                     database.query("INSERT INTO tags (tag_name) VALUES (?)", [element], (err, result) =>{
                         if (err) {
                             res.send({err: err})
@@ -191,7 +190,6 @@ app.post("/api/upload", upload.single("note"), (req, res) => {
             if (err) {
                 res.send({err: err})
             } else {
-                res.send(result);
             }
         })
     }) 
