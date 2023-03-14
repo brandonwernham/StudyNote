@@ -116,6 +116,17 @@ app.get("/api/test", (req, res) => {
             res.send({message: "no notes"})
         }
     })    
+
+    database.query("SELECT * FROM notes_tags", (err, result) => {
+        if (err){
+            res.send({err: err})
+        }
+        else if (result.length > 0){
+            res.send(result);
+        } else{
+            res.send({message: "no notes tags"})
+        }
+    })    
     
    //res.send({message: "the server is sending this message."})
 })
