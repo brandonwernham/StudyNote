@@ -60,7 +60,7 @@ const FileUpload = ({files, setFiles, removeFile}) => {
                         Upload
                     </button>
                 </div>
-                <p className="support">Supported File Types:</p>
+                <p className="support">Supported File Types test:</p>
                 <p className="file-types">PDF, JPG, PNG</p>
                 <div>
                     <p>Tags:</p>
