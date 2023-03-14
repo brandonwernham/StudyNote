@@ -192,7 +192,32 @@ app.post("/api/upload", upload.single("note"), (req, res) => {
 
 });
 
+// z test work (HASNT BEEN TESTED)
+app.post("/api/getCertainNote", (req, res) => {
+    function splitTags(tags) {
+        // Split the input string into separate words by spaces or commas
+        const tagArray = tags.split(/[ ,]+/);
+        return tagArray;
+    }
 
+    // Split the given tags
+    const tags = splitTags(req.body.tags);
+
+    // Search in file_path from notes where
+    // The split tags exist somewhere in the keyword saved for the notes (if the note was saved with "PHYSICS AND ASTRONOMY", a search query of "SPACE AND ASTRONOMY" would be returned)
+    // Where the note_id exists somewhere in the database (SE4450 or 4450 returns 4450)
+    const searchQuery = "SELECT file_path FROM notes WHERE " + tags.map(tag => "file_path LIKE '%" + tag + "%' OR note_id LIKE '%" + tag + "%'").join(" OR ");
+
+    database.query(sqlInsert, searchQuery, (err, result) => {
+        if (err){
+            res.send({err: err})
+        }
+        else{
+            console.log(result[0].FilePath);
+            res.send(result[0].FilePath);
+        }
+    })
+})
 
 app.post("/api/getNote", (req, res) => {
     const tags = req.body.tags;
