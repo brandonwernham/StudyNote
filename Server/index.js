@@ -127,14 +127,9 @@ const upload = multer({dest: "notes/"});
 // This is just a temporary way of uploading notes, I will have to figure out
 // creating unique ids and such for each note uploaded
 // For now, what it does is takes the formData as is, and inserts the first note uploaded
-app.post("/api/upload", upload.fields([
-    {name: 'note_name'},
-    {name: 'note'},
-    {name: 'creator_id'},
-    {name: 'tags'}
-]), (req, res) => {
+app.post("/api/upload", upload.single("note"), (req, res) => {
+    const file_path = req.file.path;
     const note_name = req.body.note_name;
-    const file_path = req.files.note[0].path;
     const creator_id = req.body.creator_id;
     const tags = req.body.tags;
 
