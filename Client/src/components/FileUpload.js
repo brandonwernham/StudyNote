@@ -66,7 +66,6 @@ const FileUpload = ({files, setFiles, removeFile}) => {
                 </div>
                 <div>
                     <p>Course Code *if applicable*:</p>
-                    <input className="input-tags" type="text" placeholder="Course Code"></input>
                     <input className="input-tags" type="text" placeholder="Course Code" id='cCode' onChange={(e) => {setcCode(e.target.value)}}></input>
                 </div>
                 <button className="submit-files-button" onClick={submitFiles}>Submit</button>
