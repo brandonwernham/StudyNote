@@ -103,7 +103,7 @@ app.get("/api/showDB", (req, res) => {
     })    
 });
 
-app.get("/api/showAllNotes", (req, res) => {
+app.get("/api/test", (req, res) => {
 
     const sqlInsert = "SELECT * FROM notes"
     database.query(sqlInsert, (err, result) => {
@@ -162,6 +162,7 @@ app.post("/api/getNote", (req, res) => {
         }
     })
 });
+
 
 
 app.delete("/api/upload/delete", (req, res) => {

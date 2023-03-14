@@ -18,8 +18,8 @@ export const GroupsPage = () => {
             }
         })
     }
-    const showAllNotes = () =>{
-        Axios.get("https://studynote.ca/api/showAllNotes", {
+    const test = () =>{
+        Axios.get("https://studynote.ca/api/test", {
         }).then((response)=> {
             if (response.data.message){
                 console.log(response);
@@ -46,9 +46,6 @@ export const GroupsPage = () => {
             </div>
             <div>
             <button onClick={test}>Test</button>
-            </div>
-            <div>
-            <button onClick={showAllNotes}>Show Notes</button>
             </div>
         </div>
     );
