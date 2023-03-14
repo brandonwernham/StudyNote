@@ -160,7 +160,7 @@ app.post("/api/getCertainNote", (req, res) => {
     // Search in file_path from notes where
     // The split tags exist somewhere in the keyword saved for the notes (if the note was saved with "PHYSICS AND ASTRONOMY", a search query of "SPACE AND ASTRONOMY" would be returned)
     // Where the note_id exists somewhere in the database (SE4450 or 4450 returns 4450)
-    const searchQuery = "SELECT file_path, note_id FROM notes WHERE " + tags.map(tag => "file_path LIKE '%" + tag + "%' OR note_id LIKE '%" + tag + "%'").join(" OR ");
+    const searchQuery = "SELECT file_path FROM notes WHERE " + tags.map(tag => "file_path LIKE '%" + tag + "%' OR note_id LIKE '%" + tag + "%'").join(" OR ");
 
     database.query(sqlInsert, searchQuery, (err, result) => {
         if (err){
