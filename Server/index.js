@@ -121,11 +121,7 @@ app.get("/api/test", (req, res) => {
         if (err){
             res.send({err: err})
         }
-        else if (result.length > 0){
-            res.send(result);
-        } else{
-            res.send({message: "no notes tags"})
-        }
+
     })    
     
    //res.send({message: "the server is sending this message."})
