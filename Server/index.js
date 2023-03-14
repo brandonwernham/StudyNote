@@ -138,8 +138,9 @@ app.post("/api/upload", upload.fields([
     const creator_id = req.body.creator_id;
     const tags = req.body.tags;
 
-    const sqlInsert = "INSERT INTO notes (note_id, note_name, file_path, creator_id) VALUES (?, ?, ?, ?)"
-    database.query(sqlInsert, [note_id, note_name, file_path, creator_id], (err, result) => {
+    
+    const sqlInsert = "INSERT INTO notes (note_name, file_path, creator_id) VALUES (?, ?, ?, ?)" //note ID is created inside the database and auto incremented - in thise case its the "insertId"
+    database.query(sqlInsert, [note_name, file_path, creator_id], (err, result) => {
         if (err) {
             res.send({err: err}) //this will be returned when duplicate entry in database, among with other errrs.
         } else {

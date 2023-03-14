@@ -6,6 +6,7 @@ import axios, { Axios } from "axios";
 
 const FileUpload = ({files, setFiles, removeFile}) => {
     const [tags, setTags] = useState("");
+    const [cCode, setcCode] = useState("");
 
 
     const uploadHandler = (event) => {
@@ -28,10 +29,7 @@ const FileUpload = ({files, setFiles, removeFile}) => {
         formData.append("note", file);
         formData.append("creator_id", creatorId);
         formData.append("tags", tags);
-      
-        console.log(formData.tags)
-        console.log(formData.noteName)
-        
+        formData.append("cCode", cCode);
 
         axios
           .post('https://studynote.ca/api/upload', formData, {
@@ -60,7 +58,7 @@ const FileUpload = ({files, setFiles, removeFile}) => {
                         Upload
                     </button>
                 </div>
-                <p className="support">Supported File Types test:</p>
+                <p className="support">Supported File Types:</p>
                 <p className="file-types">PDF, JPG, PNG</p>
                 <div>
                     <p>Tags:</p>
@@ -69,6 +67,7 @@ const FileUpload = ({files, setFiles, removeFile}) => {
                 <div>
                     <p>Course Code *if applicable*:</p>
                     <input className="input-tags" type="text" placeholder="Course Code"></input>
+                    <input className="input-tags" type="text" placeholder="Course Code" id='cCode' onChange={(e) => {setcCode(e.target.value)}}></input>
                 </div>
                 <button className="submit-files-button" onClick={submitFiles}>Submit</button>
             </div>
