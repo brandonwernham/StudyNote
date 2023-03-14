@@ -17,7 +17,8 @@ const FileUpload = ({files, setFiles, removeFile}) => {
         const file = files[0];
         file.isUploading = true;
         console.log(file);
-        console.log(tags)
+        console.log("tags below");
+        console.log(tags);
       
         const timestamp = Date.now();
         const noteName = `Note ${timestamp}`;
