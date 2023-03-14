@@ -23,7 +23,7 @@ const FileUpload = ({files, setFiles, removeFile}) => {
       
         const timestamp = Date.now();
         const noteName = file.name;
-        const creatorId = "testcreator";
+        const creatorId = 1;
       
         const formData = new FormData();
         formData.append("note_name", noteName);
