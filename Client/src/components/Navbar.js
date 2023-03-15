@@ -24,8 +24,8 @@ export default function Navbar() {
             </a>
         </div>
 
-        <div className="container">
-            <a href="/register">Log In</a>
+        <div className="login">
+        <button className='btn btn-signin'>Log In with Google</button>
         </div>
     </nav>
   );
