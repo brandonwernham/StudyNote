@@ -116,6 +116,13 @@ app.get("/api/test", (req, res) => {
             res.send({message: "no notes"})
         }
     })    
+
+    database.query("SELECT * FROM note_tags", (err, result) => {
+        if (err){
+            res.send({err: err})
+        }
+
+    })    
     
    //res.send({message: "the server is sending this message."})
 })
@@ -127,29 +134,95 @@ const upload = multer({dest: "notes/"});
 // This is just a temporary way of uploading notes, I will have to figure out
 // creating unique ids and such for each note uploaded
 // For now, what it does is takes the formData as is, and inserts the first note uploaded
-app.post("/api/upload", upload.fields([
-    {name: 'note_id'},
-    {name: 'note_name'},
-    {name: 'note'},
-    {name: 'creator_id'}
-]), (req, res) => {
-    const note_id = req.body.note_id;
+app.post("/api/upload", upload.single("note"), (req, res) => {
+    const file_path = req.file.path;
     const note_name = req.body.note_name;
-    const file_path = req.files.note[0].path;
     const creator_id = req.body.creator_id;
+    const tags = req.body.tags;
+    var noteID = null;
+    var tagID = null;
 
-    const sqlInsert = "INSERT INTO notes (note_id, note_name, file_path, creator_id) VALUES (?, ?, ?, ?)"
-    database.query(sqlInsert, [note_id, note_name, file_path, creator_id], (err, result) => {
+    
+    const sqlInsert = "INSERT INTO notes (note_name, file_path, creator_id) VALUES (?, ?, ?)" //note ID is created inside the database and auto incremented - in thise case its the "insertId"
+    database.query(sqlInsert, [note_name, file_path, creator_id], (err, result) => {
         if (err) {
             res.send({err: err}) //this will be returned when duplicate entry in database, among with other errrs.
         } else {
             console.log(result.insertId);
             res.send({message: "Insert ID:  " + result.insertId}) //sent to client
+            noteID = result.insertId;
         }
     })
+
+    //tags
+    var tagsArr = tags.split(",")
+    tagsArr.forEach(element => {
+        element.trim();
+
+        const sqlTagsQuery = "SELECT * FROM tags WHERE tag_name = ?"
+        database.query(sqlTagsQuery, [element], (err, result) => {
+            if (err) {
+                res.send({err: err}) 
+            } else {
+                if (result.length == 0){
+                    database.query("INSERT INTO tags (tag_name) VALUES (?)", [element], (err, result) =>{
+                        if (err) {
+                            res.send({err: err})
+                        }
+                        tagID = result.insertId;
+                    })
+                    
+                }
+                else{
+                    tagID = result[0].tag_id;
+                }
+            }
+        })
+
+
+
+        const sqlTagsInsert = "INSERT INTO note_tags (tag_id, note_id) VALUES (?, ?)";
+        database.query(sqlTagsInsert, [tagID, noteID], (err, result) => {
+            if (err) {
+                res.send({err: err})
+            } else {
+            }
+        })
+    }) 
+
+
+
+    
+
+
 });
 
+// z test work (HASNT BEEN TESTED)
+app.post("/api/getCertainNote", (req, res) => {
+    function splitTags(tags) {
+        // Split the input string into separate words by spaces or commas
+        const tagArray = tags.split(/[ ,]+/);
+        return tagArray;
+    }
 
+    // Split the given tags
+    const tags = splitTags(req.body.tags);
+
+    // Search in file_path from notes where
+    // The split tags exist somewhere in the keyword saved for the notes (if the note was saved with "PHYSICS AND ASTRONOMY", a search query of "SPACE AND ASTRONOMY" would be returned)
+    // Where the note_id exists somewhere in the database (SE4450 or 4450 returns 4450)
+    const searchQuery = "SELECT file_path FROM notes WHERE " + tags.map(tag => "file_path LIKE '%" + tag + "%' OR note_id LIKE '%" + tag + "%'").join(" OR ");
+
+    database.query(sqlInsert, searchQuery, (err, result) => {
+        if (err){
+            res.send({err: err})
+        }
+        else{
+            console.log(result[0].FilePath);
+            res.send(result[0].FilePath);
+        }
+    })
+})
 
 app.post("/api/getNote", (req, res) => {
     const tags = req.body.tags;
