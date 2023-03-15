@@ -10,8 +10,8 @@ export const RegisterPage = () => {
     const [userType, setUserType] = useState("");
     const [invalidEmailError, setInvalidEmailError] = useState("");
 
-    const [ user, setUser ] = useState([]);
-    const [ profile, setProfile ] = useState([]);
+    const [user, setUser] = useState(JSON.parse(localStorage.getItem('user')) || []);
+    const [profile, setProfile] = useState(JSON.parse(localStorage.getItem('profile')) || []);
 
     //posts entered info from signup form to server and database
     const submitSignUp = () => {
@@ -61,6 +61,11 @@ export const RegisterPage = () => {
         },
         [ user ]
     );
+
+    useEffect(() => {
+        localStorage.setItem('user', JSON.stringify(user));
+        localStorage.setItem('profile', JSON.stringify(profile));
+    }, [user, profile]);
 
     const logOut = () => {
         googleLogout();
