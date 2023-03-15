@@ -87,15 +87,15 @@ export const RegisterPage = () => {
             {profile ? (
                 <div className='google-profile'>
                     <img src={profile.picture} alt="user image" />
-                    <h3>User Logged in</h3>
+                    <h3>User Logged In</h3>
                     <p>Name: {profile.name}</p>
                     <p>Email Address: {profile.email}</p>
                     <br />
                     <br />
-                    <button className='google-logout' onClick={logOut}>Log out</button>
+                    <button className='google-logout-button' onClick={logOut}>Log out</button>
                 </div>
             ) : (
-                <button onClick={() => login()}>Sign in with Google</button>
+                <button className='google-signin-button' onClick={() => login()}>Sign in with Google</button>
             )}
 
 

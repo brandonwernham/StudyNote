@@ -90,9 +90,20 @@
     width: 50%;
 }
 
-.google-logout {
+.google-logout-button {
     padding: 0.5rem 2rem;
     background: var(--color-primary);
     color: var(--color-light);
     border-radius: 10px;
+    font-weight: bold;
+}
+
+.google-signin-button {
+    display: block;
+    margin: 0 auto;
+    padding: 0.5rem 2rem;
+    background: var(--color-primary);
+    color: var(--color-light);
+    border-radius: 10px;
+    font-weight: bold;
 }
