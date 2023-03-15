@@ -1,13 +1,17 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import "./RegisterPage.css";
 import Navbar from './Navbar';
 import Axios from 'axios';
+import { googleLogout, useGoogleLogin } from '@react-oauth/google';
 
 export const RegisterPage = () => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [userType, setUserType] = useState("");
     const [invalidEmailError, setInvalidEmailError] = useState("");
+
+    const [ user, setUser ] = useState([]);
+    const [ profile, setProfile ] = useState([]);
 
     //posts entered info from signup form to server and database
     const submitSignUp = () => {
@@ -34,6 +38,35 @@ export const RegisterPage = () => {
         return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
     };   
 
+    const login = useGoogleLogin({
+        onSuccess: (codeResponse) => setUser(codeResponse),
+        onError: (error) => console.log('Login Failed:', error)
+    });
+
+    useEffect(
+        () => {
+            if (user) {
+                Axios
+                    .get(`https://www.googleapis.com/oauth2/v1/userinfo?access_token=${user.access_token}`, {
+                        headers: {
+                            Authorization: `Bearer ${user.access_token}`,
+                            Accept: 'application/json'
+                        }
+                    })
+                    .then((res) => {
+                        setProfile(res.data);
+                    })
+                    .catch((err) => console.log(err));
+            }
+        },
+        [ user ]
+    );
+
+    const logOut = () => {
+        googleLogout();
+        setProfile(null);
+    };
+
     return (
         <div>
             <div>
@@ -42,9 +75,24 @@ export const RegisterPage = () => {
             <div className='register-title'>
                 <h1>Create a StudyNote account today!</h1>
             </div>
-            <div className = "form">
+
+            {profile ? (
+                <div className='google-profile'>
+                    <img src={profile.picture} alt="user image" />
+                    <h3>User Logged in</h3>
+                    <p>Name: {profile.name}</p>
+                    <p>Email Address: {profile.email}</p>
+                    <br />
+                    <br />
+                    <button className='google-logout' onClick={logOut}>Log out</button>
+                </div>
+            ) : (
+                <button onClick={() => login()}>Sign in with Google</button>
+            )}
+
+
+            {/* <div className = "form">
                 <div className='form-box' align='center'>
-                    {/* EMAIL */}
                     <label>Email: </label>
                     <input
 
@@ -58,7 +106,6 @@ export const RegisterPage = () => {
                     />
                     <h5 align="center" style={{color: "red"}}>{invalidEmailError}</h5>
                     <br></br>
-                    {/* PASSWORD */}
                     <label>Password: </label>
                     <input
                         className='password-box'
@@ -75,7 +122,6 @@ export const RegisterPage = () => {
                     <br></br>
                     <br></br>
                     <br></br>
-                    {/* USERTYPE */}
                     <div className='user-type'>
                         
                     <label>User Type:</label>
@@ -109,7 +155,7 @@ export const RegisterPage = () => {
                     </row>
                     <button className='register-button' onClick={submitSignUp}>Register</button>
                 </div>
-            </div>
+            </div> */}
         </div>
     );
 }

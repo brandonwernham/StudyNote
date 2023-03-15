@@ -25,7 +25,7 @@ export default function Navbar() {
         </div>
 
         <div className="container">
-            <a href="/login">Login</a>
+            <a href="/register">Login</a>
         </div>
     </nav>
   );
