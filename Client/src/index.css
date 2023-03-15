@@ -13,10 +13,10 @@
 :root {
     --color-bg: #0d0b18;
     --color-bg-variant: linear-gradient(#301E67, 80%, #0f3739);
-    --color-primary: rgb(255, 94, 0);
+    --color-primary: rgb(217, 79, 0);
     --color-primary-variant: rgb(255, 193, 86);
     --color-white: #fff;
-    --color-light: rgb(219, 210, 255);
+    --color-light: rgb(210, 215, 255);
 
     --transition: all 400ms ease;
 

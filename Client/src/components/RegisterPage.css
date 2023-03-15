@@ -93,7 +93,7 @@
 .google-logout-button {
     padding: 0.5rem 2rem;
     background: var(--color-primary);
-    color: var(--color-light);
+    color: var(--color-white);
     border-radius: 10px;
     font-weight: bold;
 }
@@ -103,7 +103,7 @@
     margin: 0 auto;
     padding: 0.5rem 2rem;
     background: var(--color-primary);
-    color: var(--color-light);
+    color: var(--color-white);
     border-radius: 10px;
     font-weight: bold;
 }

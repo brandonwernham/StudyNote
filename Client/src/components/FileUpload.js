@@ -47,7 +47,7 @@ const FileUpload = ({files, setFiles, removeFile}) => {
             <div className="file-box">
                 <div className="file-input">
                     <input className="the-input" type="file" onChange={uploadHandler}/>
-                    <button className="upload-button">
+                    <button className="btn btn-upload">
                         <i className="plus-icon">
                             <FontAwesomeIcon icon={faPlus} />
                         </i>
@@ -64,7 +64,7 @@ const FileUpload = ({files, setFiles, removeFile}) => {
                     <p>Course Code *if applicable*:</p>
                     <input className="input-tags" type="text" placeholder="Course Code"></input>
                 </div>
-                <button className="submit-files-button" onClick={submitFiles}>Submit</button>
+                <button className="btn btn-submit" onClick={submitFiles}>Submit</button>
             </div>
         </>
     );
