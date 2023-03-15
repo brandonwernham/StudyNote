@@ -1,8 +1,9 @@
 #/bin/bash
 
 # crontab config below
-# 0 9 * * * root reboot
-# @reboot /home/ubuntu/startup.sh
+# 0 1 * * * /sbin/shutdown -r +5
+# 0 13 * * * /sbin/shutdown -r +5
+# @reboot sleep 15 && /home/ubuntu/startup.sh
 
 killall screen
 cd /var/www/StudyNote && git pull
