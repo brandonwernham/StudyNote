@@ -14,9 +14,9 @@
     --color-bg: #0d0b18;
     --color-bg-variant: linear-gradient(#301E67, 80%, #0f3739);
     --color-primary: rgb(255, 94, 0);
-    --color-primary-variant: #B6EADA;
+    --color-primary-variant: rgb(255, 193, 86);
     --color-white: #fff;
-    --color-light: rgba(255, 255, 255, 0.728);
+    --color-light: rgb(219, 210, 255);
 
     --transition: all 400ms ease;
 

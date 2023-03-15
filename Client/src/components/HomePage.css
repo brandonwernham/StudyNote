@@ -13,26 +13,18 @@
     justify-content: center;
 }
 
-.task-button {
-    margin: 15px;
+.btn-task {
     border: none;
-    background-color: rgb(255, 94, 0);
-    padding-top: 5px;
-    border-radius: 10px;
+    background: linear-gradient(to bottom right, var(--color-primary), var(--color-primary-variant));
+    border-radius: 20px;
+    margin: 1rem;
+    padding: 2rem;
 }
 
-.task-button:hover {
-    background-color: rgb(78, 29, 0);
+.btn-task:hover {
+    background: var(--color-light);
 }
 
-.view-classes-image {
-    width: 350px;
-}
-
-.browse-notes-image {
-    width: 350px;
-}
-
-.ask-question-image {
-    width: 350px;
+.task-image {
+    width: 300px;
 }

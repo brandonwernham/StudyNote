@@ -33,19 +33,19 @@ export const HomePage = () => {
                 </div>
                 <div className='row'>
                     <div>
-                        <button className='task-button'>
+                        <button className='btn btn-task'>
                             <img src={require("./../images/view_classes.png")} 
-                            alt="View Classes" className='view-classes-image'>
+                            alt="View Classes" className='task-image'>
                             </img> 
                         </button>
-                        <button className='task-button'>
+                        <button className='btn btn-task'>
                             <img src={require("./../images/browse_notes.png")} 
-                            alt="View Classes" className='browse-notes-image'>
+                            alt="View Classes" className='task-image'>
                             </img>
                         </button>
-                        <button className='task-button'>
+                        <button className='btn btn-task'>
                             <img src={require("./../images/ask_question.png")} 
-                            alt="View Classes" className='ask-question-image'>
+                            alt="View Classes" className='task-image'>
                             </img>
                         </button>
                     </div>
