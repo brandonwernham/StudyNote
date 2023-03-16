@@ -143,6 +143,8 @@ app.post("/api/upload", upload.single("note"), (req, res) => {
     var tagID = null;
 
     
+
+    
     const sqlInsert = "INSERT INTO notes (note_name, file_path, creator_id) VALUES (?, ?, ?)" //note ID is created inside the database and auto incremented - in thise case its the "insertId"
     database.query(sqlInsert, [note_name, file_path, creator_id], (err, result) => {
         if (err) {
@@ -154,41 +156,46 @@ app.post("/api/upload", upload.single("note"), (req, res) => {
         }
     })
 
+
+
+
     //tags
     var tagsArr = tags.split(",")
-    tagsArr.forEach(element => {
-        element.trim();
+    for (var tag of tagsArr){
+        tag = tag.trim();
 
         const sqlTagsQuery = "SELECT * FROM tags WHERE tag_name = ?"
-        database.query(sqlTagsQuery, [element], (err, result) => {
-            if (err) {
-                res.send({err: err}) 
-            } else {
-                if (result.length == 0){
-                    database.query("INSERT INTO tags (tag_name) VALUES (?)", [element], (err, result) =>{
-                        if (err) {
-                            res.send({err: err})
-                        }
-                        tagID = result.insertId;
-                    })
-                    
-                }
-                else{
-                    tagID = result[0].tag_id;
-                }
+        database.query(sqlTagsQuery, [tag], (err, result) => {
+        if (err) {
+            res.send({err: err}) 
+        } else {
+            if (result.length == 0){
+                database.query("INSERT INTO tags (tag_name) VALUES (?)", [tag], (err, result) =>{
+                    if (err) {
+                        res.send({err: err})
+                    }
+                    tagID = result.insertId;
+                })
+                
             }
+            else{
+                tagID = result[0].tag_id;
+            }
+        }
         })
-
-
+        console.log(noteID)
 
         const sqlTagsInsert = "INSERT INTO note_tags (tag_id, note_id) VALUES (?, ?)";
         database.query(sqlTagsInsert, [tagID, noteID], (err, result) => {
-            if (err) {
-                res.send({err: err})
-            } else {
-            }
+        if (err) {
+            res.send({err: err})
+        } else {
+
+        }
         })
-    }) 
+    }
+    
+
 
 
 
