@@ -141,13 +141,14 @@ app.post("/api/upload", upload.single("note"), (req, res) => {
     const tags = req.body.tags;
     var noteID = null;
     var tagID = null;
+    var message = null;
 
     function sqlInsertFunc() {
         return new Promise(resolve => {
             const sqlInsert = "INSERT INTO notes (note_name, file_path, creator_id) VALUES (?, ?, ?)" //note ID is created inside the database and auto incremented - in thise case its the "insertId"
             database.query(sqlInsert, [note_name, file_path, creator_id], (err, result) => {
                 if (err) {
-                    res.send({err: err}) //this will be returned when duplicate entry in database, among with other errrs.
+                    message = message + " " + err;
                     resolve();
                 } else {
                     console.log(result.insertId);
@@ -169,12 +170,12 @@ app.post("/api/upload", upload.single("note"), (req, res) => {
                 const sqlTagsQuery = "SELECT * FROM tags WHERE tag_name = ?"
                 database.query(sqlTagsQuery, [tag], (err, result) => {
                 if (err) {
-                    res.send({err: err}) 
+                    message = message + " " + err;
                 } else {
                     if (result.length == 0){
                         database.query("INSERT INTO tags (tag_name) VALUES (?)", [tag], (err, result) =>{
                             if (err) {
-                                res.send({err: err})
+                                message = message + " " + err;
                             }
                             tagID = result.insertId;
                             resolve();
@@ -196,16 +197,22 @@ app.post("/api/upload", upload.single("note"), (req, res) => {
             await sqlTagsQueryFunc();
             const sqlTagsInsert = "INSERT INTO note_tags (tag_id, note_id) VALUES (?, ?)";
             database.query(sqlTagsInsert, [tagID, noteID], (err, result) => {
-            if (err) {
-                res.send({err: err})
-            } else {
+                if (err) {
+                    message = message + " " + err;
+                } else {
 
-            }
+                }
             })
+
+            if (message != null){
+                //res.send(message);
+            }
         }
 
         sqlTagsInsertFunc();        
     }
+
+
 });
 
 // z test work (HASNT BEEN TESTED)
