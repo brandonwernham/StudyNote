@@ -161,58 +161,60 @@ app.post("/api/upload", upload.single("note"), (req, res) => {
     }
     
     //tags
-    var tagsArr = tags.split(",")
-    for (var tag of tagsArr){
-        tag = tag.trim();
+    async function sqlTagsFunc() {
+        await sqlInsertFunc();
+        var tagsArr = tags.split(",")
+        for (var tag of tagsArr){
+            tag = tag.trim();
 
-        function sqlTagsQueryFunc() {
-            return new Promise(resolve => {
-                const sqlTagsQuery = "SELECT * FROM tags WHERE tag_name = ?"
-                database.query(sqlTagsQuery, [tag], (err, result) => {
-                if (err) {
-                    message = message + " " + err;
-                } else {
-                    if (result.length == 0){
-                        database.query("INSERT INTO tags (tag_name) VALUES (?)", [tag], (err, result) =>{
-                            if (err) {
-                                message = message + " " + err;
-                            }
-                            tagID = result.insertId;
+            function sqlTagsQueryFunc() {
+                return new Promise(resolve => {
+                    const sqlTagsQuery = "SELECT * FROM tags WHERE tag_name = ?"
+                    database.query(sqlTagsQuery, [tag], (err, result) => {
+                    if (err) {
+                        message = message + " " + err;
+                    } else {
+                        if (result.length == 0){
+                            database.query("INSERT INTO tags (tag_name) VALUES (?)", [tag], (err, result) =>{
+                                if (err) {
+                                    message = message + " " + err;
+                                }
+                                tagID = result.insertId;
+                                resolve();
+                            })
+                            
+                        }
+                        else{
+                            tagID = result[0].tag_id;
                             resolve();
-                        })
-                        
+                        }
                     }
-                    else{
-                        tagID = result[0].tag_id;
-                        resolve();
-                    }
-                }
-                })
-                console.log(noteID)
-            });
-        }
-
-        async function sqlTagsInsertFunc() {
-            await sqlInsertFunc();
-            await sqlTagsQueryFunc();
-            const sqlTagsInsert = "INSERT INTO note_tags (tag_id, note_id) VALUES (?, ?)";
-            database.query(sqlTagsInsert, [tagID, noteID], (err, result) => {
-                if (err) {
-                    message = message + " " + err;
-                } else {
-
-                }
-            })
-
-            if (message != null){
-                //res.send(message);
+                    })
+                    console.log(noteID)
+                });
             }
-        }
 
-        sqlTagsInsertFunc();        
+            async function sqlTagsInsertFunc() {
+                await sqlTagsQueryFunc();
+                const sqlTagsInsert = "INSERT INTO note_tags (tag_id, note_id) VALUES (?, ?)";
+                database.query(sqlTagsInsert, [tagID, noteID], (err, result) => {
+                    if (err) {
+                        message = message + " " + err;
+                    } else {
+
+                    }
+                })
+
+                if (message != null){
+                    //res.send(message);
+                }
+            }
+
+            sqlTagsInsertFunc();        
+        }
     }
 
-
+    sqlTagsFunc();
 });
 
 // z test work (HASNT BEEN TESTED)
