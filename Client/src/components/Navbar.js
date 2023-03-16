@@ -39,6 +39,18 @@ export default function Navbar() {
     localStorage.setItem('profile', JSON.stringify(profile));
   }, [user, profile]);
 
+  useEffect(() => {
+    if (profile && profile.email != null) {
+      Axios.post("https://studynote.ca/api/signUp", {
+        email: profile.email,
+        password: null, // Leaving these null for now since Google is now handling password storage and such
+        userType: null
+      }).then((response)=> {
+        console.log(response);
+      }).catch(error => console.log('Error: ', error.message));
+    }
+  }, [profile]);
+
   const logOut = () => {
     localStorage.removeItem('user');
     localStorage.removeItem('profile');

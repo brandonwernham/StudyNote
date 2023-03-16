@@ -22,7 +22,7 @@ export const RegisterPage = () => {
         }
 
         if(userType == "student" || userType == "instructor") {
-            Axios.post("https://studynote.ca/api/signUp", {
+            Axios.post("http://localhost:3001/api/signUp", {
                 email: email,
                 password: password,
                 userType: userType
@@ -99,7 +99,7 @@ export const RegisterPage = () => {
             )}
 
 
-            {/* <div className = "form">
+            <div className = "form">
                 <div className='form-box' align='center'>
                     <label>Email: </label>
                     <input
@@ -163,7 +163,7 @@ export const RegisterPage = () => {
                     </row>
                     <button className='register-button' onClick={submitSignUp}>Register</button>
                 </div>
-            </div> */}
+            </div>
         </div>
     );
 }
