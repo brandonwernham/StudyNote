@@ -1,3 +1,7 @@
+.search-content {
+    margin-top: 1rem;
+}
+
 .search-title {
     display: flex;
     justify-content: center;
@@ -14,9 +18,9 @@
 }
 
 .search-form {
-    padding-top: 50px;
     display: flex;
     justify-content: center;
+    margin-top: 2rem;
 }
 
 .keyword-input {
@@ -25,7 +29,8 @@
     font-size: 17px;
     border: none;
     width: 600px;
-    height: 40px;
+    height: 3rem;
+    border-radius: 10px;
 }
 
 .course-code-input {
@@ -34,7 +39,8 @@
     font-size: 17px;
     border: none;
     width: 125px;
-    height: 40px;
+    height: 3rem;
+    border-radius: 10px;
 }
 
 .subject-dropdown {
@@ -43,19 +49,25 @@
     font-size: 17px;
     border: none;
     width: 125px;
-    height: 40px;
+    height: 3rem;
+    border-radius: 10px;
 }
 
 .searchPage-search-button {
     margin: 10px;
     width: 150px;
-    background: rgb(255, 94, 0);
+    height: 3rem;
+    background: var(--color-primary);
     color: #fff;
     font-size: 17px;
     border: none;
     cursor: pointer;
+    border-radius: 10px;
 }
 
-.searchPage-search-button:hover {
-    background: rgb(78, 29, 0);
+.placeholder-image {
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 2rem;
+    width: 30rem;
 }

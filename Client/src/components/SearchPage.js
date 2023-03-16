@@ -24,8 +24,7 @@ export const SearchPage = () => {
             <div>
                 <Navbar />
             </div>
-            <div>
-                <h1 className='search-title'>Search</h1>
+            <div className='search-content'>
                 <h2 className='search-slogan-1'>Missed a class? Struggling with certain concepts?</h2>
                 <h3 className='search-slogan-2'>StudyNote has you covered!</h3>
                 <form className='search-form'>
@@ -42,9 +41,9 @@ export const SearchPage = () => {
                     <option value="se">SE</option>
                     {/* FILL IN ALL SUBJECTS, USE SHORT FORM FOR CODES, SORT ALPHABETICALLY */}
                 </select>
-                <button type ="button" className='searchPage-search-button' onClick={getNote}>Search</button>
+                <button type ="button" className='btn searchPage-search-button' onClick={getNote}>Search</button>
                 </form>
-                <img src ={imageURL} style = {{width: 500, height: 500}}></img>
+                <img src ={imageURL} className='placeholder-image'></img>
             </div>
         </div>
     );
