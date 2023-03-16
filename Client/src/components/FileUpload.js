@@ -1,10 +1,13 @@
-import React from "react";
+import React, {useState} from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus } from '@fortawesome/free-solid-svg-icons'
 import "./UploadPage.css";
 import axios, { Axios } from "axios";
 
 const FileUpload = ({files, setFiles, removeFile}) => {
+    const [tags, setTags] = useState("");
+    const [cCode, setcCode] = useState("");
+
 
     const uploadHandler = (event) => {
         const file = event.target.files[0];
@@ -12,21 +15,23 @@ const FileUpload = ({files, setFiles, removeFile}) => {
     }
 
     const submitFiles = () => {
-        const file = files[0];
+        const file = files[0]; //this line needs to be changed eventually for multi file uploads
         file.isUploading = true;
         console.log(file);
+        console.log(tags);
+        console.log(file.name)
       
         const timestamp = Date.now();
-        const noteId = `${timestamp}`;
-        const noteName = `Note ${timestamp}`;
-        const creatorId = `creator_${timestamp}`;
+        const noteName = file.name;
+        const creatorId = 1;
       
         const formData = new FormData();
-        formData.append("note_id", noteId);
         formData.append("note_name", noteName);
         formData.append("note", file);
         formData.append("creator_id", creatorId);
-      
+        formData.append("tags", tags);
+        formData.append("cCode", cCode);
+
         axios
           .post("http://localhost:3001/api/upload", formData, {
             headers: { "Content-Type": "multipart/form-data" },
@@ -58,11 +63,11 @@ const FileUpload = ({files, setFiles, removeFile}) => {
                 <p className="file-types">PDF, JPG, PNG</p>
                 <div>
                     <p>Tags:</p>
-                    <input className="input-tags" type="text" placeholder="Keywords to Help Find Your Note"></input>
+                    <input className="input-tags" type="text" placeholder="Keywords to Help Find Your Note" id='tags' onChange={(e) => {setTags(e.target.value)}}></input>
                 </div>
                 <div>
                     <p>Course Code *if applicable*:</p>
-                    <input className="input-tags" type="text" placeholder="Course Code"></input>
+                    <input className="input-tags" type="text" placeholder="Course Code" id='cCode' onChange={(e) => {setcCode(e.target.value)}}></input>
                 </div>
                 <button className="btn btn-submit" onClick={submitFiles}>Submit</button>
             </div>
