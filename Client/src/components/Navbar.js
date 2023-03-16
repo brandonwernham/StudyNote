@@ -71,8 +71,7 @@ export default function Navbar() {
           {profile ? (
             <div className='google-profile'>
               <img className="google-image" src={profile.picture} alt="user image" />
-              <p>{profile.email}</p>
-              <button className='btn btn-logout' onClick={logOut}>Log out</button>
+              <button className='btn btn-logout' onClick={logOut}>Log Out</button>
             </div>
           ) : (
             <button className='btn btn-login' onClick={() => login()}>Log In with Google</button>
