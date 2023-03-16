@@ -169,28 +169,36 @@ app.post("/api/upload", upload.single("note"), (req, res) => {
 
             function sqlTagsQueryFunc() {
                 return new Promise(resolve => {
-                    const sqlTagsQuery = "SELECT * FROM tags WHERE tag_name = ?"
-                    database.query(sqlTagsQuery, [tag], (err, result) => {
-                    if (err) {
-                        message = message + " " + err;
-                    } else {
-                        if (result.length == 0){
-                            database.query("INSERT INTO tags (tag_name) VALUES (?)", [tag], (err, result) =>{
-                                if (err) {
-                                    message = message + " " + err;
-                                }
-                                tagID = result.insertId;
-                                resolve();
-                            })
-                            
-                        }
-                        else{
-                            tagID = result[0].tag_id;
-                            resolve();
-                        }
+                    function sqlTagsSelectFunc() {
+                        return new Promise(resolve => {
+                            const sqlTagsQuery = "SELECT * FROM tags WHERE tag_name = ?"
+                        }); 
                     }
-                    })
-                    console.log(noteID)
+                    async function sqlTagsQueryInsertFunc() {
+                        await sqlTagsSelectFunc();
+                        database.query(sqlTagsQuery, [tag], (err, result) => {
+                            if (err) {
+                                message = message + " " + err;
+                            } else {
+                                if (result.length == 0){
+                                    database.query("INSERT INTO tags (tag_name) VALUES (?)", [tag], (err, result) =>{
+                                        if (err) {
+                                            message = message + " " + err;
+                                        }
+                                        tagID = result.insertId;
+                                        resolve();
+                                    })
+                                    
+                                }
+                                else{
+                                    tagID = result[0].tag_id;
+                                    resolve();
+                                }
+                            }
+                        })
+                        console.log(noteID)
+                    } 
+                    sqlTagsQueryInsertFunc();
                 });
             }
 
