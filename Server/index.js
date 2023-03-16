@@ -158,8 +158,6 @@ app.post("/api/upload", upload.single("note"), (req, res) => {
             })
         });
     }
-
-    sqlInsertFunc();
     
     //tags
     var tagsArr = tags.split(",")
@@ -192,8 +190,6 @@ app.post("/api/upload", upload.single("note"), (req, res) => {
                 console.log(noteID)
             });
         }
-
-        sqlTagsQueryFunc();
 
         async function sqlTagsInsertFunc() {
             await sqlInsertFunc();
