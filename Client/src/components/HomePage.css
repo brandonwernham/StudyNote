@@ -28,3 +28,9 @@
 .task-image {
     width: 300px;
 }
+
+@media screen and (max-width: 1188px) {
+    .btn-task {
+        display: flex;
+    }
+}
