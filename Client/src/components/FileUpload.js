@@ -6,6 +6,7 @@ import axios from "axios";
 
 const FileUpload = ({ files, setFiles, removeFile }) => {
   const [tags, setTags] = useState("");
+  const [subjectCode, setSubjectCode] = useState("");
   const [courseCode, setCourseCode] = useState("");
 
   const uploadHandler = (event) => {
@@ -31,6 +32,7 @@ const FileUpload = ({ files, setFiles, removeFile }) => {
     formData.append("note_name", noteName);
     formData.append("tags", tags);
     formData.append("course_code", courseCode);
+    formData.append("subject_code", subjectCode);
     formData.append("note", file);
     formData.append("creator_id", creatorId);
 
@@ -47,6 +49,16 @@ const FileUpload = ({ files, setFiles, removeFile }) => {
         removeFile(file.name);
       });
   };
+
+  const subject_code_options = [
+    { value: "CHEM", label: "Chemistry" },
+    { value: "COMPSCI", label: "Computer Science" },
+    { value: "GEOG", label: "Geography" },
+    { value: "LAW", label: "Law" },
+    { value: "MATH", label: "Mathematics" },
+    { value: "PATHOL", label: "Pathology" },
+    { value: "SE", label: "Software Engineering" },
+  ];
 
   return (
     <>
@@ -74,7 +86,25 @@ const FileUpload = ({ files, setFiles, removeFile }) => {
           />
         </div>
         <div>
-          <p>Course Code *if applicable*:</p>
+        <p>Subject Code:</p>
+        <select
+            className="input-tags"
+            id="subject_code"
+            value={subjectCode}
+            onChange={(e) => setSubjectCode(e.target.value)}
+        >
+            <option value="">Select Subject Code</option>
+            <option value="CHEM">CHEM</option>
+            <option value="COMPSCI">COMPSCI</option>
+            <option value="GEOG">GEOG</option>
+            <option value="LAW">LAW</option>
+            <option value="MATH">MATH</option>
+            <option value="PATHOL">PATHOL</option>
+            <option value="SE">SE</option>
+        </select>
+        </div>
+        <div>
+          <p>Course Code:</p>
           <input
             className="input-tags"
             type="text"

@@ -133,6 +133,7 @@ app.post("/api/upload", upload.fields([
     {name: 'note'},
     {name: 'tags'},
     {name: 'course_code'},
+    {name: 'subject_code'},
     {name: 'creator_id'}
 ]), (req, res) => {
     const note_id = req.body.note_id;
@@ -140,10 +141,11 @@ app.post("/api/upload", upload.fields([
     const file_path = req.files.note[0].path;
     const tags = req.body.tags;
     const course_code = req.body.course_code;
+    const subject_code = req.body.subject_code;
     const creator_id = req.body.creator_id;
 
-    const sqlInsert = "INSERT INTO notes (note_id, note_name, file_path, tags, course_code, creator_id) VALUES (?, ?, ?, ?, ?, ?)"
-    database.query(sqlInsert, [note_id, note_name, file_path, tags, course_code, creator_id], (err, result) => {
+    const sqlInsert = "INSERT INTO notes (note_id, note_name, file_path, tags, course_code, subject_code, creator_id) VALUES (?, ?, ?, ?, ?, ?, ?)"
+    database.query(sqlInsert, [note_id, note_name, file_path, tags, course_code, subject_code, creator_id], (err, result) => {
         if (err) {
             res.send({err: err}) //this will be returned when duplicate entry in database, among with other errrs.
         } else {
@@ -155,21 +157,55 @@ app.post("/api/upload", upload.fields([
 
 
 
-app.post("/api/getNote", (req, res) => {
+function splitTags(tags) {
+    // Split the input string into separate words by spaces or commas
+    const tagArray = tags.split(/[ ,]+/);
+    return tagArray;
+  }
+
+  app.post("/api/getNote", (req, res) => {
     const tags = req.body.tags;
-
-    const sqlInsert = "SELECT file_path FROM notes WHERE note_id = ?"
-    database.query(sqlInsert, tags, (err, result) => {
-        if (err){
-            res.send({err: err})
-        }
-        else{
-            console.log(result[0].FilePath);
-            res.send(result[0].FilePath);
-        }
-    })
-});
-
+    const subject_code = req.body.subject_code;
+    const course_code = req.body.course_code;
+  
+    let query = "SELECT * FROM notes";
+    const whereConditions = [];
+  
+    if (tags.length > 0) {
+        const tagArray = splitTags(tags);
+        whereConditions.push(tagArray.map(tag => "tags LIKE '%" + tag + "%'").join(" OR "));
+      }
+  
+    if (course_code) {
+      whereConditions.push("course_code = '" + course_code + "'");
+    }
+  
+    if (subject_code) {
+      whereConditions.push("subject_code = '" + subject_code + "'");
+    }
+  
+    if (whereConditions.length > 0) {
+      query += " WHERE " + whereConditions.join(" AND ");
+    }
+  
+    database.query(query, (err, result) => {
+      if (err) {
+        res.send({err: err});
+      } else if (result.length > 0) {
+        const resultsArray = result.map(r => ({
+          id: r.id,
+          file_path: r.file_path,
+          tags: r.tags,
+          course_code: r.course_code,
+          subject_code: r.subject_code,
+          created_at: r.created_at
+        }));
+        res.send(resultsArray);
+      } else {
+        res.send("No matching notes found.");
+      }
+    });
+  });
 
 
 app.delete("/api/upload/delete", (req, res) => {
