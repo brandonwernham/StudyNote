@@ -28,7 +28,7 @@ const FileUpload = ({files, setFiles, removeFile}) => {
         formData.append("creator_id", creatorId);
       
         axios
-          .post('https://studynote.ca/api/upload', formData, {
+          .post("http://localhost:3001/api/upload", formData, {
             headers: { "Content-Type": "multipart/form-data" },
           })
           .then((res) => {
