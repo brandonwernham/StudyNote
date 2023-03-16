@@ -6,17 +6,17 @@ import Axios from 'axios';
 
 export const HomePage = () => {
 
-    Axios.defaults.withCredentials = true;
+    // Axios.defaults.withCredentials = true;
 
-    const [loginStatus, setLoginStatus] = useState("");
+    // const [loginStatus, setLoginStatus] = useState("");
 
-    useEffect(() => {
-        Axios.get("https://studynote.ca/api/login").then((response) => {
-            if(response.data.loggedIn == true) {
-                setLoginStatus(response.data.user[0].Email);
-            }
-        })
-    }, []);
+    // useEffect(() => {
+    //     Axios.get("https://studynote.ca/api/login").then((response) => {
+    //         if(response.data.loggedIn == true) {
+    //             setLoginStatus(response.data.user[0].Email);
+    //         }
+    //     })
+    // }, []);
 
     return (
         <div>
@@ -27,7 +27,7 @@ export const HomePage = () => {
                 <br></br>
                 <br></br>
                 <div>
-                    <h2 className='welcome-text'>Welcome back {loginStatus}!</h2>
+                    <h2 className='welcome-text'>Welcome back!</h2>
                     <h4 className='accomplish-text'>What would you like to accomplish?</h4>
                     <br></br>
                 </div>
