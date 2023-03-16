@@ -80,7 +80,7 @@ export default function Navbar() {
         </div>
 
         <div className="login">
-          {profile ? (
+          {user && profile ? (
             <div className='google-profile'>
               <img className="google-image" src={profile.picture} alt="user image" />
               <button className='btn btn-logout' onClick={logOut}>Log Out</button>
