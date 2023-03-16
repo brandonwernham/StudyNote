@@ -15,8 +15,6 @@ function App() {
             <Route path='classes' element={<ClassesPage />}></Route>
             <Route path='groups' element={<GroupsPage />}></Route>
             <Route path='upload' element={<UploadPage />}></Route>
-            <Route path='login' element={<LoginPage />}></Route>
-            <Route path='register' element={<RegisterPage />}></Route>
         </Routes>
     );
 }

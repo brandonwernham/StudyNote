@@ -1,8 +1,51 @@
 import { useLocation } from "react-router-dom";
+import React, {useState, useEffect} from 'react';
 import "./Navbar.css";
+import Axios from 'axios';
+import { googleLogout, useGoogleLogin } from '@react-oauth/google';
 
 export default function Navbar() {
   const { pathname } = useLocation();
+
+  const [user, setUser] = useState(JSON.parse(localStorage.getItem('user')) || null);
+  const [profile, setProfile] = useState(JSON.parse(localStorage.getItem('profile')) || null);
+
+  const login = useGoogleLogin({
+    onSuccess: (codeResponse) => setUser(codeResponse),
+    onError: (error) => console.log('Login Failed:', error)
+  });
+
+  useEffect(
+    () => {
+      if (user) {
+        Axios
+          .get(`https://www.googleapis.com/oauth2/v1/userinfo?access_token=${user.access_token}`, {
+            headers: {
+              Authorization: `Bearer ${user.access_token}`,
+              Accept: 'application/json'
+            }
+          })
+          .then((res) => {
+            setProfile(res.data);
+          })
+          .catch((err) => console.log(err));
+      }
+    },
+    [ user ]
+  );
+
+  useEffect(() => {
+    localStorage.setItem('user', JSON.stringify(user));
+    localStorage.setItem('profile', JSON.stringify(profile));
+  }, [user, profile]);
+
+  const logOut = () => {
+    localStorage.removeItem('user');
+    localStorage.removeItem('profile');
+    setUser(null);
+    setProfile(null);
+    googleLogout();
+  };
 
   return (
     <nav className="navbar">
@@ -25,7 +68,15 @@ export default function Navbar() {
         </div>
 
         <div className="login">
-        <button className='btn btn-signin'>Log In with Google</button>
+          {profile ? (
+            <div className='google-profile'>
+              <img className="google-image" src={profile.picture} alt="user image" />
+              <p>{profile.email}</p>
+              <button className='btn btn-logout' onClick={logOut}>Log out</button>
+            </div>
+          ) : (
+            <button className='btn btn-login' onClick={() => login()}>Log In with Google</button>
+          )}          
         </div>
     </nav>
   );

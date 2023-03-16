@@ -80,30 +80,3 @@
     padding: 6px;
     margin: 10px;
 }
-
-.google-profile {
-    border: 3px solid var(--color-primary);
-    border-radius: 10px;
-    padding: 1rem;
-    text-align: center;
-    margin: auto;
-    width: 50%;
-}
-
-.google-logout-button {
-    padding: 0.5rem 2rem;
-    background: var(--color-primary);
-    color: var(--color-white);
-    border-radius: 10px;
-    font-weight: bold;
-}
-
-.google-signin-button {
-    display: block;
-    margin: 0 auto;
-    padding: 0.5rem 2rem;
-    background: var(--color-primary);
-    color: var(--color-white);
-    border-radius: 10px;
-    font-weight: bold;
-}

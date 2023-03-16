@@ -35,9 +35,23 @@ nav .login {
   margin-right: 2rem;
 }
 
-.btn-signin {
+.btn-login {
   display: block;
   margin: 1.9rem auto;
+  padding: 0.5rem 2rem;
+  background: var(--color-primary);
+  color: var(--color-white);
+  border-radius: 10px;
+  font-weight: bold;
+}
+
+.google-image {
+  width: 30px;
+  border-radius: 50%;
+}
+
+.btn-logout {
+  display: block;
   padding: 0.5rem 2rem;
   background: var(--color-primary);
   color: var(--color-white);
