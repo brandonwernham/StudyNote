@@ -131,15 +131,19 @@ app.post("/api/upload", upload.fields([
     {name: 'note_id'},
     {name: 'note_name'},
     {name: 'note'},
+    {name: 'tags'},
+    {name: 'course_code'},
     {name: 'creator_id'}
 ]), (req, res) => {
     const note_id = req.body.note_id;
     const note_name = req.body.note_name;
     const file_path = req.files.note[0].path;
+    const tags = req.body.tags;
+    const course_code = req.body.course_code;
     const creator_id = req.body.creator_id;
 
-    const sqlInsert = "INSERT INTO notes (note_id, note_name, file_path, creator_id) VALUES (?, ?, ?, ?)"
-    database.query(sqlInsert, [note_id, note_name, file_path, creator_id], (err, result) => {
+    const sqlInsert = "INSERT INTO notes (note_id, note_name, file_path, tags, course_code, creator_id) VALUES (?, ?, ?, ?, ?, ?)"
+    database.query(sqlInsert, [note_id, note_name, file_path, tags, course_code, creator_id], (err, result) => {
         if (err) {
             res.send({err: err}) //this will be returned when duplicate entry in database, among with other errrs.
         } else {
