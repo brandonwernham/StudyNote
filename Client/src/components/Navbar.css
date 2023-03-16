@@ -37,7 +37,7 @@
 
 .btn-login {
   display: block;
-  margin: 1.9rem auto;
+  margin-top: 2rem;
   padding: 0.5rem 2rem;
   background: var(--color-primary);
   color: var(--color-white);
@@ -59,11 +59,11 @@
 
 .btn-logout {
   display: block;
-  height: 40px;
+  padding: 0.5rem 2rem;
   background: var(--color-primary);
   color: var(--color-white);
   border-radius: 10px;
   font-weight: bold;
-  margin-top: 1.7rem;
+  margin-top: 2rem;
   margin-left: 0.5rem;
 }
