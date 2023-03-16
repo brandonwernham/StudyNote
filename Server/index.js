@@ -142,66 +142,74 @@ app.post("/api/upload", upload.single("note"), (req, res) => {
     var noteID = null;
     var tagID = null;
 
+    function sqlInsertFunc() {
+        return new Promise(resolve => {
+            const sqlInsert = "INSERT INTO notes (note_name, file_path, creator_id) VALUES (?, ?, ?)" //note ID is created inside the database and auto incremented - in thise case its the "insertId"
+            database.query(sqlInsert, [note_name, file_path, creator_id], (err, result) => {
+                if (err) {
+                    res.send({err: err}) //this will be returned when duplicate entry in database, among with other errrs.
+                    resolve();
+                } else {
+                    console.log(result.insertId);
+                    res.send({message: "Insert ID:  " + result.insertId}) //sent to client
+                    noteID = result.insertId;
+                    resolve();
+                }
+            })
+        });
+    }
+
+    sqlInsertFunc();
     
-
-    
-    const sqlInsert = "INSERT INTO notes (note_name, file_path, creator_id) VALUES (?, ?, ?)" //note ID is created inside the database and auto incremented - in thise case its the "insertId"
-    database.query(sqlInsert, [note_name, file_path, creator_id], (err, result) => {
-        if (err) {
-            res.send({err: err}) //this will be returned when duplicate entry in database, among with other errrs.
-        } else {
-            console.log(result.insertId);
-            res.send({message: "Insert ID:  " + result.insertId}) //sent to client
-            noteID = result.insertId;
-        }
-    })
-
-
-
-
     //tags
     var tagsArr = tags.split(",")
     for (var tag of tagsArr){
         tag = tag.trim();
 
-        const sqlTagsQuery = "SELECT * FROM tags WHERE tag_name = ?"
-        database.query(sqlTagsQuery, [tag], (err, result) => {
-        if (err) {
-            res.send({err: err}) 
-        } else {
-            if (result.length == 0){
-                database.query("INSERT INTO tags (tag_name) VALUES (?)", [tag], (err, result) =>{
-                    if (err) {
-                        res.send({err: err})
+        function sqlTagsQueryFunc() {
+            return new Promise(resolve => {
+                const sqlTagsQuery = "SELECT * FROM tags WHERE tag_name = ?"
+                database.query(sqlTagsQuery, [tag], (err, result) => {
+                if (err) {
+                    res.send({err: err}) 
+                } else {
+                    if (result.length == 0){
+                        database.query("INSERT INTO tags (tag_name) VALUES (?)", [tag], (err, result) =>{
+                            if (err) {
+                                res.send({err: err})
+                            }
+                            tagID = result.insertId;
+                            resolve();
+                        })
+                        
                     }
-                    tagID = result.insertId;
+                    else{
+                        tagID = result[0].tag_id;
+                        resolve();
+                    }
+                }
                 })
-                
-            }
-            else{
-                tagID = result[0].tag_id;
-            }
+                console.log(noteID)
+            });
         }
-        })
-        console.log(noteID)
 
-        const sqlTagsInsert = "INSERT INTO note_tags (tag_id, note_id) VALUES (?, ?)";
-        database.query(sqlTagsInsert, [tagID, noteID], (err, result) => {
-        if (err) {
-            res.send({err: err})
-        } else {
+        sqlTagsQueryFunc();
 
+        async function sqlTagsInsertFunc() {
+            await sqlInsertFunc();
+            await sqlTagsQueryFunc();
+            const sqlTagsInsert = "INSERT INTO note_tags (tag_id, note_id) VALUES (?, ?)";
+            database.query(sqlTagsInsert, [tagID, noteID], (err, result) => {
+            if (err) {
+                res.send({err: err})
+            } else {
+
+            }
+            })
         }
-        })
+
+        sqlTagsInsertFunc();        
     }
-    
-
-
-
-
-    
-
-
 });
 
 // z test work (HASNT BEEN TESTED)
