@@ -172,6 +172,7 @@ app.post("/api/upload", upload.single("note"), (req, res) => {
                     function sqlTagsSelectFunc() {
                         return new Promise(resolve => {
                             const sqlTagsQuery = "SELECT * FROM tags WHERE tag_name = ?"
+                            resolve();
                         }); 
                     }
                     async function sqlTagsQueryInsertFunc() {
