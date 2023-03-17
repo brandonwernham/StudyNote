@@ -18,10 +18,14 @@ export const SearchPage = () => {
       subject_code: subject_code,
     })
       .then((response) => {
-        console.log("repsonse: " + response.data);
-        setNoteList(response.data);
+        if (response.data != "No matching notes found.") {
+          setNoteList(response.data);
+        } else {
+          setNoteList([]);
+        }
       })
       .catch((error) => console.log("Error: ", error.message));
+      
   };
 
   return (
