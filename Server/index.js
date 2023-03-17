@@ -116,13 +116,6 @@ app.get("/api/test", (req, res) => {
             res.send({message: "no notes"})
         }
     })    
-
-    database.query("SELECT * FROM note_tags", (err, result) => {
-        if (err){
-            res.send({err: err})
-        }
-
-    })    
     
    //res.send({message: "the server is sending this message."})
 })
@@ -134,146 +127,85 @@ const upload = multer({dest: "notes/"});
 // This is just a temporary way of uploading notes, I will have to figure out
 // creating unique ids and such for each note uploaded
 // For now, what it does is takes the formData as is, and inserts the first note uploaded
-app.post("/api/upload", upload.single("note"), (req, res) => {
-    const file_path = req.file.path;
+app.post("/api/upload", upload.fields([
+    {name: 'note_id'},
+    {name: 'note_name'},
+    {name: 'note'},
+    {name: 'tags'},
+    {name: 'course_code'},
+    {name: 'subject_code'},
+    {name: 'creator_id'}
+]), (req, res) => {
+    const note_id = req.body.note_id;
     const note_name = req.body.note_name;
+    const file_path = req.files.note[0].path;
+    const tags = req.body.tags;
+    const course_code = req.body.course_code;
+    const subject_code = req.body.subject_code;
     const creator_id = req.body.creator_id;
-    const tags = req.body.tags;
-    var noteID = null;
-    var tagID = null;
-    var message = null;
 
-    function sqlInsertFunc() {
-        return new Promise(resolve => {
-            const sqlInsert = "INSERT INTO notes (note_name, file_path, creator_id) VALUES (?, ?, ?)" //note ID is created inside the database and auto incremented - in thise case its the "insertId"
-            database.query(sqlInsert, [note_name, file_path, creator_id], (err, result) => {
-                if (err) {
-                    message = message + " " + err;
-                    resolve();
-                } else {
-                    console.log(result.insertId);
-                    res.send({message: "Insert ID:  " + result.insertId}) //sent to client
-                    noteID = result.insertId;
-                    resolve();
-                }
-            })
-        });
-    }
-    
-    //tags
-    async function sqlTagsFunc() {
-        await sqlInsertFunc();
-        var tagsArr = tags.split(",")
-        for (var tag of tagsArr){
-
-            function sqlTagsQueryFunc() {
-                return new Promise(resolve => {
-                    var matchResult = null;
-                    function sqlTagsSelectFunc() {
-                        return new Promise(resolve => {
-                            tag = tag.trim();
-                            console.log (tag)
-                            const sqlTagsQuery = "SELECT * FROM tags WHERE tag_name = ?"
-                            database.query(sqlTagsQuery, [tag], (err, result) => {
-                                if (err) {
-                                    message = message + " " + err;
-                                    resolve();
-                                } else {
-                                    matchResult = result
-                                    resolve();
-                                }
-                            })
-                            console.log(noteID)
-                        });
-                    }
-                    
-                    async function sqlTagsInsertFunc2() {
-                        await sqlTagsSelectFunc();
-                        if (matchResult.length == 0){
-                            database.query("INSERT INTO tags (tag_name) VALUES (?)", [tag], (err, result) =>{
-                                if (err) {
-                                    message = message + " " + err;
-                                }
-                                tagID = result.insertId;
-                                resolve();
-                            })
-                            
-                        }
-                        else {
-                            tagID = matchResult[0].tag_id;
-                            resolve();
-                        }
-                    }
-
-                    sqlTagsInsertFunc2();
-                });
-            }
-
-            async function sqlTagsInsertFunc() {
-                await sqlTagsQueryFunc();
-                const sqlTagsInsert = "INSERT INTO note_tags (tag_id, note_id) VALUES (?, ?)";
-                database.query(sqlTagsInsert, [tagID, noteID], (err, result) => {
-                    if (err) {
-                        message = message + " " + err;
-                    } else {
-
-                    }
-                })
-
-                if (message != null){
-                    //res.send(message);
-                }
-            }
-
-            sqlTagsInsertFunc();        
-        }
-    }
-
-    sqlTagsFunc();
-});
-
-// z test work (HASNT BEEN TESTED)
-app.post("/api/getCertainNote", (req, res) => {
-    function splitTags(tags) {
-        // Split the input string into separate words by spaces or commas
-        const tagArray = tags.split(/[ ,]+/);
-        return tagArray;
-    }
-
-    // Split the given tags
-    const tags = splitTags(req.body.tags);
-
-    // Search in file_path from notes where
-    // The split tags exist somewhere in the keyword saved for the notes (if the note was saved with "PHYSICS AND ASTRONOMY", a search query of "SPACE AND ASTRONOMY" would be returned)
-    // Where the note_id exists somewhere in the database (SE4450 or 4450 returns 4450)
-    const searchQuery = "SELECT file_path FROM notes WHERE " + tags.map(tag => "file_path LIKE '%" + tag + "%' OR note_id LIKE '%" + tag + "%'").join(" OR ");
-
-    database.query(sqlInsert, searchQuery, (err, result) => {
-        if (err){
-            res.send({err: err})
-        }
-        else{
-            console.log(result[0].FilePath);
-            res.send(result[0].FilePath);
-        }
-    })
-})
-
-app.post("/api/getNote", (req, res) => {
-    const tags = req.body.tags;
-
-    const sqlInsert = "SELECT file_path FROM notes WHERE note_id = ?"
-    database.query(sqlInsert, tags, (err, result) => {
-        if (err){
-            res.send({err: err})
-        }
-        else{
-            console.log(result[0].FilePath);
-            res.send(result[0].FilePath);
+    const sqlInsert = "INSERT INTO notes (note_id, note_name, file_path, tags, course_code, subject_code, creator_id) VALUES (?, ?, ?, ?, ?, ?, ?)"
+    database.query(sqlInsert, [note_id, note_name, file_path, tags, course_code, subject_code, creator_id], (err, result) => {
+        if (err) {
+            res.send({err: err}) //this will be returned when duplicate entry in database, among with other errrs.
+        } else {
+            console.log(result.insertId);
+            res.send({message: "Insert ID:  " + result.insertId}) //sent to client
         }
     })
 });
 
+
+
+function splitTags(tags) {
+    // Split the input string into separate words by spaces or commas
+    const tagArray = tags.split(/[ ,]+/);
+    return tagArray;
+  }
+
+  app.post("/api/getNote", (req, res) => {
+    const tags = req.body.tags;
+    const subject_code = req.body.subject_code;
+    const course_code = req.body.course_code;
+  
+    let query = "SELECT * FROM notes";
+    const whereConditions = [];
+  
+    if (tags.length > 0) {
+        const tagArray = splitTags(tags);
+        whereConditions.push(tagArray.map(tag => "tags LIKE '%" + tag + "%'").join(" OR "));
+      }
+  
+    if (course_code) {
+      whereConditions.push("course_code = '" + course_code + "'");
+    }
+  
+    if (subject_code) {
+      whereConditions.push("subject_code = '" + subject_code + "'");
+    }
+  
+    if (whereConditions.length > 0) {
+      query += " WHERE " + whereConditions.join(" AND ");
+    }
+  
+    database.query(query, (err, result) => {
+      if (err) {
+        res.send({err: err});
+      } else if (result.length > 0) {
+        const resultsArray = result.map(r => ({
+          id: r.id,
+          file_path: r.file_path,
+          tags: r.tags,
+          course_code: r.course_code,
+          subject_code: r.subject_code,
+          created_at: r.created_at
+        }));
+        res.send(resultsArray);
+      } else {
+        res.send("No matching notes found.");
+      }
+    });
+  });
 
 
 app.delete("/api/upload/delete", (req, res) => {
