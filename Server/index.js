@@ -168,9 +168,9 @@ app.post("/api/upload", upload.single("note"), (req, res) => {
 
             function sqlTagsQueryFunc() {
                 return new Promise(resolve => {
+                    var matchResult = null;
                     function sqlTagsSelectFunc() {
                         return new Promise(resolve => {
-                            var matchResult = null;
                             tag = tag.trim();
                             console.log (tag)
                             const sqlTagsQuery = "SELECT * FROM tags WHERE tag_name = ?"
