@@ -168,37 +168,42 @@ app.post("/api/upload", upload.single("note"), (req, res) => {
 
             function sqlTagsQueryFunc() {
                 return new Promise(resolve => {
-                    var matchResult = null;
-                    tag = tag.trim();
-                    console.log (tag)
-                    const sqlTagsQuery = "SELECT * FROM tags WHERE tag_name = ?"
-                    database.query(sqlTagsQuery, [tag], (err, result) => {
-                        if (err) {
-                            message = message + " " + err;
-                        } else {
-                            matchResult = result
-                        }
-                    })
-                    console.log(noteID)
-
-
-                    if (matchResult.length == 0){
-                        database.query("INSERT INTO tags (tag_name) VALUES (?)", [tag], (err, result) =>{
+                    function sqlTagsSelectFunc() {
+                        var matchResult = null;
+                        tag = tag.trim();
+                        console.log (tag)
+                        const sqlTagsQuery = "SELECT * FROM tags WHERE tag_name = ?"
+                        database.query(sqlTagsQuery, [tag], (err, result) => {
                             if (err) {
                                 message = message + " " + err;
+                                resolve();
+                            } else {
+                                matchResult = result
+                                resolve();
                             }
-                            tagID = result.insertId;
-                            resolve();
                         })
-                        
+                        console.log(noteID)
                     }
-                    else {
-                        tagID = matchResult[0].tag_id;
-                        resolve();
+                    
+                    async function sqlTagsInsertFunc2() {
+                        await sqlTagsSelectFunc();
+                        if (matchResult.length == 0){
+                            database.query("INSERT INTO tags (tag_name) VALUES (?)", [tag], (err, result) =>{
+                                if (err) {
+                                    message = message + " " + err;
+                                }
+                                tagID = result.insertId;
+                                resolve();
+                            })
+                            
+                        }
+                        else {
+                            tagID = matchResult[0].tag_id;
+                            resolve();
+                        }
                     }
 
-
-
+                    sqlTagsInsertFunc2();
                 });
             }
 
