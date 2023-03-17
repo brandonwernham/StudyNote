@@ -94,40 +94,4 @@ export const SearchPage = () => {
   );
 };
 
-function SearchNotes() {
-    // GET KEYWORDS FROM THE BIG LINE
-    // BREAK THEIR ENTRIES INTO INDIVIDUAL WORDS
-    // SEARCH WORDS AND BRING UP ANY MATCHES
-
-    // GET COURSE CODE FROM THE SECOND INPUT BOX
-    // SEARCH COURSE CODE AND BRING UP ANY MATCHES
-    
-    // GET SUBJECT FROM DROP DOWN BOX
-    // SEARCH SUBJECT AND BRING UP ANY MATCHES
-
-    // IF MULTIPLE INPUTS ARE USED, SHOW RESULTS WHICH CONTAIN ALL 3
-
-
-
-
-
-
-    // outdated but still useful below
-
-    
-    var userInput = document.getElementById("keyword").value;
-    
-    // we need to search the note title and note tags to get accurate results
-
-    // define some list to store the results (notes) in
-
-    // search the db for if any note title contains our userInput or part of our userInput
-
-    // search the db for if any note tags contains our userInput or part of our userInput
-
-    // if yes to the past two queries, then add that note to the list
-
-    // display the list
-}
-
 export default SearchPage;
