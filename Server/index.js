@@ -169,20 +169,22 @@ app.post("/api/upload", upload.single("note"), (req, res) => {
             function sqlTagsQueryFunc() {
                 return new Promise(resolve => {
                     function sqlTagsSelectFunc() {
-                        var matchResult = null;
-                        tag = tag.trim();
-                        console.log (tag)
-                        const sqlTagsQuery = "SELECT * FROM tags WHERE tag_name = ?"
-                        database.query(sqlTagsQuery, [tag], (err, result) => {
-                            if (err) {
-                                message = message + " " + err;
-                                resolve();
-                            } else {
-                                matchResult = result
-                                resolve();
-                            }
-                        })
-                        console.log(noteID)
+                        return new Promise(resolve => {
+                            var matchResult = null;
+                            tag = tag.trim();
+                            console.log (tag)
+                            const sqlTagsQuery = "SELECT * FROM tags WHERE tag_name = ?"
+                            database.query(sqlTagsQuery, [tag], (err, result) => {
+                                if (err) {
+                                    message = message + " " + err;
+                                    resolve();
+                                } else {
+                                    matchResult = result
+                                    resolve();
+                                }
+                            })
+                            console.log(noteID)
+                        });
                     }
                     
                     async function sqlTagsInsertFunc2() {
