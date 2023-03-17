@@ -165,10 +165,10 @@ app.post("/api/upload", upload.single("note"), (req, res) => {
         await sqlInsertFunc();
         var tagsArr = tags.split(",")
         for (var tag of tagsArr){
-            tag = tag.trim();
 
             function sqlTagsQueryFunc() {
                 return new Promise(resolve => {
+                    tag = tag.trim();
                     const sqlTagsQuery = "SELECT * FROM tags WHERE tag_name = ?"
                     database.query(sqlTagsQuery, [tag], (err, result) => {
                         if (err) {
