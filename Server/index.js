@@ -9,8 +9,8 @@ const multer = require('multer');
 
 const database = mysql.createPool({
     host: "localhost",
-    user: "server",
-    password: "Rohan123",
+    user: "root",
+    password: "luna",
     database: "StudyNoteDB",
 });
 

@@ -77,15 +77,15 @@ export const SearchPage = () => {
         </form>
         {noteList.length > 0 ? (
         <div className="note-list">
-            {noteList.map((note, index) => (
-            <div key={index}>
-                <div>File path: {note.file_path}</div>
-                <div>Tags: {note.tags}</div>
-                <div>Course code: {note.course_code}</div>
-                <div>Subject code: {note.subject_code}</div>
-            </div>
-            ))}
-        </div>
+        {noteList.map((note, index) => (
+          <div key={index} className="note-box" onClick={() => { /* do something */ }}>
+            <div>File path: {note.file_path}</div>
+            <div>Tags: {note.tags}</div>
+            <div>Course code: {note.course_code}</div>
+            <div>Subject code: {note.subject_code}</div>
+          </div>
+        ))}
+      </div>
         ) : (
         <div>No matching notes found.</div>
         )}

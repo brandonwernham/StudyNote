@@ -71,3 +71,20 @@
     margin-top: 2rem;
     width: 30rem;
 }
+
+.note-list {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-gap: 20px;
+  }
+  
+  .note-box {
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 10px;
+    cursor: pointer;
+  }
+  
+  .note-box:hover {
+    background-color: #f5f5f5;
+  }
