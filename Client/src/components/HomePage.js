@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import "./HomePage.css";
 import Navbar from './Navbar';
 import Axios from 'axios';
-
+import { Link } from "react-router-dom";
 
 export const HomePage = () => {
 
@@ -42,21 +42,21 @@ export const HomePage = () => {
                 </div>
                 <div className='row'>
                     <div>
-                        <button className='btn btn-task'>
+                        <Link className='btn btn-task' to="/classes">
                             <img src={require("./../images/view_classes.png")} 
                             alt="View Classes" className='task-image'>
                             </img> 
-                        </button>
-                        <button className='btn btn-task'>
+                        </Link>
+                        <Link className='btn btn-task' to="/search">
                             <img src={require("./../images/browse_notes.png")} 
-                            alt="View Classes" className='task-image'>
+                            alt="Browse Notes" className='task-image'>
                             </img>
-                        </button>
-                        <button className='btn btn-task'>
+                        </Link>
+                        <Link className='btn btn-task' to="/groups">
                             <img src={require("./../images/ask_question.png")} 
-                            alt="View Classes" className='task-image'>
+                            alt="Ask A Question" className='task-image'>
                             </img>
-                        </button>
+                        </Link>
                     </div>
                 </div>
             </div>
