@@ -3,12 +3,11 @@ import React, {useState, useEffect} from 'react';
 import "./Navbar.css";
 import Axios from 'axios';
 import { googleLogout, useGoogleLogin } from '@react-oauth/google';
+import { useUserContext } from "./UserContext";
 
 export default function Navbar() {
   const { pathname } = useLocation();
-
-  const [user, setUser] = useState(JSON.parse(localStorage.getItem('user')) || null);
-  const [profile, setProfile] = useState(JSON.parse(localStorage.getItem('profile')) || null);
+  const { user, setUser, profile, setProfile } = useUserContext();
 
   const login = useGoogleLogin({
     onSuccess: (codeResponse) => setUser(codeResponse),
