@@ -149,7 +149,6 @@ app.post("/api/upload", upload.fields([
         if (err) {
             res.send({err: err}) //this will be returned when duplicate entry in database, among with other errrs.
         } else {
-            console.log(result.insertId);
             res.send({message: "Insert ID:  " + result.insertId}) //sent to client
         }
     })
@@ -194,6 +193,7 @@ function splitTags(tags) {
       } else if (result.length > 0) {
         const resultsArray = result.map(r => ({
           id: r.id,
+          note_name: r.note_name,
           file_path: r.file_path,
           tags: r.tags,
           course_code: r.course_code,

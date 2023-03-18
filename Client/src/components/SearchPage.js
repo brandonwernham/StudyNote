@@ -82,7 +82,7 @@ export const SearchPage = () => {
           {noteList.map((note, index) => (
             <div key={index} className="note-box" onClick={() => { /* do something */ }}>
               <div className="note-box-bottom">
-                <div className="note-name">THIS SHOULD BE A GOOD LENGTH FOR A NAME WHAT IF IT OVERFLOWS</div>
+                <div className="note-name">{note.note_name}</div>
                 <div className="note-code">{note.subject_code} {note.course_code}</div>
                 <div className="note-tags">{note.tags}</div>
               </div>

@@ -8,6 +8,7 @@ const FileUpload = ({ files, setFiles, removeFile }) => {
   const [tags, setTags] = useState("");
   const [subjectCode, setSubjectCode] = useState("");
   const [courseCode, setCourseCode] = useState("");
+  const [noteName, setNoteName] = useState("");
 
   const uploadHandler = (event) => {
     const file = event.target.files[0];
@@ -21,7 +22,6 @@ const FileUpload = ({ files, setFiles, removeFile }) => {
 
     const timestamp = Date.now();
     const noteId = `${timestamp}`;
-    const noteName = `Note ${timestamp}`;
     const creatorId = `creator_${timestamp}`;
 
     console.log("tags", tags); // add this line to check the value of tags
@@ -74,6 +74,17 @@ const FileUpload = ({ files, setFiles, removeFile }) => {
         </div>
         <p className="support">Supported File Types:</p>
         <p className="file-types">PDF, JPG, PNG</p>
+        <div>
+          <p>File Name:</p>
+          <input
+            className="input-tags"
+            type="text"
+            id="note_name"
+            placeholder="Note Name"
+            value={noteName}
+            onChange={(e) => setNoteName(e.target.value)}
+          />
+        </div>
         <div>
           <p>Tags:</p>
           <input
