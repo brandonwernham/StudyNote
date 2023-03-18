@@ -18,6 +18,15 @@ export const HomePage = () => {
     //     })
     // }, []);
 
+    const [profile, setProfile] = useState(JSON.parse(localStorage.getItem('profile')) || null);
+    const [accountName, setAccountName] = useState('');
+
+    useEffect(() => {
+        if (profile != null) {
+        setAccountName(profile.name);
+        }
+    }, [profile]);
+    
     return (
         <div>
             <div>
@@ -27,7 +36,7 @@ export const HomePage = () => {
                 <br></br>
                 <br></br>
                 <div>
-                    <h2 className='welcome-text'>Welcome back!</h2>
+                    <h2 className='welcome-text'>Welcome back {accountName}!</h2>
                     <h4 className='accomplish-text'>What would you like to accomplish?</h4>
                     <br></br>
                 </div>

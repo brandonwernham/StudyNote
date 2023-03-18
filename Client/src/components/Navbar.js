@@ -41,7 +41,7 @@ export default function Navbar() {
 
   useEffect(() => {
     if (profile && profile.email != null) {
-      Axios.post("https://studynote.ca/api/signUp", {
+      Axios.post("http://localhost:3001/api/signUp", {
         email: profile.email,
         password: null, // Leaving these null for now since Google is now handling password storage and such
         userType: null
@@ -57,6 +57,7 @@ export default function Navbar() {
     setUser(null);
     setProfile(null);
     googleLogout();
+    window.location.reload();
   };
 
   return (
