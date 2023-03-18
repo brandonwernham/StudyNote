@@ -154,7 +154,7 @@ app.post("/api/upload", upload.single("note"), (req, res) => {
                 conn.release();
                 return result;
             }).then(result => {
-                const noteID = result[0].insertID;
+                const noteID = result[0].insertId;
 
                 //loops through every tag recieved from client
                 tagsArr.forEach(tag => {
@@ -173,7 +173,7 @@ app.post("/api/upload", upload.single("note"), (req, res) => {
                                 conn.release();
                                 return result;
                             }).then(result => {
-                                const tagID = result[0].insertID;
+                                const tagID = result[0].insertId;
                                 insertTagNote(tagID, noteID);
                             }).catch(err => {
                                 errMessage = errMessage + " || insertTag error: " + err;
@@ -204,12 +204,11 @@ app.post("/api/upload", upload.single("note"), (req, res) => {
 
         //inserts into the note_tag table
         database.getConnection().then(conn => {
-            const result = conn.query("INSERT INTO note_tags (tag id, note_id) VALUES (?, ?)", [tagID, noteID]);
+            const result = conn.query("INSERT INTO note_tags (tag_id, note_id) VALUES (?, ?)", [tagID, noteID]);
             conn.release();
             return result;
         }).then(result => {
-            //temp console test below?
-            //console.log(tag + "added successfully");
+            //success message to frontened
         }).catch(err => {
             errMessage = errMessage + " || insertNoteTag error: " + err;
             isError = true;
