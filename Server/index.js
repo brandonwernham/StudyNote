@@ -1,6 +1,6 @@
 const express = require('express');
 const app = express();
-const mysql = require('mysql');
+const mysql = require('mysql2/promise');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const cookieParser = require('cookie-parser');
@@ -9,8 +9,8 @@ const multer = require('multer');
 
 const database = mysql.createPool({
     host: "localhost",
-    user: "root",
-    password: "luna",
+    user: "server",
+    password: "Rohan123",
     database: "StudyNoteDB",
 });
 
@@ -127,86 +127,160 @@ const upload = multer({dest: "notes/"});
 // This is just a temporary way of uploading notes, I will have to figure out
 // creating unique ids and such for each note uploaded
 // For now, what it does is takes the formData as is, and inserts the first note uploaded
-app.post("/api/upload", upload.fields([
-    {name: 'note_id'},
-    {name: 'note_name'},
-    {name: 'note'},
-    {name: 'tags'},
-    {name: 'course_code'},
-    {name: 'subject_code'},
-    {name: 'creator_id'}
-]), (req, res) => {
-    const note_id = req.body.note_id;
-    const note_name = req.body.note_name;
-    const file_path = req.files.note[0].path;
-    const tags = req.body.tags;
-    const course_code = req.body.course_code;
-    const subject_code = req.body.subject_code;
-    const creator_id = req.body.creator_id;
 
-    const sqlInsert = "INSERT INTO notes (note_id, note_name, file_path, tags, course_code, subject_code, creator_id) VALUES (?, ?, ?, ?, ?, ?, ?)"
-    database.query(sqlInsert, [note_id, note_name, file_path, tags, course_code, subject_code, creator_id], (err, result) => {
-        if (err) {
-            res.send({err: err}) //this will be returned when duplicate entry in database, among with other errrs.
+app.post("/api/upload", upload.single("note"), (req, res) => {
+    const file_path = req.file.path;
+    const note_name = req.body.note_name;
+    const creator_id = req.body.creator_id;
+    const tags = req.body.tags;
+    const class_name = req.body.subject_code + req.body.course_code;
+    const tagsArr = tags.split(",");
+    var errMessage = "Errors: ";
+    var okMessage = "Tags: ";
+    var isError = false;
+
+    //search to see if class exists in the database
+    database.getConnection().then(conn => {
+        const result = conn.query("SELECT * FROM classes WHERE class_name = ?", [class_name]);
+        conn.release();
+        return result;
+    }).then(result => {
+        if(result[0].length == 0) {
+            //something here about the class not existing, adding a note requires an actual class to exist of course
         } else {
-            res.send({message: "Insert ID:  " + result.insertId}) //sent to client
+            //insert note into the database
+            database.getConnection().then(conn => {
+                const result = conn.query("INSERT INTO notes (note_name, file_path, creator_id, class_name) VALUES (?, ?, ?, ?)", [note_name, file_path, creator_id, class_name]);
+                conn.release();
+                return result;
+            }).then(result => {
+                const noteID = result[0].insertID;
+
+                //loops through every tag recieved from client
+                tagsArr.forEach(tag => {
+                    tag = tag.trim();
+
+                    //search to see if tag exists in the database
+                    database.getConnection().then(conn => {
+                        const result = conn.query("SELECT * FROM tags WHERE tag_name = ?", [tag]);
+                        conn.release();
+                        return result;
+                    }).then(result => {
+                        if(result[0].length == 0) {
+                            //adds tag if it doesn't exist
+                            database.getConnection().then(conn => {
+                                const result = conn.query("INSERT INTO tags (tag_name) VALUES (?)", [tag]);
+                                conn.release();
+                                return result;
+                            }).then(result => {
+                                const tagID = result[0].insertID;
+                                insertTagNote(tagID, noteID);
+                            }).catch(err => {
+                                errMessage = errMessage + " || insertTag error: " + err;
+                                isError = true;
+                            })
+                        } else {
+                            //get tagID if it exists
+                            const tagID = result[0];
+                            insertTagNote(tagID, noteID);
+                        }
+                    }).catch(err => {
+                        errMessage = errMessage + " || selectTags error: " + err;
+                        isError = true;
+                    })
+                })
+            }).catch(err => {
+                errMessage = errMessage + " || insertNote error: " + err;
+                isError = true;
+            })
+        }
+    }).catch(err => {
+        errMessage = errMessage + " || classCheck error: " + err;
+        isError = true;
+    })
+
+    function insertTagNote(tagID, noteID) {
+        console.log("inserttagnote: " + tagID);
+
+        //inserts into the note_tag table
+        database.getConnection().then(conn => {
+            const result = conn.query("INSERT INTO note_tags (tag id, note_id) VALUES (?, ?)", [tagID, noteID]);
+            conn.release();
+            return result;
+        }).then(result => {
+            //temp console test below?
+            //console.log(tag + "added successfully");
+        }).catch(err => {
+            errMessage = errMessage + " || insertNoteTag error: " + err;
+            isError = true;
+        })
+    }
+});
+
+//keeping as zuhayr's work until I (Rohan) end up
+//merging the search to work with tags as db table
+//keep in mind this shouldn't work at the moment
+//as its built around tags as an array and old sql version
+app.post("api/getNote", (req, res) => {
+    const tags = req.body.tags;
+    const subject_code = req.body.subject_code;
+    const course_code = req.body.course_code;
+
+    let query = "SELECT * FROM notes";
+    const whereConditions = [];
+
+    if(tags.length > 0) {
+        //const tagArray = splitTags(tags);
+        const tagArray = [];
+        whereConditions.push(tagArray.map(tag => "tags LIKE '%" + tag + "%'").join(" OR "));
+    }
+
+    if(course_code) {
+        whereConditions.push("course_code = '" + course_code + "'");
+    }
+
+    if(subject_code) {
+        whereConditions.push("subject code = '" + subject_code + "'");
+    }
+
+    if(whereConditions.length > 0) {
+        query += " WHERE " + whereConditions.join(" AND ");
+    }
+
+    database.query(query, (err, result) => {
+        if(err) {
+            res.send({err: err});
+        } else if(result.length > 0) {
+            const resultsArray = result.map(r => ({
+                id: r.id,
+                note_name: r.note_name,
+                file_path: r.file_path,
+                tags: r.tags,
+                subject_code: r.subject_code,
+                course_code: r.course_code,
+                created_at: r.created_at
+            }));
+            res.send(resultsArray);
         }
     })
 });
 
-
-
-function splitTags(tags) {
-    // Split the input string into separate words by spaces or commas
-    const tagArray = tags.split(/[ ,]+/);
-    return tagArray;
-  }
-
-  app.post("/api/getNote", (req, res) => {
+//ethan's old getNote that will be merged to work 
+//with above when using tags as db table
+/*app.post("/api/getNote", (req, res) => {
     const tags = req.body.tags;
-    const subject_code = req.body.subject_code;
-    const course_code = req.body.course_code;
-  
-    let query = "SELECT * FROM notes";
-    const whereConditions = [];
-  
-    if (tags.length > 0) {
-        const tagArray = splitTags(tags);
-        whereConditions.push(tagArray.map(tag => "tags LIKE '%" + tag + "%'").join(" OR "));
-      }
-  
-    if (course_code) {
-      whereConditions.push("course_code = '" + course_code + "'");
-    }
-  
-    if (subject_code) {
-      whereConditions.push("subject_code = '" + subject_code + "'");
-    }
-  
-    if (whereConditions.length > 0) {
-      query += " WHERE " + whereConditions.join(" AND ");
-    }
-  
-    database.query(query, (err, result) => {
-      if (err) {
-        res.send({err: err});
-      } else if (result.length > 0) {
-        const resultsArray = result.map(r => ({
-          id: r.id,
-          note_name: r.note_name,
-          file_path: r.file_path,
-          tags: r.tags,
-          course_code: r.course_code,
-          subject_code: r.subject_code,
-          created_at: r.created_at
-        }));
-        res.send(resultsArray);
-      } else {
-        res.send("No matching notes found.");
-      }
-    });
-  });
 
+    const sqlInsert = "SELECT file_path FROM notes WHERE note_id = ?"
+    database.query(sqlInsert, tags, (err, result) => {
+        if (err){
+            res.send({err: err})
+        }
+        else{
+            console.log(result[0].FilePath);
+            res.send(result[0].FilePath);
+        }
+    })
+});*/
 
 app.delete("/api/upload/delete", (req, res) => {
     console.log("file was deleted");

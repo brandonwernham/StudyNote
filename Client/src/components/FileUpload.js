@@ -16,38 +16,35 @@ const FileUpload = ({ files, setFiles, removeFile }) => {
   };
 
   const submitFiles = () => {
-    const file = files[0];
+    const file = files[0]; //apparently needs to be changed for multi file uploads?
     file.isUploading = true;
+
     console.log(file);
+    console.log(tags);
+    console.log(subjectCode);
+    console.log(courseCode);
 
     const timestamp = Date.now();
-    const noteId = `${timestamp}`;
-    const creatorId = `creator_${timestamp}`;
-
-    console.log("tags", tags); // add this line to check the value of tags
-    console.log("courseCode", courseCode); // add this line to check the value of courseCode
+    const creatorId = 1; //needs to be changed eventually to actual account that submitted note
+    //const creatorId = `creator_${timestamp}`;
 
     const formData = new FormData();
-    formData.append("note_id", noteId);
     formData.append("note_name", noteName);
     formData.append("tags", tags);
-    formData.append("course_code", courseCode);
     formData.append("subject_code", subjectCode);
+    formData.append("course_code", courseCode);
     formData.append("note", file);
     formData.append("creator_id", creatorId);
 
-    axios
-      .post("http://localhost:3001/api/upload", formData, {
-        headers: { "Content-Type": "multipart/form-data" },
-      })
-      .then((res) => {
-        console.log(res);
-        file.isUploading = false;
-      })
-      .catch((err) => {
-        console.log(err);
-        removeFile(file.name);
-      });
+    axios.post("http://localhost:3001/api/upload", formData, {
+      headers: { "Content-Type": "multipart/form-data" },
+    }).then((res) => {
+      console.log(res);
+      file.isUploading = false;
+    }).catch((err) => {
+      console.log(err);
+      removeFile(file.name);
+    });
   };
 
   const subject_code_options = [
