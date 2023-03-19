@@ -47,16 +47,6 @@ const FileUpload = ({ files, setFiles, removeFile }) => {
     });
   };
 
-  const subject_code_options = [
-    { value: "CHEM", label: "Chemistry" },
-    { value: "COMPSCI", label: "Computer Science" },
-    { value: "GEOG", label: "Geography" },
-    { value: "LAW", label: "Law" },
-    { value: "MATH", label: "Mathematics" },
-    { value: "PATHOL", label: "Pathology" },
-    { value: "SE", label: "Software Engineering" },
-  ];
-
   return (
     <>
       <div className="file-box">
