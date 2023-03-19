@@ -43,22 +43,31 @@ app.use(session({
 }));
 
 //sign up 
-app.post("/api/signUp", (req, res) => {
-    const user_id = req.body.user_id;
-    const email = req.body.email;
-    const password = req.body.password;
-    const userType = req.body.userType;
 
-    const sqlInsert = "INSERT INTO users (user_id, email, user_password, user_type) VALUES (?,?,?,?)"
-    database.query(sqlInsert, [user_id, email, password, userType], (err, result) => {
-        if(err) {
-            res.send({err: err}) //this will be returned when duplicate entry in database, among with other errrs.
-        } else {
-            console.log(result);
-            res.send({message: "User " + email + " added successfully"}) //sent to client
-        }
-    })
+const userExists = async (userId) => {
+    const query = 'SELECT COUNT(*) as count FROM users WHERE user_id = ?';
+    const [rows] = await database.query(query, [userId]);
+    return rows[0].count > 0;
+};
+  
+app.post('/api/signUp', async (req, res) => {
+    const { user_id, email, password, userType } = req.body;
+  
+    try {
+      // Now it will see if the user exists and such
+      const exists = await userExists(user_id);
+      if (exists) {
+        res.status(200).json({ message: 'User already exists' });
+      } else {
+        const query = 'INSERT INTO users (user_id, email, user_password, user_type) VALUES (?, ?, ?, ?)';
+        const result = await database.query(query, [user_id, email, password, userType]);
+        res.status(201).json({ message: 'User created', data: result });
+      }
+    } catch (error) {
+      res.status(500).json({ message: 'Error occurred', error: error.message });
+    }
 });
+  
 
 //login
 app.post("/api/login", (req, res) => {
