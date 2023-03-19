@@ -7,10 +7,12 @@ import { useUserContext } from "./UserContext";
 export const HomePage = () => {
     const { profile } = useUserContext();
     const [accountName, setAccountName] = useState("");
+    const [accountType, setAccountType] = useState("");
 
     useEffect(() => {
         if (profile != null) {
             setAccountName(profile.name);
+            setAccountType(profile.user_type);
         }
     }, [profile]);
 
@@ -24,7 +26,7 @@ export const HomePage = () => {
                 <br></br>
                 <div>
                     <h2 className="welcome-text">
-                        Welcome back{accountName ? ", " + accountName : ""}!
+                        Welcome back{accountType ? ", " + accountType : ""}{accountName ? " " + accountName : ""}!
                     </h2>
                     <h4 className="accomplish-text">What would you like to accomplish?</h4>
                     <br></br>

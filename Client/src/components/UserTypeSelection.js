@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import "./UserTypeSelection.css";
 
 export default function UserTypeSelection({ onSelect, onSkip }) {
   const [user_type, setUserType] = useState('');
@@ -11,29 +12,31 @@ export default function UserTypeSelection({ onSelect, onSkip }) {
   };
 
   return (
-    <div>
-      <h2>Select user type</h2>
-      {onSkip && <button onClick={onSkip}>Skip</button>}
-      <form onSubmit={handleSubmit}>
-        <label>
+    <div className='user-type-container'>
+      <h3 className='select-text'>Select User Type:</h3>
+      {onSkip && <button onClick={onSkip} className='btn btn-skip'>Skip</button>}
+      <form onSubmit={handleSubmit} className='form-type'>
+        <label className='label-type'>
           <input
             type="radio"
             value="student"
             checked={user_type === 'student'}
             onChange={(e) => setUserType(e.target.value)}
+            className='input-type'
           />
           Student
         </label>
-        <label>
+        <label className='label-type'>
           <input
             type="radio"
             value="teacher"
             checked={user_type === 'teacher'}
             onChange={(e) => setUserType(e.target.value)}
+            className='input-type'
           />
           Teacher
         </label>
-        <button type="submit" disabled={!user_type}>
+        <button type="submit" disabled={!user_type} className='btn btn-submit-type'>
           Submit
         </button>
       </form>
