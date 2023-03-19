@@ -51,7 +51,7 @@ const userExists = async (userId) => {
 };
   
 app.post('/api/signUp', async (req, res) => {
-    const { user_id, email, password, userType } = req.body;
+    const { user_id, email, password, user_type } = req.body;
   
     try {
       // Now it will see if the user exists and such
@@ -60,14 +60,30 @@ app.post('/api/signUp', async (req, res) => {
         res.status(200).json({ message: 'User already exists' });
       } else {
         const query = 'INSERT INTO users (user_id, email, user_password, user_type) VALUES (?, ?, ?, ?)';
-        const result = await database.query(query, [user_id, email, password, userType]);
+        const result = await database.query(query, [user_id, email, password, user_type]);
         res.status(201).json({ message: 'User created', data: result });
       }
     } catch (error) {
       res.status(500).json({ message: 'Error occurred', error: error.message });
     }
 });
+
+app.get('/api/getUserType/:userId', async (req, res) => {
+    const { userId } = req.params;
   
+    try {
+      const query = 'SELECT user_type FROM users WHERE user_id = ?';
+      const [rows] = await database.query(query, [userId]);
+  
+      if (rows.length > 0) {
+        res.status(200).json({ user_type: rows[0].user_type });
+      } else {
+        res.status(404).json({ message: 'User not found' });
+      }
+    } catch (error) {
+      res.status(500).json({ message: 'Error occurred', error: error.message });
+    }
+});  
 
 //login
 app.post("/api/login", (req, res) => {
