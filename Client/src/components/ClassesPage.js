@@ -1,8 +1,19 @@
 import React from 'react';
 import "./ClassesPage.css";
 import Navbar from './Navbar';
+import { useUserContext } from "./UserContext";
+import { useEffect, useState } from "react";
 
 export const ClassesPage = () => {
+    const { profile } = useUserContext();
+    const [accountType, setAccountType] = useState("");
+
+    useEffect(() => {
+        if (profile != null) {
+            setAccountType(profile.user_type);
+        }
+    }, [profile]);
+
     return (
         <div>
             <div>
@@ -10,7 +21,7 @@ export const ClassesPage = () => {
             </div>
             <div className='container-page'>
                 <div className='header'>
-                    <h1 className='classes-title'>Your Classes</h1>
+                    <h1 className='classes-title'>Your Classes as a {accountType}</h1>
                 </div>
                 <div className='content'>
                     <div className='classes'>
