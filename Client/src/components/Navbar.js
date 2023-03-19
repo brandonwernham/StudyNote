@@ -9,12 +9,22 @@ import UserTypeSelection from './UserTypeSelection';
 export default function Navbar() {
   const { pathname } = useLocation();
   const { user, setUser, profile, setProfile } = useUserContext();
-  const [selectedUserType, setSelectedUserType] = useState(null);
 
   const handleUserTypeSelect = (user_type) => {
-    setSelectedUserType(user_type);
-    login();
-  };
+    if (profile && profile.email != null && profile.id != null) {
+      Axios.post("http://localhost:3001/api/signUp", {
+        user_id: profile.id,
+        email: profile.email,
+        password: null,
+        user_type: user_type
+      })
+        .then((response) => {
+          console.log(response);
+          setProfile((prevProfile) => ({ ...prevProfile, user_type }));
+        })
+        .catch((error) => console.log("Error: ", error.message));
+    }
+  };  
 
   const login = useGoogleLogin({
     onSuccess: (codeResponse) => setUser(codeResponse),
@@ -35,32 +45,19 @@ export default function Navbar() {
           Axios.get(`http://localhost:3001/api/getUserType/${res.data.id}`)
             .then((response) => {
               if (response.data.user_type) {
-                setSelectedUserType(response.data.user_type);
+                setProfile((prevProfile) => ({ ...prevProfile, user_type: response.data.user_type }));
               }
             })
             .catch((error) => console.log('Error fetching user type:', error.message));
         })
         .catch((err) => console.log(err));
     }
-  }, [user]);  
+  }, [user]);   
 
   useEffect(() => {
     localStorage.setItem('user', JSON.stringify(user));
     localStorage.setItem('profile', JSON.stringify(profile));
   }, [user, profile]);
-
-  useEffect(() => {
-    if (profile && profile.email != null && profile.id != null && selectedUserType != null) {
-      Axios.post("http://localhost:3001/api/signUp", {
-        user_id: profile.id, // VARCHAR(255) is the only type that works with this it seems
-        email: profile.email,
-        password: null, // Leaving this null for now since Google is now handling password storage and such
-        user_type: selectedUserType
-      }).then((response)=> {
-        console.log(response);
-      }).catch(error => console.log('Error: ', error.message));
-    }
-  }, [profile, selectedUserType]);
 
   const logOut = () => {
     localStorage.removeItem('user');
@@ -92,16 +89,18 @@ export default function Navbar() {
         </div>
 
         <div className="login">
-          {user && profile ? (
+        {user && profile ? (
+          profile.user_type ? (
             <div className='google-profile'>
               <img className="google-image" src={profile.picture} alt="user image" />
               <button className='btn btn-logout' onClick={logOut}>Log Out</button>
             </div>
-          ) : selectedUserType ? (
-            <button className='btn btn-login' onClick={() => login()}>Log In with Google as {selectedUserType}</button>
           ) : (
-            !user && <UserTypeSelection onSelect={handleUserTypeSelect} />
-          )}       
+            <UserTypeSelection onSelect={handleUserTypeSelect} onSkip={logOut} />
+          )
+        ) : (
+          <button className='btn btn-login' onClick={() => login()}>Log In with Google</button>
+        )}
         </div>
     </nav>
   );

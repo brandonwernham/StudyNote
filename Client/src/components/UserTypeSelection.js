@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-export default function UserTypeSelection({ onSelect }) {
+export default function UserTypeSelection({ onSelect, onSkip }) {
   const [user_type, setUserType] = useState('');
 
   const handleSubmit = (e) => {
@@ -13,6 +13,7 @@ export default function UserTypeSelection({ onSelect }) {
   return (
     <div>
       <h2>Select user type</h2>
+      {onSkip && <button onClick={onSkip}>Skip</button>}
       <form onSubmit={handleSubmit}>
         <label>
           <input
