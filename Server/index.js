@@ -44,12 +44,13 @@ app.use(session({
 
 //sign up 
 app.post("/api/signUp", (req, res) => {
+    const user_id = req.body.user_id;
     const email = req.body.email;
     const password = req.body.password;
     const userType = req.body.userType;
 
-    const sqlInsert = "INSERT INTO users (email, user_password, user_type) VALUES (?,?,?)"
-    database.query(sqlInsert, [email, password, userType], (err, result) => {
+    const sqlInsert = "INSERT INTO users (user_id, email, user_password, user_type) VALUES (?,?,?,?)"
+    database.query(sqlInsert, [user_id, email, password, userType], (err, result) => {
         if(err) {
             res.send({err: err}) //this will be returned when duplicate entry in database, among with other errrs.
         } else {

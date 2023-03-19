@@ -39,10 +39,11 @@ export default function Navbar() {
   }, [user, profile]);
 
   useEffect(() => {
-    if (profile && profile.email != null) {
+    if (profile && profile.email != null && profile.id != null) {
       Axios.post("http://localhost:3001/api/signUp", {
+        user_id: profile.id, // VARCHAR(255) is the only type that works with this it seems
         email: profile.email,
-        password: null, // Leaving these null for now since Google is now handling password storage and such
+        password: null, // Leaving this null for now since Google is now handling password storage and such
         userType: null
       }).then((response)=> {
         console.log(response);
