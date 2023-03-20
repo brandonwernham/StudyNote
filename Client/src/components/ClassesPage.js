@@ -18,17 +18,18 @@ export const ClassesPage = () => {
     const [courseCode, setCourseCode] = useState("");
 
 
-    /*
     useEffect(() => {
-        axios.get('/api/courses')
-            .then(response => {
-            setCourses(response.data);
+
+        Axios.get("http://localhost:3001/api/loadClasses")
+        .then((response) => {
+            if (response.data != "No matching notes found.") {
+                setLoadCourseList(response.data);
+            } else {
+                setLoadCourseList([]);
+            }
         })
-            .catch(error => {
-            console.log(error);
-        });
+        .catch((error) => console.log("Error: ", error.message));
     }, []);
-    */
 
     useEffect(() => {
         if (profile != null) {
@@ -40,7 +41,7 @@ export const ClassesPage = () => {
     const createClass = () => {
 
         // TEST VARIABLES DELETE LATER
-        const class_id = 1;
+        const class_id = 2;
         const user_id = 1;
 
         // Get variables
@@ -250,7 +251,7 @@ export const ClassesPage = () => {
                                 Create Class
                             </button>
                         </div>
-                        {loadCourselist.length > 0 ? (
+                        {loadCourselist.length >= 0 ? (
                             <table>
                                 <colgroup>
                                     <col width='32%' />
