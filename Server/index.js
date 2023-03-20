@@ -266,15 +266,19 @@ app.post("/api/upload", upload.single("note"), (req, res) => {
 // Adding, joining, and loading classes
 
 app.post('/api/createClass', async (req, res) => {
-    const { class_id, user_id, class_name, course_code, subject_code } = req.body;
+    const { class_id, user_id, class_name } = req.body;
+    const subject_code = req.body.subject_code;
+    const course_code = req.body.course_code;
+
+    const class_code = subject_code + " " + course_code;
   
     try {
-      const exists = await classExists(user_id);
+      const exists = await classExists(class_id);
       if (exists) {
         res.status(200).json({ message: 'Class already exists' });
       } else {
-        const query = 'INSERT INTO classes (class_id, user_id, class_name, course_code, subject_code) VALUES (?, ?, ?, ?, ?)';
-        const result = await database.query(query, [class_id, user_id, class_name, course_code, subject_code]);
+        const query = 'INSERT INTO classes (class_id, user_id, class_name, class_code) VALUES (?, ?, ?, ?)';
+        const result = await database.query(query, [class_id, user_id, class_name, class_code]);
         res.status(201).json({ message: 'Class created', data: result });
       }
     } catch (error) {
@@ -282,27 +286,36 @@ app.post('/api/createClass', async (req, res) => {
     }
 });
 
-app.post('api/searchClass', async (req, res) => {
+app.post('/api/searchClass', async (req, res) => {
     const subject_code = req.body.subject_code;
     const course_code = req.body.course_code;
 
-    const class_code = subject_code + course_code;
+    const class_code = subject_code + " " + course_code;
 
-    
+    database.getConnection().then(conn => {
+        const result = conn.query("SELECT * FROM classes WHERE class_code = ?", [class_code]);
+        conn.release();
+        return result;
+    }).then(result => {
+        if(result[0].length == 0) {
+            //no notes with the selected classes
+            returnNoClasses();
+        } else {
+            returnFoundClasses(result);
+        }
+    }).catch(err => {
+        res.send(err)
+    })
 
-    try {
-        // Now it will see if the class exists and such
-        const exists = await classCodeExists(class_id);
-    if (exists) {
-        let query = "SELECT * FROM classes WHERE class_code = '" + class_code + "'";
-        const result = await database.query(query, [class_id, user_id, class_name, class_code]);
-        res.status(201).json({ message: 'Pulling classes', data: result });
-        
-    } else {
-        res.status(200).json({ message: 'Not found.' });
-        
-    }} catch (error) {
-        res.status(500).json({ message: 'Error occurred.', error: error.message, data: class_id  });
+    //respond to frontend with note data
+    function returnFoundClasses(result) {
+        const classesFoundArray = result[0][0];
+        res.send(classesFoundArray);
+    }
+
+    //if there is no matching notes to given request
+    function returnNoClasses() { 
+        res.send("No classes found.");
     }
 
 })

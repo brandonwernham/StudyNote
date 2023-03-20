@@ -40,7 +40,7 @@ export const ClassesPage = () => {
     const createClass = () => {
 
         // TEST VARIABLES DELETE LATER
-        const class_id = 1;
+        const class_id = 4;
         const user_id = 1;
 
         // Get variables
@@ -83,16 +83,17 @@ export const ClassesPage = () => {
           course_code: course_code,
           subject_code: subject_code,
         })
-          .then((response) => {
-            if (response.data && response.data.length > 0) {
-              console.log("Found classes:", response.data);
-              setSearchCourseList(response.data);
-            } else {
-              console.log("No classes found.");
-              setSearchCourseList([]);
-            }
-          })
-          .catch((error) => console.log("Error: ", error.message));
+        .then((response) => {
+          if (response.data != "No classes found.") {
+            setSearchCourseList(response.data);
+            console.log(response.data);
+            console.log(response.data.length);
+          } else {
+            setSearchCourseList([]);
+          }
+        })
+        .catch((error) => console.log("Error: ", error.message));
+
       };
 
     /*
@@ -204,6 +205,21 @@ export const ClassesPage = () => {
                         <br></br>
                     </div>
                 </div>
+                <br></br>
+                {searchCourseList.length > 0 ? (
+                    <div className='search-results'>
+                        {searchCourseList.map(searchCourse => (
+                        <div key={searchCourse.class_code} className='search-result'>
+                            <h3>{searchCourse.class_name}</h3>
+                            <p>{searchCourse.class_code}</p>
+                        </div>
+                        ))}
+                    </div> 
+                ) : (
+                    <div>
+                        <h1>hello</h1>
+                    </div>
+                )}
             </div>
             ) : (
                 // Teacher Page
