@@ -9,13 +9,16 @@ export const SearchPage = () => {
 
   const getNote = () => {
     const tags = document.getElementById("tags").value;
-    const course_code = document.getElementById("course_code").value;
-    const subject_code = document.getElementById("subject").value;
+    const courseCode = document.getElementById("course_code").value;
+    const subjectCode = document.getElementById("subject").value;
+
+    const formData = new FormData();
+    formData.append("tags", tags);
+    formData.append("subject_code", subjectCode);
+    formData.append("course_code", courseCode);
 
     Axios.post("http://localhost:3001/api/getNote", {
-      tags: tags,
-      course_code: course_code,
-      subject_code: subject_code,
+      headers: { "Content-Type": "multipart/form-data" },
     })
       .then((response) => {
         if (response.data != "No matching notes found.") {
