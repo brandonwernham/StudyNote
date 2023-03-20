@@ -66,7 +66,8 @@ const classCodeExists = async (classCode) => {
   
 app.post('/api/signUp', async (req, res) => {
     const { user_id, email, password, user_type } = req.body;
-  
+    console.log(user_id)
+    console.log(18446744000000000000)
     try {
       // Now it will see if the user exists and such
       const exists = await userExists(user_id);
@@ -169,70 +170,78 @@ app.post("/api/upload", upload.single("note"), (req, res) => {
     const note_name = req.body.note_name;
     const creator_id = req.body.creator_id;
     const tags = req.body.tags;
-    const class_code = req.body.subject_code + req.body.course_code;
+    const class_name = req.body.subject_code + req.body.course_code;
     const tagsArr = tags.split(",");
-    var errMessage = "Errors: ";
-    var okMessage = "Tags: ";
-    var isError = false;
+    // var errMessage = "Errors: ";
+    // var okMessage = "Tags: ";
+    // var isError = false;
 
     //search to see if class exists in the database
     database.getConnection().then(conn => {
-        const result = conn.query("SELECT * FROM classes WHERE class_name = ?", [class_code]);
+        const result = conn.query("SELECT * FROM classes WHERE class_name = ?", [class_name]);
         conn.release();
         return result;
     }).then(result => {
         if(result[0].length == 0) {
-            //something here about the class not existing, adding a note requires an actual class to exist of course
-        } else {
-            //insert note into the database
+            //adds class to database if it doesnt exist
             database.getConnection().then(conn => {
-                const result = conn.query("INSERT INTO notes (note_name, file_path, creator_id, class_code) VALUES (?, ?, ?, ?)", [note_name, file_path, creator_id, class_code]);
+                const result = conn.query("INSERT INTO classes (class_name, subject_code, course_code, user_id) VALUES (?, ?, ?, ?)", [class_name, req.body.subject_code, req.body.course_code, creator_id]);
                 conn.release();
                 return result;
             }).then(result => {
-                const noteID = result[0].insertId;
-
-                //loops through every tag recieved from client
-                tagsArr.forEach(tag => {
-                    tag = tag.trim();
-
-                    //search to see if tag exists in the database
-                    database.getConnection().then(conn => {
-                        const result = conn.query("SELECT * FROM tags WHERE tag_name = ?", [tag]);
-                        conn.release();
-                        return result;
-                    }).then(result => {
-                        if(result[0].length == 0) {
-                            //adds tag if it doesn't exist
-                            database.getConnection().then(conn => {
-                                const result = conn.query("INSERT INTO tags (tag_name) VALUES (?)", [tag]);
-                                conn.release();
-                                return result;
-                            }).then(result => {
-                                const tagID = result[0].insertId;
-                                insertTagNote(tagID, noteID);
-                            }).catch(err => {
-                                errMessage = errMessage + " || insertTag error: " + err;
-                                isError = true;
-                            })
-                        } else {
-                            //get tagID if it exists
-                            const tagID = result[0];
-                            insertTagNote(tagID, noteID);
-                        }
-                    }).catch(err => {
-                        errMessage = errMessage + " || selectTags error: " + err;
-                        isError = true;
-                    })
-                })
+                //do something
             }).catch(err => {
-                errMessage = errMessage + " || insertNote error: " + err;
-                isError = true;
+                res.send(err)
             })
+        } else {
+            //do something
         }
+        return
+    }).then(()=> {
+        //insert note into the database
+        database.getConnection().then(conn => {
+            const result = conn.query("INSERT INTO notes (note_name, file_path, creator_id, class_name) VALUES (?, ?, ?, ?)", [note_name, file_path, creator_id, class_name]);
+            conn.release();
+            return result;
+        }).then(result => {
+            const noteID = result[0].insertId;
+
+            //loops through every tag recieved from client
+            tagsArr.forEach(tag => {
+                tag = tag.trim();
+
+                //search to see if tag exists in the database
+                database.getConnection().then(conn => {
+                    const result = conn.query("SELECT * FROM tags WHERE tag_name = ?", [tag]);
+                    conn.release();
+                    return result;
+                }).then(result => {
+                    if(result[0].length == 0) {
+                        //adds tag if it doesn't exist
+                        database.getConnection().then(conn => {
+                            const result = conn.query("INSERT INTO tags (tag_name) VALUES (?)", [tag]);
+                            conn.release();
+                            return result;
+                        }).then(result => {
+                            const tagID = result[0].insertId;
+                            insertTagNote(tagID, noteID);
+                        }).catch(err => {
+                            res.send(err)
+                        })
+                    } else {
+                        //get tagID if it exists
+                        const tagID = result[0];
+                        insertTagNote(tagID, noteID);
+                    }
+                }).catch(err => {
+                    res.send(err)
+                })
+            })
+        }).catch(err => {
+            res.send(err)
+        })
     }).catch(err => {
-        errMessage = errMessage + " || classCheck error: " + err;
-        isError = true;
+        res.send(err)
     })
 
     function insertTagNote(tagID, noteID) {
@@ -244,13 +253,17 @@ app.post("/api/upload", upload.single("note"), (req, res) => {
             conn.release();
             return result;
         }).then(result => {
-            //success message to frontened
+            res.send(result)
         }).catch(err => {
-            errMessage = errMessage + " || insertNoteTag error: " + err;
-            isError = true;
+            res.send(err)
         })
     }
 });
+
+
+
+
+
 
 // Adding, joining, and loading classes
 
