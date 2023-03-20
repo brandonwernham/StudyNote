@@ -164,10 +164,6 @@ app.get("/api/test", (req, res) => {
 //file uploading
 const upload = multer({dest: "notes/"});
 
-// This is just a temporary way of uploading notes, I will have to figure out
-// creating unique ids and such for each note uploaded
-// For now, what it does is takes the formData as is, and inserts the first note uploaded
-
 app.post("/api/upload", upload.single("note"), (req, res) => {
     const file_path = req.file.path;
     const note_name = req.body.note_name;
@@ -323,6 +319,7 @@ app.get('/api/loadClasses', async (req, res) => {
     }
 })
 
+//note searching
 app.post("api/getNote", (req, res) => {
     const tags = req.body.tags;
     const class_code = req.body.subject_code + req.body.course_code;
@@ -330,137 +327,90 @@ app.post("api/getNote", (req, res) => {
     var okMessage = "Tags: ";
     var isError = false;
 
-    //nothing entered into tags field (not sure whether the request returns as null or an empty string)
-    //also there needs to be a way to return all notes that don't have the requested tags, apparently either note_id or "note_id" should work
-    if(tags == NULL || tags == "") {
-        selectClassNotes("note_id", class_code);
+    //if no tags were entered, return all notes from the class selected
+    if(tags == "") {
+        database.getConnection().then(conn => {
+            const result = conn.query("SELECT * FROM notes WHERE class_name = ?", [class_code]);
+            conn.release();
+            return result;
+        }).then(result => {
+            if(result[0].length == 0) {
+                //no notes with the selected classes
+                returnNoNotes();
+            } else {
+                returnFoundNotes(result);
+            }
+        }).catch(err => {
+            errMessage = errMessage + " || selectNote error: " + err;
+            isError = true;
+        })
+    //otherwise if tags were entered
     } else {
-
+        database.getConnection().then(conn => {
+            const result = conn.query("SELECT * FROM tags WHERE tag_name = ?", [tag]);
+            conn.release();
+            return result;
+        }).then(result => {
+            if(result[0].length == 0) {
+                //tag(s) don't exist
+                returnNoNotes();
+            } else {
+                const tagID = result[0].insertId;
+                database.getConnection().then(conn => {
+                    const result = conn.query("SELECT * FROM note_tags WHERE tag_id = ?", [tagID]);
+                    conn.release();
+                    return result;
+                }).then(result => {
+                    if(result[0].length == 0) {
+                        //no notes with selected tags
+                        returnNoNotes();
+                    } else {
+                        const noteID = result[0].insertId;
+                        database.getConnection().then(conn => {
+                            const result = conn.query("SELECT * FROM notes WHERE note_id = ? AND class_name = ?", [noteID, class_code]);
+                            conn.release();
+                            return result;
+                        }).then(result => {
+                            if(result[0].length == 0) {
+                                //no notes with the selected classes
+                                returnNoNotes();
+                            } else {
+                                returnFoundNotes(result);
+                            }
+                        }).catch(err => {
+                            errMessage = errMessage + " || selectNote error: " + err;
+                            isError = true;
+                        })
+                    }
+                }).catch(err => {
+                    errMessage = errMessage + " || selectNoteTags error: " + err;
+                    isError = true;
+                })
+            }
+        }).catch(err => {
+            errMessage = errMessage + " || selectTags error: " + err;
+            isError = true;
+        })
     }
 
-    database.getConnection().then(conn => {
-        const result = conn.query("SELECT * FROM tags WHERE tag_name = ?", [tag]);
-        conn.release();
-        return result;
-    }).then(result => {
-        if(result[0].length == 0) {
-            //tag doesn't exist
-            // maybe show all notes from class?
-            //might have to since nothing entered into tag field means 
-        } else {
-            const tagID = result[0].insertId;
-            database.getConnection().then(conn => {
-                const result = conn.query("SELECT * FROM note_tags WHERE tag_id = ?", [tagID]);
-                conn.release();
-                return result;
-            }).then(result => {
-                if(result[0].length == 0) {
-                    //no notes with selected tag
-                    //should end here and display no tags found
-                } else {
-                    const noteID = result[0].insertId;
-                    selectClassNotes(noteID, class_code);
-                }
-            }).catch(err => {
-                errMessage = errMessage + " || selectNoteTags error: " + err;
-                isError = true;
-            })
-        }
-    }).catch(err => {
-        errMessage = errMessage + " || selectTags error: " + err;
-        isError = true;
-    })
+    //respond to frontend with note data
+    function returnFoundNotes(result) {
+        //not sure whether its result or result[0]
+        const resultsArray = result[0].map(r => ({
+            id: r.id,
+            note_name: r.note_name,
+            file_path: r.file_path,
+            class_name: r.class_name,
+            creator_id: r.creator_id
+        }));
+        res.send(resultsArray);
+    }
+    
+    //if there is no matching notes to given request
+    function returnNoNotes() {
+        res.send("No matching notes found.");
+    }
 });
-
-function selectClassNotes(noteID, classCode) {
-    database.getConnection().then(conn => {
-        const result = conn.query("SELECT * FROM notes WHERE note_id = ? AND class_name = ?", [noteID, classCode]);
-        conn.release();
-        return result;
-    }).then(result => {
-        if(result[0].length == 0) {
-            //no classes with selected tags found
-        } else {
-            //send list of notes
-            //will this work with mysql2?
-            const resultsArray = result.map(r => ({
-                id: r.id,
-                note_name: r.note_name,
-                file_path: r.file_path,
-                tags: r.tags,
-                subject_code: r.subject_code,
-                course_code: r.course_code,
-                created_at: r.created_at
-            }));
-            res.send(resultsArray);
-        }
-    })
-}
-
-function returnNoNotes() {
-    //function to use to show that no matching notes found
-}
-
-//zuhayr's getNote work
-/*app.post("api/getNote", (req, res) => {
-    const tags = req.body.tags;
-    const subject_code = req.body.subject_code;
-    const course_code = req.body.course_code;
-
-    let query = "SELECT * FROM notes";
-    const whereConditions = [];
-
-    if(tags.length > 0) {
-        //const tagArray = splitTags(tags);
-        const tagArray = [];
-        whereConditions.push(tagArray.map(tag => "tags LIKE '%" + tag + "%'").join(" OR "));
-    }
-
-    if(course_code) {
-        whereConditions.push("course_code = '" + course_code + "'");
-    }
-
-    if(subject_code) {
-        whereConditions.push("subject code = '" + subject_code + "'");
-    }
-
-    if(whereConditions.length > 0) {
-        query += " WHERE " + whereConditions.join(" AND ");
-    }
-
-    database.query(query, (err, result) => {
-        if(err) {
-            res.send({err: err});
-        } else if(result.length > 0) {
-            const resultsArray = result.map(r => ({
-                id: r.id,
-                note_name: r.note_name,
-                file_path: r.file_path,
-                tags: r.tags,
-                subject_code: r.subject_code,
-                course_code: r.course_code,
-                created_at: r.created_at
-            }));
-            res.send(resultsArray);
-        }
-    })
-});*/
-
-//ethan's getNote work
-/*app.post("/api/getNote", (req, res) => {
-    const tags = req.body.tags;
-
-    const sqlInsert = "SELECT file_path FROM notes WHERE note_id = ?"
-    database.query(sqlInsert, tags, (err, result) => {
-        if (err){
-            res.send({err: err})
-        }
-        else{
-            console.log(result[0].FilePath);
-            res.send(result[0].FilePath);
-        }
-    })
-});*/
 
 app.delete("/api/upload/delete", (req, res) => {
     console.log("file was deleted");
