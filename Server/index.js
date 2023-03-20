@@ -172,9 +172,7 @@ app.post("/api/upload", upload.single("note"), (req, res) => {
     const tags = req.body.tags;
     const class_name = req.body.subject_code + req.body.course_code;
     const tagsArr = tags.split(",");
-    // var errMessage = "Errors: ";
-    // var okMessage = "Tags: ";
-    // var isError = false;
+
 
     //search to see if class exists in the database
     database.getConnection().then(conn => {
@@ -333,12 +331,9 @@ app.get('/api/loadClasses', async (req, res) => {
 })
 
 //note searching
-app.post("api/getNote", (req, res) => {
+app.post("/api/getNote", (req, res) => {
     const tags = req.body.tags;
     const class_code = req.body.subject_code + req.body.course_code;
-    var errMessage = "Errors: ";
-    var okMessage = "Tags: ";
-    var isError = false;
 
     //if no tags were entered, return all notes from the class selected
     if(tags == "") {
@@ -354,8 +349,7 @@ app.post("api/getNote", (req, res) => {
                 returnFoundNotes(result);
             }
         }).catch(err => {
-            errMessage = errMessage + " || selectNote error: " + err;
-            isError = true;
+            res.send(err)
         })
     //otherwise if tags were entered
     } else {
@@ -391,18 +385,15 @@ app.post("api/getNote", (req, res) => {
                                 returnFoundNotes(result);
                             }
                         }).catch(err => {
-                            errMessage = errMessage + " || selectNote error: " + err;
-                            isError = true;
+                            res.send(err)
                         })
                     }
                 }).catch(err => {
-                    errMessage = errMessage + " || selectNoteTags error: " + err;
-                    isError = true;
+                    res.send(err)
                 })
             }
         }).catch(err => {
-            errMessage = errMessage + " || selectTags error: " + err;
-            isError = true;
+            res.send(err)
         })
     }
 
