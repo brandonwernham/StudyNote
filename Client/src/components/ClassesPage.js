@@ -198,27 +198,23 @@ export const ClassesPage = () => {
                             value={courseCode}
                             onChange={(e) => setCourseCode(e.target.value)}
                         />
-                        <button type='submit' name='search' className='search-button' onClick={searchClass}>Search Class</button>
+                        <button type='submit' name='search' className='search-button' onClick={searchClass}>
+                            Search Class
+                        </button>
                         <br></br>
                     </div>
                 </div>
             </div>
             ) : (
-
-
-
-
-
                 // Teacher Page
                 <div className='container-page'>
-                <div className='header'>
-                    <h1 className='classes-title'>Your Classes (Teacher): </h1>
-                </div>
-                <div className='content'>
-                <div className='classes'>
-                </div>
-                    <div className='create-classes' align='center'>
-                        <h2>Create a Class</h2>
+                    <div className='header'>
+                        <h1 className='classes-title'>Your Classes (Teacher): </h1>
+                    </div>
+                    <div className='content'>
+                        <div className='classes'></div>
+                        <div className='create-classes' align='center'>
+                            <h2>Create a Class</h2>
                             <input
                                 className="class-input"
                                 type="text"
@@ -251,8 +247,9 @@ export const ClassesPage = () => {
                                 value={courseCode}
                                 onChange={(e) => setCourseCode(e.target.value)}
                             />
-                            <button type='submit' name='search' className='search-button' onClick={createClass}>Create Class</button>
-                            <br></br>
+                            <button type='submit' name='search' className='search-button' onClick={createClass}>
+                                Create Class
+                            </button>
                         </div>
                     </div>
                 </div>

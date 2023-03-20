@@ -256,6 +256,8 @@ app.post("/api/upload", upload.single("note"), (req, res) => {
     }
 });
 
+// Adding, joining, and loading classes
+
 app.post("/api/createClass", async (req, res) => {
 
     const class_id = req.body.class_id;
