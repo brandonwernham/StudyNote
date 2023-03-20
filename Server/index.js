@@ -9,8 +9,8 @@ const multer = require('multer');
 
 const database = mysql.createPool({
     host: "localhost",
-    user: "server",
-    password: "Rohan123",
+    user: "root",
+    password: "luna",
     database: "StudyNoteDB",
 });
 
@@ -309,7 +309,7 @@ app.post('/api/searchClass', async (req, res) => {
 
     //respond to frontend with note data
     function returnFoundClasses(result) {
-        const classesFoundArray = result[0][0];
+        const classesFoundArray = result[0];
         res.send(classesFoundArray);
     }
 

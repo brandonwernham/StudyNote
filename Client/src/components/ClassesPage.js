@@ -86,8 +86,6 @@ export const ClassesPage = () => {
         .then((response) => {
           if (response.data != "No classes found.") {
             setSearchCourseList(response.data);
-            console.log(response.data);
-            console.log(response.data.length);
           } else {
             setSearchCourseList([]);
           }
