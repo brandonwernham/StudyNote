@@ -3,12 +3,12 @@ import "./ClassesPage.css";
 import Navbar from './Navbar';
 import { useUserContext } from "./UserContext";
 import { useEffect, useState } from "react";
-import axios from 'axios';
+import Axios from 'axios';
 
 export const ClassesPage = () => {
 
-    const [courses, setCourses] = useState([]);
-    const [coursesResults, getCourses] = useState([]);
+    const [loadCourselist, setLoadCourseList] = useState([]);
+    const [searchCourseList, setSearchCourseList] = useState([]);
     
     const { profile } = useUserContext();
     const [accountType, setAccountType] = useState("");
@@ -37,65 +37,93 @@ export const ClassesPage = () => {
     }, [profile]);
 
    
-
-
-
     const createClass = () => {
 
         // TEST VARIABLES DELETE LATER
-        const classId = 1;
-        const userId = 1;
+        const class_id = 1;
+        const user_id = 1;
 
-        // Variables stored in database
-        const formData = new FormData();
-        formData.append("class_id", classId);
-        formData.append("user_id", userId);
-        formData.append("class_name", className);
-        formData.append("subject_code", subjectCode);
-        formData.append("course_code", courseCode);
+        // Get variables
+        const class_name = document.getElementById("create_class_name").value;
+        const subject_code = document.getElementById("create_subject_code").value;
+        const course_code = document.getElementById("create_course_code").value; 
 
         // testing (delete later)
         console.log(className);
         console.log(subjectCode);
         console.log(courseCode);
-
-        /*
+        
         // Axios Post to create class in database
-        axios.post("http://localhost:3001/api/createClass", formData, {
-            headers: { "Content-Type": "multipart/form-data" },
+        Axios.post("http://localhost:3001/api/createClass", {
+            class_id: class_id,
+            user_id: user_id,
+            class_name: class_name,
+            course_code: course_code,
+            subject_code: subject_code,
+
         }).then((res) => {
             console.log(res);
         }).catch((err) => {
-            console.log(err);;
-        });
-        */
+            console.log(err);
+        }); 
+
     };
 
 
-
-
-
-    const findClass = () => {
-
-        // Variables to look for, return all classes with matching subject and course code
-        const formData = new FormData();
-        formData.append("subject_code", subjectCode);
-        formData.append("course_code", courseCode);
-
+    const searchClass = () => {
+        // Get variables
+        const subject_code = document.getElementById("subject_code").value;
+        const course_code = document.getElementById("course_code").value;
+      
         // testing (delete later)
-        console.log(subjectCode);
-        console.log(courseCode);
-        /*
-        // Axios Post to find class in database
-        axios.post("http://localhost:3001/api/findClass", formData, {
-            headers: { "Content-Type": "multipart/form-data" },
-        }).then((res) => {
-            console.log(res);
-        }).catch((err) => {
-            console.log(err);;
-        }); */
+        console.log(subject_code);
+        console.log(course_code);
+      
+        Axios.post("http://localhost:3001/api/searchClass", {
+          course_code: course_code,
+          subject_code: subject_code,
+        })
+          .then((response) => {
+            if (response.data && response.data.length > 0) {
+              console.log("Found classes:", response.data);
+              setSearchCourseList(response.data);
+            } else {
+              console.log("No classes found.");
+              setSearchCourseList([]);
+            }
+          })
+          .catch((error) => console.log("Error: ", error.message));
+      };
+
+    /*
+    
+
+    const joinClass = () => {
+
+        // Get variables
+        const user_id = profile.user_id;
+        const class_id = 
+        
+        
     }
 
+    const loadClass = () => {
+
+        const user_id = profile.user_id;
+
+        Axios.post("http://localhost:3001/api/loadClass", {
+            user_id: user_id,
+        })
+        .then((response) => {
+            if (response.data != "No matching notes found.") {
+                setLoadCourseList(response.data);
+            } else {
+                setLoadCourseList([]);
+            }
+        })
+        .catch((error) => console.log("Error: ", error.message));
+    }
+*/
 
     
 
@@ -105,15 +133,15 @@ export const ClassesPage = () => {
             <div>
                 <Navbar/>
             </div>
-            { accountType != "student" ? (
+            { accountType == "student" ? (
             // Student Page, change between == and != to test different pages
             <div className='container-page'>
-            <div className='header'>
-                <h1 className='classes-title'>Your Classes (Student): </h1>
-            </div>
+                <div className='header'>
+                    <h1 className='classes-title'>Your Classes (Student): </h1>
+                </div>
             <div className='content'>
             <div className='classes'>
-            {courses.length > 0 ? (
+            {loadCourselist.length > 0 ? (
                 <table>
                     <colgroup>
                         <col width='32%' />
@@ -128,7 +156,7 @@ export const ClassesPage = () => {
                             <th>Subject</th>
                             <th>Professor</th>
                         </tr>
-                        {courses.map(course => (
+                        {loadCourselist.map(course => (
                             <tr key={course.id}>
                                 <td>{course.name}</td>
                                 <td>{course.code}</td>
@@ -170,19 +198,8 @@ export const ClassesPage = () => {
                             value={courseCode}
                             onChange={(e) => setCourseCode(e.target.value)}
                         />
-                        <button type='submit' name='search' className='search-button' onClick={findClass}>Join Class</button>
+                        <button type='submit' name='search' className='search-button' onClick={searchClass}>Search Class</button>
                         <br></br>
-                        {/* My Idea for joining a class: */}
-                        {/* Student chooses subject through dropdown (Similar to Student Center, these results come from database) */}
-                        {/* Student manually types in course code, these results comes from database) */}
-                        {/* IF the database finds a match from both subject and the course code, the results will display as such:*/}
-                            {/* 4472A SE */}
-                            {/* Information Security */}
-                            {/* Prof. Aleksander Essex */}
-                            {/* Join Class */} 
-                        {/* It will return the 4 paramters above (again, from the database), and the 'Join Class' will be ah hyperlink*/}
-                        {/* ZUHAYR NOTE: */}
-                        {/* still need to make it so that if there are no results, say that no class can be found. */}
                     </div>
                 </div>
             </div>
@@ -199,6 +216,60 @@ export const ClassesPage = () => {
                 </div>
                 <div className='content'>
                 <div className='classes'>
+                </div>
+                    <div className='create-classes' align='center'>
+                        <h2>Create a Class</h2>
+                            <input
+                                className="class-input"
+                                type="text"
+                                id="create_class_name"
+                                placeholder="Class Name"
+                                value={className}
+                                onChange={(e) => setClassName(e.target.value)}
+                            />
+                            <select
+                                placeholder="Subject Code"
+                                className="class-input"
+                                id="create_subject_code"
+                                value={subjectCode}
+                                onChange={(e) => setSubjectCode(e.target.value)}>
+
+                                <option value="">Select Subject Code</option>
+                                <option value="CHEM">CHEM</option>
+                                <option value="COMPSCI">COMPSCI</option>
+                                <option value="GEOG">GEOG</option>
+                                <option value="LAW">LAW</option>
+                                <option value="MATH">MATH</option>
+                                <option value="PATHOL">PATHOL</option>
+                                <option value="SE">SE</option>
+                            </select>
+                            <input
+                                className="class-input"
+                                type="text"
+                                id="create_course_code"
+                                placeholder="Course Code"
+                                value={courseCode}
+                                onChange={(e) => setCourseCode(e.target.value)}
+                            />
+                            <button type='submit' name='search' className='search-button' onClick={createClass}>Create Class</button>
+                            <br></br>
+                        </div>
+                    </div>
+                </div>
+            )}
+
+            <div className='footer' align='center'>
+            </div>
+
+        </div>
+    );
+}
+
+export default ClassesPage;
+
+/*
+
+
                 {courses.length > 0 ? (
                     <table>
                         <colgroup>
@@ -229,57 +300,5 @@ export const ClassesPage = () => {
                         <p>You have no classes yet, create a class now!</p>
                     </div>
                 )}
-                </div>
-                    <div className='create-classes' align='center'>
-                        <h2>Create a Class</h2>
-                            <input
-                                className="class-input"
-                                type="text"
-                                id="class_name"
-                                placeholder="Class Name"
-                                value={className}
-                                onChange={(e) => setClassName(e.target.value)}
-                            />
-                            <select
-                                placeholder="Subject Code"
-                                className="class-input"
-                                id="subject_code"
-                                value={subjectCode}
-                                onChange={(e) => setSubjectCode(e.target.value)}>
-
-                                <option value="">Select Subject Code</option>
-                                <option value="CHEM">CHEM</option>
-                                <option value="COMPSCI">COMPSCI</option>
-                                <option value="GEOG">GEOG</option>
-                                <option value="LAW">LAW</option>
-                                <option value="MATH">MATH</option>
-                                <option value="PATHOL">PATHOL</option>
-                                <option value="SE">SE</option>
-                            </select>
-                            <input
-                                className="class-input"
-                                type="text"
-                                id="course_code"
-                                placeholder="Course Code"
-                                value={courseCode}
-                                onChange={(e) => setCourseCode(e.target.value)}
-                            />
-                            <button type='submit' name='search' className='search-button' onClick={createClass}>Create Class</button>
-                            <br></br>
-                        </div>
-                    </div>
-                </div>
-            )}
-
-            <div className='footer' align='center'>
-            </div>
-
-        </div>
-    );
-}
-
-export default ClassesPage;
-
-/*
 
 */

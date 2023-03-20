@@ -42,13 +42,27 @@ app.use(session({
     },
 }));
 
-//sign up 
+
 
 const userExists = async (userId) => {
     const query = 'SELECT COUNT(*) as count FROM users WHERE user_id = ?';
     const [rows] = await database.query(query, [userId]);
     return rows[0].count > 0;
 };
+
+const classExists = async (classId) => {
+    const query = 'SELECT COUNT(*) as count FROM classes WHERE class_id = ?';
+    const [rows] = await database.query(query, [classId]);
+    return rows[0].count > 0;
+};
+
+const classCodeExists = async (classCode) => {
+    const query = 'SELECT COUNT(*) as count FROM classes WHERE class_code = ?';
+    const [rows] = await database.query(query, [classCode]);
+    return rows[0].count > 0;
+}
+
+//sign up 
   
 app.post('/api/signUp', async (req, res) => {
     const { user_id, email, password, user_type } = req.body;
@@ -83,7 +97,7 @@ app.get('/api/getUserType/:userId', async (req, res) => {
     } catch (error) {
       res.status(500).json({ message: 'Error occurred', error: error.message });
     }
-});  
+}); 
 
 //login
 app.post("/api/login", (req, res) => {
@@ -159,7 +173,7 @@ app.post("/api/upload", upload.single("note"), (req, res) => {
     const note_name = req.body.note_name;
     const creator_id = req.body.creator_id;
     const tags = req.body.tags;
-    const class_name = req.body.subject_code + req.body.course_code;
+    const class_code = req.body.subject_code + req.body.course_code;
     const tagsArr = tags.split(",");
     var errMessage = "Errors: ";
     var okMessage = "Tags: ";
@@ -167,7 +181,7 @@ app.post("/api/upload", upload.single("note"), (req, res) => {
 
     //search to see if class exists in the database
     database.getConnection().then(conn => {
-        const result = conn.query("SELECT * FROM classes WHERE class_name = ?", [class_name]);
+        const result = conn.query("SELECT * FROM classes WHERE class_name = ?", [class_code]);
         conn.release();
         return result;
     }).then(result => {
@@ -176,7 +190,7 @@ app.post("/api/upload", upload.single("note"), (req, res) => {
         } else {
             //insert note into the database
             database.getConnection().then(conn => {
-                const result = conn.query("INSERT INTO notes (note_name, file_path, creator_id, class_name) VALUES (?, ?, ?, ?)", [note_name, file_path, creator_id, class_name]);
+                const result = conn.query("INSERT INTO notes (note_name, file_path, creator_id, class_code) VALUES (?, ?, ?, ?)", [note_name, file_path, creator_id, class_code]);
                 conn.release();
                 return result;
             }).then(result => {
@@ -241,6 +255,92 @@ app.post("/api/upload", upload.single("note"), (req, res) => {
         })
     }
 });
+
+app.post("/api/createClass", async (req, res) => {
+
+    const class_id = req.body.class_id;
+    const user_id = req.body.user_id;
+    const class_name = req.body.class_name;
+    const subject_code = req.body.subject_code;
+    const course_code = req.body.course_code;
+
+    const class_code = subject_code + " " + course_code;
+
+    if (!class_id || isNaN(class_id)) {
+        res.status(400).json({ message: 'Invalid class ID.' });
+        return;
+    }
+    
+    try {
+        const query = 'SELECT * FROM classes WHERE class_code = ?';
+        const [rows] = await database.query(query, [class_code]);
+    
+        const searchClasses = [];
+        if (rows.length > 0) {
+          rows.forEach((row) => {
+            searchClasses.push({
+              class_id: row.class_id,
+              user_id: row.user_id,
+              class_name: row.class_name,
+              subject_code: row.subject_code,
+              course_code: row.course_code,
+              class_code: row.class_code
+            });
+          });
+          res.status(200).json({ classes: searchClasses });
+        } else
+          res.status(404).json({ message: 'User not found' });
+      } catch (error) {
+        res.status(500).json({ message: 'Error occurred', error: error.message });
+      }
+
+});
+
+app.post('api/searchClass', async (req, res) => {
+    const subject_code = req.body.subject_code;
+    const course_code = req.body.course_code;
+
+    const class_code = subject_code + course_code;
+
+    
+
+    try {
+        // Now it will see if the class exists and such
+        const exists = await classCodeExists(class_id);
+    if (exists) {
+        let query = "SELECT * FROM classes WHERE class_code = '" + class_code + "'";
+        const result = await database.query(query, [class_id, user_id, class_name, class_code]);
+        res.status(201).json({ message: 'Pulling classes', data: result });
+        
+    } else {
+        res.status(200).json({ message: 'Not found.' });
+        
+    }} catch (error) {
+        res.status(500).json({ message: 'Error occurred.', error: error.message, data: class_id  });
+    }
+
+})
+
+app.get('/api/loadClass', async (req, res) => {
+
+    const user_id = req.body.user_id;
+
+    let query = ("SELECT * FROM classes WHERE user_id = ?", [class_code]);
+    database.query(query, (err, result) => {
+        if(err) {
+            res.send({err: err});
+        } else if(result.length > 0) {
+            const searchClassArray = result.map(r => ({
+                class_id: r.class_id,
+                user_id: r.user_id,
+                class_name: r.class_name,
+                class_code: r.class_code,
+            }));
+            res.send(searchClassArray);
+        }
+    })
+
+})
 
 //keeping as zuhayr's work until I (Rohan) end up
 //merging the search to work with tags as db table
