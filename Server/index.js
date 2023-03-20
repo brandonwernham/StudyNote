@@ -270,7 +270,7 @@ app.post('/api/createClass', async (req, res) => {
     const subject_code = req.body.subject_code;
     const course_code = req.body.course_code;
 
-    const class_code = subject_code + " " + course_code;
+    const class_code = subject_code + course_code;
   
     try {
       const exists = await classExists(class_id);
@@ -290,7 +290,7 @@ app.post('/api/searchClass', async (req, res) => {
     const subject_code = req.body.subject_code;
     const course_code = req.body.course_code;
 
-    const class_code = subject_code + " " + course_code;
+    const class_code = subject_code + course_code;
 
     database.getConnection().then(conn => {
         const result = conn.query("SELECT * FROM classes WHERE class_code = ?", [class_code]);
