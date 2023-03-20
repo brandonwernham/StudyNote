@@ -225,7 +225,7 @@ export const ClassesPage = () => {
                             />
                             <select
                                 placeholder="Subject Code"
-                                className="class-input"
+                                className="class-dropdown"
                                 id="create_subject_code"
                                 value={subjectCode}
                                 onChange={(e) => setSubjectCode(e.target.value)}>
@@ -247,7 +247,7 @@ export const ClassesPage = () => {
                                 value={courseCode}
                                 onChange={(e) => setCourseCode(e.target.value)}
                             />
-                            <button type='submit' name='search' className='search-button' onClick={createClass}>
+                            <button type='submit' name='search' className='btn btn-create-class' onClick={createClass}>
                                 Create Class
                             </button>
                         </div>

@@ -23,11 +23,14 @@
 
 .join-classes,
 .create-classes {
-    width: 300px;
-    float: right;
-    border: 3px solid white;
-    background-color: rgba(255, 94, 0, 0.226);
-    padding: 10px;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    background: linear-gradient(to bottom right, var(--color-primary), var(--color-primary-variant));
+    padding: 1rem;
+    width: 20rem;
+    border-radius: 20px;
+    margin-left: 1rem;
 }
 
 .footer {
@@ -36,28 +39,30 @@
 
 input[type=text].class-input {
     padding: 6px;
-    margin-top: 20px;
-    margin-left: 10px;
+    margin-top: 1rem;
     font-size: 17px;
     border: none;
-    width: 200px;
+    width: 12rem;
+    border-radius: 10px;
 }
 
-.search-button {
-    padding: 6px;
-    margin-left: 10px;
-    margin-top: 20px;
+.class-dropdown {
+    width: 12rem;
+    margin-top: 1rem;
+    padding: 0.5rem;
+    border-radius: 10px;
+}
+
+.btn-create-class {
+    padding: 0.5rem;
+    margin-top: 1.5rem;
     margin-bottom: 10px;
-    background: rgb(255, 94, 0);
+    background: var(--color-primary);
     color: #fff;
     font-size: 17px;
     border: none;
     cursor: pointer;
     width: 150px;
-}
-
-.search-button:hover {
-    background: rgb(78, 29, 0);
 }
 
 table, th, td {
