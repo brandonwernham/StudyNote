@@ -262,7 +262,7 @@ app.post('/api/createClass', async (req, res) => {
     const { class_id, user_id, class_name, course_code, subject_code } = req.body;
   
     try {
-      const exists = await classExists(user_id);
+      const exists = await classExists(class_id);
       if (exists) {
         res.status(200).json({ message: 'Class already exists' });
       } else {
@@ -300,25 +300,27 @@ app.post('api/searchClass', async (req, res) => {
 
 })
 
-app.get('/api/loadClass', async (req, res) => {
+app.get('/api/loadClasses', async (req, res) => {
+    const { class_id, user_id, class_name, subject_code, course_code } = req.params;
 
-    const user_id = req.body.user_id;
-
-    let query = ("SELECT * FROM classes WHERE user_id = ?", [class_code]);
-    database.query(query, (err, result) => {
-        if(err) {
-            res.send({err: err});
-        } else if(result.length > 0) {
-            const searchClassArray = result.map(r => ({
-                class_id: r.class_id,
-                user_id: r.user_id,
-                class_name: r.class_name,
-                class_code: r.class_code,
-            }));
-            res.send(searchClassArray);
+    try {
+        const query = 'SELECT * FROM classes';
+        const [rows] = await database.query(query, [class_id, user_id, class_name, subject_code, course_code]);
+    
+        if (rows.length > 0) {
+            res.send({
+                class_id: class_id,
+                user_id: user_id,
+                class_name: class_name,
+                subject_code: subject_code,
+                course_code: course_code
+            });
+        } else {
+          res.status(404).json({ message: 'No classes' });
         }
-    })
-
+    } catch (error) {
+        res.status(500).json({ message: 'Error occurred', error: error.message });
+    }
 })
 
 app.post("api/getNote", (req, res) => {
