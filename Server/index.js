@@ -352,7 +352,7 @@ app.post("/api/getNote", (req, res) => {
     //otherwise if tags were entered
     } else {
         database.getConnection().then(conn => {
-            const result = conn.query("SELECT * FROM tags WHERE tag_name = ?", [tag]);
+            const result = conn.query("SELECT * FROM tags WHERE tag_name = ?", [tags]);
             conn.release();
             return result;
         }).then(result => {
@@ -397,14 +397,7 @@ app.post("/api/getNote", (req, res) => {
 
     //respond to frontend with note data
     function returnFoundNotes(result) {
-        //not sure whether its result or result[0]
-        const resultsArray = result[0][0].map(r => ({
-            id: r.id,
-            note_name: r.note_name,
-            file_path: r.file_path,
-            class_name: r.class_name,
-            creator_id: r.creator_id
-        }));
+        const resultsArray = result[0][0];
         res.send(resultsArray);
     }
     
