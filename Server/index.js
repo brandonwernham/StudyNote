@@ -258,44 +258,21 @@ app.post("/api/upload", upload.single("note"), (req, res) => {
 
 // Adding, joining, and loading classes
 
-app.post("/api/createClass", async (req, res) => {
-
-    const class_id = req.body.class_id;
-    const user_id = req.body.user_id;
-    const class_name = req.body.class_name;
-    const subject_code = req.body.subject_code;
-    const course_code = req.body.course_code;
-
-    const class_code = subject_code + " " + course_code;
-
-    if (!class_id || isNaN(class_id)) {
-        res.status(400).json({ message: 'Invalid class ID.' });
-        return;
-    }
-    
+app.post('/api/createClass', async (req, res) => {
+    const { class_id, user_id, class_name, course_code, subject_code } = req.body;
+  
     try {
-        const query = 'SELECT * FROM classes WHERE class_code = ?';
-        const [rows] = await database.query(query, [class_code]);
-    
-        const searchClasses = [];
-        if (rows.length > 0) {
-          rows.forEach((row) => {
-            searchClasses.push({
-              class_id: row.class_id,
-              user_id: row.user_id,
-              class_name: row.class_name,
-              subject_code: row.subject_code,
-              course_code: row.course_code,
-              class_code: row.class_code
-            });
-          });
-          res.status(200).json({ classes: searchClasses });
-        } else
-          res.status(404).json({ message: 'User not found' });
-      } catch (error) {
-        res.status(500).json({ message: 'Error occurred', error: error.message });
+      const exists = await classExists(user_id);
+      if (exists) {
+        res.status(200).json({ message: 'Class already exists' });
+      } else {
+        const query = 'INSERT INTO classes (class_id, user_id, class_name, course_code, subject_code) VALUES (?, ?, ?, ?, ?)';
+        const result = await database.query(query, [class_id, user_id, class_name, course_code, subject_code]);
+        res.status(201).json({ message: 'Class created', data: result });
       }
-
+    } catch (error) {
+      res.status(500).json({ message: 'Error occurred', error: error.message });
+    }
 });
 
 app.post('api/searchClass', async (req, res) => {

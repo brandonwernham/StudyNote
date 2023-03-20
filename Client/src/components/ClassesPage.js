@@ -212,7 +212,6 @@ export const ClassesPage = () => {
                         <h1 className='classes-title'>Your Classes (Teacher): </h1>
                     </div>
                     <div className='content'>
-                        <div className='classes'></div>
                         <div className='create-classes' align='center'>
                             <h2>Create a Class</h2>
                             <input
@@ -251,6 +250,36 @@ export const ClassesPage = () => {
                                 Create Class
                             </button>
                         </div>
+                        {loadCourselist.length > 0 ? (
+                            <table>
+                                <colgroup>
+                                    <col width='32%' />
+                                    <col width='17%' />
+                                    <col width='14%' />
+                                    <col width='37%' />
+                                </colgroup>
+                                <tbody>
+                                    <tr>
+                                        <th>Course Name</th>
+                                        <th>Course Code</th>
+                                        <th>Subject</th>
+                                        <th>Professor</th>
+                                    </tr>
+                                    {loadCourselist.map(course => (
+                                        <tr key={course.id}>
+                                            <td>{course.name}</td>
+                                            <td>{course.code}</td>
+                                            <td>{course.subject}</td>
+                                            <td>{course.professor}</td>
+                                        </tr>
+                                    ))}
+                                </tbody>
+                            </table>
+                        ) : (
+                            <div className='no-classes'>
+                                <p>You have no classes yet, create a class now!</p>
+                            </div>
+                        )}
                     </div>
                 </div>
             )}
