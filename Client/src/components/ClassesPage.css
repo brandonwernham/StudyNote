@@ -4,6 +4,9 @@
     padding: 10px;
 }
 
+.container-page {
+}
+
 .content {
     display: flex;
     flex-direction: column;
