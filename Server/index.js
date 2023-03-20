@@ -321,11 +321,86 @@ app.get('/api/loadClass', async (req, res) => {
 
 })
 
-//keeping as zuhayr's work until I (Rohan) end up
-//merging the search to work with tags as db table
-//keep in mind this shouldn't work at the moment
-//as its built around tags as an array and old sql version
 app.post("api/getNote", (req, res) => {
+    const tags = req.body.tags;
+    const class_code = req.body.subject_code + req.body.course_code;
+    var errMessage = "Errors: ";
+    var okMessage = "Tags: ";
+    var isError = false;
+
+    //nothing entered into tags field (not sure whether the request returns as null or an empty string)
+    //also there needs to be a way to return all notes that don't have the requested tags, apparently either note_id or "note_id" should work
+    if(tags == NULL || tags == "") {
+        selectClassNotes("note_id", class_code);
+    } else {
+
+    }
+
+    database.getConnection().then(conn => {
+        const result = conn.query("SELECT * FROM tags WHERE tag_name = ?", [tag]);
+        conn.release();
+        return result;
+    }).then(result => {
+        if(result[0].length == 0) {
+            //tag doesn't exist
+            // maybe show all notes from class?
+            //might have to since nothing entered into tag field means 
+        } else {
+            const tagID = result[0].insertId;
+            database.getConnection().then(conn => {
+                const result = conn.query("SELECT * FROM note_tags WHERE tag_id = ?", [tagID]);
+                conn.release();
+                return result;
+            }).then(result => {
+                if(result[0].length == 0) {
+                    //no notes with selected tag
+                    //should end here and display no tags found
+                } else {
+                    const noteID = result[0].insertId;
+                    selectClassNotes(noteID, class_code);
+                }
+            }).catch(err => {
+                errMessage = errMessage + " || selectNoteTags error: " + err;
+                isError = true;
+            })
+        }
+    }).catch(err => {
+        errMessage = errMessage + " || selectTags error: " + err;
+        isError = true;
+    })
+});
+
+function selectClassNotes(noteID, classCode) {
+    database.getConnection().then(conn => {
+        const result = conn.query("SELECT * FROM notes WHERE note_id = ? AND class_name = ?", [noteID, classCode]);
+        conn.release();
+        return result;
+    }).then(result => {
+        if(result[0].length == 0) {
+            //no classes with selected tags found
+        } else {
+            //send list of notes
+            //will this work with mysql2?
+            const resultsArray = result.map(r => ({
+                id: r.id,
+                note_name: r.note_name,
+                file_path: r.file_path,
+                tags: r.tags,
+                subject_code: r.subject_code,
+                course_code: r.course_code,
+                created_at: r.created_at
+            }));
+            res.send(resultsArray);
+        }
+    })
+}
+
+function returnNoNotes() {
+    //function to use to show that no matching notes found
+}
+
+//zuhayr's getNote work
+/*app.post("api/getNote", (req, res) => {
     const tags = req.body.tags;
     const subject_code = req.body.subject_code;
     const course_code = req.body.course_code;
@@ -367,10 +442,9 @@ app.post("api/getNote", (req, res) => {
             res.send(resultsArray);
         }
     })
-});
+});*/
 
-//ethan's old getNote that will be merged to work 
-//with above when using tags as db table
+//ethan's getNote work
 /*app.post("/api/getNote", (req, res) => {
     const tags = req.body.tags;
 
