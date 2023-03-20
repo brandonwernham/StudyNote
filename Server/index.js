@@ -360,7 +360,7 @@ app.post("/api/getNote", (req, res) => {
                 //tag(s) don't exist
                 returnNoNotes();
             } else {
-                const tagID = result[0].insertId;
+                const tagID = result[0][0].tag_id;
                 database.getConnection().then(conn => {
                     const result = conn.query("SELECT * FROM note_tags WHERE tag_id = ?", [tagID]);
                     conn.release();
@@ -370,7 +370,7 @@ app.post("/api/getNote", (req, res) => {
                         //no notes with selected tags
                         returnNoNotes();
                     } else {
-                        const noteID = result[0].insertId;
+                        const noteID = result[0][0].note_id;
                         database.getConnection().then(conn => {
                             const result = conn.query("SELECT * FROM notes WHERE note_id = ? AND class_name = ?", [noteID, class_code]);
                             conn.release();
@@ -398,7 +398,7 @@ app.post("/api/getNote", (req, res) => {
     //respond to frontend with note data
     function returnFoundNotes(result) {
         //not sure whether its result or result[0]
-        const resultsArray = result[0].map(r => ({
+        const resultsArray = result[0][0].map(r => ({
             id: r.id,
             note_name: r.note_name,
             file_path: r.file_path,
