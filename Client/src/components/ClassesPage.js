@@ -7,6 +7,7 @@ import Axios from 'axios';
 
 export const ClassesPage = () => {
 
+    const [searched, setSearched] = useState(false);
     const [loadCourselist, setLoadCourseList] = useState([]);
     const [searchCourseList, setSearchCourseList] = useState([]);
     
@@ -76,6 +77,7 @@ export const ClassesPage = () => {
         // Get variables
         const subject_code = document.getElementById("subject_code").value;
         const course_code = document.getElementById("course_code").value;
+        setSearched(true);
       
         // testing (delete later)
         console.log(subject_code);
@@ -214,20 +216,26 @@ export const ClassesPage = () => {
                     </div>
                 </div>
                 <br></br>
-                {searchCourseList.length > 0 ? (
+                {searched && searchCourseList.length > 0 ? (
                 <div className='search-results'>
                     {searchCourseList.map(searchCourse => (
-                    <div key={searchCourse.class_code} className='search-result'>
-                        <h3>{searchCourse.class_name}</h3>
-                        <p>{searchCourse.class_code}</p>
-                        <button type="submit" name='join-class' className='join-class-button' onClick={() => joinClass(searchCourse.class_id)}>Join</button>
-                    </div>
+                        <div key={searchCourse.class_code} className='search-result'>
+                            <h3>{searchCourse.class_name}</h3>
+                            <p>{searchCourse.class_code}</p>
+                            <button type="submit" name='join-class' className='join-class-button' onClick={() => joinClass(searchCourse.class_id)}>Join</button>
+                        </div>
                     ))}
                 </div> 
+                ) : (searched && searchCourseList.length <= 0) ? (
+                    <div>
+                        <h1>No classes found.</h1>
+                    </div>
+                ) : !searched ? (
+                    <div>
+                    </div>
                 ) : (
-                <div>
-                    <h1>hello</h1>
-                </div>
+                    <div>
+                    </div>
                 )}
             </div>
             ) : (
