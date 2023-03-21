@@ -144,4 +144,8 @@ margin: 0 200px;
 }
 .note-box:hover {
     transform: scale(1.05);
-  }
+}
+
+.download-button {
+    background: var(--color-white);
+}

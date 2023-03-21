@@ -478,7 +478,10 @@ app.post("/api/getNote", (req, res) => {
 
     //respond to frontend with note data
     function returnFoundNotes(result) {
-        const resultsArray = result[0];
+        const resultsArray = result[0].map((note) => ({
+        ...note,
+        file_url: `http://localhost:3001/${note.file_path}`,
+        }));
         res.send(resultsArray);
     }
     

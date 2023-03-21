@@ -89,7 +89,9 @@ export const SearchPage = () => {
                     <div className="note-box-bottom">
                       <div className="note-name">{note.note_name}</div>
                       <div className="note-code">{note.class_code}</div>
+                      <a href={note.file_url} download={`${note.note_name}.pdf`} className="btn download-button">Download</a>
                     </div>
+                    
                   </div>
                 ))}
               </div>
