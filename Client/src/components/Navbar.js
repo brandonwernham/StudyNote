@@ -13,7 +13,7 @@ export default function Navbar() {
   const handleUserTypeSelect = (user_type) => {
     if (profile && profile.email != null && profile.id != null) {
       Axios.post("http://localhost:3001/api/signUp", {
-        user_id: profile.id,
+        //user_id: profile.id,
         email: profile.email,
         password: null,
         user_type: user_type
@@ -41,8 +41,11 @@ export default function Navbar() {
           }
         })
         .then((res) => {
+          console.log(res.data)
           setProfile(res.data);
-          Axios.get(`http://localhost:3001/api/getUserType/${res.data.id}`)
+          Axios.post("http://localhost:3001/api/getUserType", {
+            email: res.data.email
+          })
             .then((response) => {
               if (response.data.user_type) {
                 setProfile((prevProfile) => ({ ...prevProfile, user_type: response.data.user_type }));

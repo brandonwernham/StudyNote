@@ -44,9 +44,9 @@ app.use(session({
 
 
 
-const userExists = async (userId) => {
-    const query = 'SELECT COUNT(*) as count FROM users WHERE user_id = ?';
-    const [rows] = await database.query(query, [userId]);
+const userExists = async (email) => {
+    const query = 'SELECT COUNT(*) as count FROM users WHERE email = ?';
+    const [rows] = await database.query(query, [email]);
     return rows[0].count > 0;
 };
 
@@ -65,30 +65,29 @@ const classCodeExists = async (classCode) => {
 //sign up 
   
 app.post('/api/signUp', async (req, res) => {
-    const { user_id, email, password, user_type } = req.body;
-    console.log(user_id)
-    console.log(18446744000000000000)
+    const { email, password, user_type } = req.body;
     try {
       // Now it will see if the user exists and such
-      const exists = await userExists(user_id);
+      const exists = await userExists(email);
       if (exists) {
         res.status(200).json({ message: 'User already exists' });
       } else {
-        const query = 'INSERT INTO users (user_id, email, user_password, user_type) VALUES (?, ?, ?, ?)';
-        const result = await database.query(query, [user_id, email, password, user_type]);
+        const query = 'INSERT INTO users (email, user_password, user_type) VALUES (?, ?, ?)';
+        const result = await database.query(query, [email, password, user_type]);
         res.status(201).json({ message: 'User created', data: result });
       }
     } catch (error) {
+        console.log(error)
       res.status(500).json({ message: 'Error occurred', error: error.message });
     }
 });
 
-app.get('/api/getUserType/:userId', async (req, res) => {
-    const { userId } = req.params;
+app.post('/api/getUserType', async (req, res) => {
+    const email = req.email;
   
     try {
-      const query = 'SELECT user_type FROM users WHERE user_id = ?';
-      const [rows] = await database.query(query, [userId]);
+      const query = 'SELECT user_type FROM users WHERE email = ?';
+      const [rows] = await database.query(query, [email]);
   
       if (rows.length > 0) {
         res.status(200).json({ user_type: rows[0].user_type });
