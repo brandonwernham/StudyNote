@@ -175,20 +175,20 @@ app.post("/api/upload", upload.single("note"), (req, res) => {
     const note_name = req.body.note_name;
     const creator_id = req.body.creator_id;
     const tags = req.body.tags;
-    const class_name = req.body.subject_code + req.body.course_code;
+    const class_code = req.body.subject_code + req.body.course_code;
     const tagsArr = tags.split(",");
 
 
     //search to see if class exists in the database
     database.getConnection().then(conn => {
-        const result = conn.query("SELECT * FROM classes WHERE class_name = ?", [class_name]);
+        const result = conn.query("SELECT * FROM classes WHERE class_code = ?", [class_code]);
         conn.release();
         return result;
     }).then(result => {
         if(result[0].length == 0) {
             //adds class to database if it doesnt exist
             database.getConnection().then(conn => {
-                const result = conn.query("INSERT INTO classes (class_name, subject_code, course_code, user_id) VALUES (?, ?, ?, ?)", [class_name, req.body.subject_code, req.body.course_code, creator_id]);
+                const result = conn.query("INSERT INTO classes (class_name, class_code, user_id) VALUES (?, ?, ?)", ["no_name_provided", class_code, creator_id]);
                 conn.release();
                 return result;
             }).then(result => {
@@ -203,7 +203,7 @@ app.post("/api/upload", upload.single("note"), (req, res) => {
     }).then(()=> {
         //insert note into the database
         database.getConnection().then(conn => {
-            const result = conn.query("INSERT INTO notes (note_name, file_path, creator_id, class_name) VALUES (?, ?, ?, ?)", [note_name, file_path, creator_id, class_name]);
+            const result = conn.query("INSERT INTO notes (note_name, file_path, creator_id, class_code) VALUES (?, ?, ?, ?)", [note_name, file_path, creator_id, class_code]);
             conn.release();
             return result;
         }).then(result => {
@@ -233,7 +233,7 @@ app.post("/api/upload", upload.single("note"), (req, res) => {
                         })
                     } else {
                         //get tagID if it exists
-                        const tagID = result[0];
+                        const tagID = result[0][0].tag_id;
                         insertTagNote(tagID, noteID);
                     }
                 }).catch(err => {
@@ -271,19 +271,19 @@ app.post("/api/upload", upload.single("note"), (req, res) => {
 // Adding, joining, and loading classes
 
 app.post('/api/createClass', async (req, res) => {
-    const { class_id, user_id, class_name } = req.body;
+    const { user_id, class_name } = req.body;
     const subject_code = req.body.subject_code;
     const course_code = req.body.course_code;
 
     const class_code = subject_code + course_code;
-  
+    
     try {
-      const exists = await classExists(class_id);
+      const exists = await classCodeExists(class_code);
       if (exists) {
         res.status(200).json({ message: 'Class already exists' });
       } else {
-        const query = 'INSERT INTO classes (class_id, user_id, class_name, class_code) VALUES (?, ?, ?, ?)';
-        const result = await database.query(query, [class_id, user_id, class_name, class_code]);
+        const query = 'INSERT INTO classes (user_id, class_name, class_code) VALUES (?, ?, ?)';
+        const result = await database.query(query, [user_id, class_name, class_code]);
         res.status(201).json({ message: 'Class created', data: result });
       }
     } catch (error) {
