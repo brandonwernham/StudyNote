@@ -7,11 +7,13 @@ import Axios from 'axios';
 
 export const ClassesPage = () => {
 
+    const [searched, setSearched] = useState(false);
     const [loadCourselist, setLoadCourseList] = useState([]);
     const [searchCourseList, setSearchCourseList] = useState([]);
     
     const { profile } = useUserContext();
     const [accountType, setAccountType] = useState("");
+    const [accountID, setAccountID] = useState("");
 
     const [className, setClassName] = useState("");
     const [subjectCode, setSubjectCode] = useState("");
@@ -33,14 +35,15 @@ export const ClassesPage = () => {
     useEffect(() => {
         if (profile != null) {
             setAccountType(profile.user_type);
+            setAccountID(profile.id);
         }
     }, [profile]);
 
-   
+// CREATE CLASSES
     const createClass = () => {
 
         // TEST VARIABLES DELETE LATER
-        const class_id = 1;
+        const class_id = 4;
         const user_id = 1;
 
         // Get variables
@@ -69,11 +72,12 @@ export const ClassesPage = () => {
 
     };
 
-
+// SEARCH FOR CLASSES 
     const searchClass = () => {
         // Get variables
         const subject_code = document.getElementById("subject_code").value;
         const course_code = document.getElementById("course_code").value;
+        setSearched(true);
       
         // testing (delete later)
         console.log(subject_code);
@@ -83,53 +87,63 @@ export const ClassesPage = () => {
           course_code: course_code,
           subject_code: subject_code,
         })
-          .then((response) => {
-            if (response.data && response.data.length > 0) {
-              console.log("Found classes:", response.data);
-              setSearchCourseList(response.data);
-            } else {
-              console.log("No classes found.");
-              setSearchCourseList([]);
-            }
-          })
-          .catch((error) => console.log("Error: ", error.message));
+        .then((response) => {
+          if (response.data != "No classes found.") {
+            setSearchCourseList(response.data);
+          } else {
+            setSearchCourseList([]);
+          }
+        })
+        .catch((error) => console.log("Error: ", error.message));
+
       };
 
-    /*
-    
+// JOIN CLASSES
+    function joinClass(classID) {
 
-    const joinClass = () => {
-
-        // Get variables
-        const user_id = profile.user_id;
-        const class_id = 
+        const class_id = classID;
         
-        
-    }
-
-    const loadClass = () => {
-
-        const user_id = profile.user_id;
-
-        Axios.post("http://localhost:3001/api/loadClass", {
-            user_id: user_id,
+        Axios.post("http://localhost:3001/api/joinClass", {
+            class_id: class_id,
+            user_id: accountID,
         })
         .then((response) => {
-            if (response.data != "No matching notes found.") {
+            if (response.data != "No classes found.") {
+                setSearchCourseList(response.data);
+            } else {
+                setSearchCourseList([]);
+            }
+            window.location.reload(); // Refresh the page
+        })
+        .catch((error) => console.log("Error: ", error.message));
+
+        }
+
+    
+// LOAD CLASSES
+    const loadClasses = () => {
+
+        const user_id = accountID;
+
+        Axios.post("http://localhost:3001/api/loadClasses", {
+            user_id: user_id,
+          })
+          .then((response) => {
+            if (response.data != "No classes found.") {
                 setLoadCourseList(response.data);
             } else {
                 setLoadCourseList([]);
             }
-        })
-        .catch((error) => console.log("Error: ", error.message));
+          })
+          .catch((error) => console.log("Error: ", error.message));
     }
-*/
+
 
     
 
 
     return (
-        <div>
+        <div onLoad={loadClasses}>
             <div>
                 <Navbar/>
             </div>
@@ -144,24 +158,21 @@ export const ClassesPage = () => {
             {loadCourselist.length > 0 ? (
                 <table>
                     <colgroup>
-                        <col width='32%' />
-                        <col width='17%' />
-                        <col width='14%' />
-                        <col width='37%' />
+                        <col width='30%' />
+                        <col width='20%' />
+                        <col width='50%' />
                     </colgroup>
                     <tbody>
                         <tr>
                             <th>Course Name</th>
-                            <th>Course Code</th>
-                            <th>Subject</th>
+                            <th>Class Code</th>
                             <th>Professor</th>
                         </tr>
                         {loadCourselist.map(course => (
                             <tr key={course.id}>
-                                <td>{course.name}</td>
-                                <td>{course.code}</td>
-                                <td>{course.subject}</td>
-                                <td>{course.professor}</td>
+                                <td>{course.class_name}</td>
+                                <td>{course.class_code}</td>
+                                <td>{course.user_id}</td>
                             </tr>
                         ))}
                     </tbody>
@@ -204,6 +215,28 @@ export const ClassesPage = () => {
                         <br></br>
                     </div>
                 </div>
+                <br></br>
+                {searched && searchCourseList.length > 0 ? (
+                <div className='search-results'>
+                    {searchCourseList.map(searchCourse => (
+                        <div key={searchCourse.class_code} className='search-result'>
+                            <h3>{searchCourse.class_name}</h3>
+                            <p>{searchCourse.class_code}</p>
+                            <button type="submit" name='join-class' className='join-class-button' onClick={() => joinClass(searchCourse.class_id)}>Join</button>
+                        </div>
+                    ))}
+                </div> 
+                ) : (searched && searchCourseList.length <= 0) ? (
+                    <div>
+                        <h1>No classes found.</h1>
+                    </div>
+                ) : !searched ? (
+                    <div>
+                    </div>
+                ) : (
+                    <div>
+                    </div>
+                )}
             </div>
             ) : (
                 // Teacher Page

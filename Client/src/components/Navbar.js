@@ -72,39 +72,45 @@ export default function Navbar() {
   };
 
   return (
-    <nav className="navbar">
+    <div>
+      <nav className="navbar">
         <a href="/" className="title">
-            StudyNote
+          StudyNote
         </a>
-        <div className="pages">
-            <a href="/search" className={pathname === "/search" ? "active" : ""}>
+        <div className={`pages ${!profile || !profile.user_type ? 'disabled' : ''}`}>
+          <a href="/search" className={pathname === "/search" ? "active" : ""}>
             Search
-            </a>
-            <a href="/classes" className={pathname === "/classes" ? "active" : ""}>
+          </a>
+          <a href="/classes" className={pathname === "/classes" ? "active" : ""}>
             Classes
-            </a>
-            <a href="/groups" className={pathname === "/groups" ? "active" : ""}>
+          </a>
+          <a href="/groups" className={pathname === "/groups" ? "active" : ""}>
             Groups
-            </a>
-            <a href="/upload" className={pathname === "/upload" ? "active" : ""}>
+          </a>
+          <a href="/upload" className={pathname === "/upload" ? "active" : ""}>
             Upload
-            </a>
+          </a>
         </div>
-
+    
         <div className="login">
-        {user && profile ? (
-          profile.user_type ? (
-            <div className='google-profile'>
-              <img className="google-image" src={profile.picture} alt="user image" />
-              <button className='btn btn-logout' onClick={logOut}>Log Out</button>
-            </div>
+          {user && profile ? (
+            profile.user_type ? (
+              <div className='google-profile'>
+                <img className="google-image" src={profile.picture} alt="user image" />
+                <button className='btn btn-logout' onClick={logOut}>Log Out</button>
+              </div>
+            ) : (
+              <div className="overlay">
+                <UserTypeSelection onSelect={handleUserTypeSelect} />
+              </div>
+            )
           ) : (
-            <UserTypeSelection onSelect={handleUserTypeSelect} onSkip={logOut} />
-          )
-        ) : (
-          <button className='btn btn-login' onClick={() => login()}>Log In with Google</button>
-        )}
+            <button className="btn btn-login" onClick={() => login()}>
+              Log In with Google
+            </button>
+          )}
         </div>
-    </nav>
-  );
+      </nav>
+    </div>
+  );  
 }
