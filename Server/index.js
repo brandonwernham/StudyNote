@@ -10,8 +10,8 @@ const { JSONCookie } = require('cookie-parser');
 
 const database = mysql.createPool({
     host: "localhost",
-    user: "root",
-    password: "luna",
+    user: "server",
+    password: "Rohan123",
     database: "StudyNoteDB",
 });
 

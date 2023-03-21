@@ -1,6 +1,7 @@
-import React, { useState } from "react";
+import { useEffect, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
+import { useUserContext } from "./UserContext";
 import "./UploadPage.css";
 import axios from "axios";
 
@@ -9,6 +10,17 @@ const FileUpload = ({ files, setFiles, removeFile }) => {
   const [subjectCode, setSubjectCode] = useState("");
   const [courseCode, setCourseCode] = useState("");
   const [noteName, setNoteName] = useState("");
+  const { profile } = useUserContext();
+  const [accountType, setAccountType] = useState("");
+  const [accountID, setAccountID] = useState("");
+
+  useEffect(() => {
+      if (profile != null) {
+          setAccountType(profile.user_type);
+          setAccountID(profile.user_id);
+      }
+  }, [profile]);
+
 
   const uploadHandler = (event) => {
     const file = event.target.files[0];
@@ -24,9 +36,7 @@ const FileUpload = ({ files, setFiles, removeFile }) => {
     console.log(subjectCode);
     console.log(courseCode);
 
-    const timestamp = Date.now();
-    const creatorId = 1; //needs to be changed eventually to actual account that submitted note
-    //const creatorId = `creator_${timestamp}`;
+    const creatorId = accountID; //needs to be changed eventually to actual account that submitted note
 
     const formData = new FormData();
     formData.append("note_name", noteName);
