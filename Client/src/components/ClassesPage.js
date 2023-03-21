@@ -38,7 +38,7 @@ export const ClassesPage = () => {
         }
     }, [profile]);
 
-   
+// CREATE CLASSES
     const createClass = () => {
 
         // TEST VARIABLES DELETE LATER
@@ -71,7 +71,7 @@ export const ClassesPage = () => {
 
     };
 
-
+// SEARCH FOR CLASSES 
     const searchClass = () => {
         // Get variables
         const subject_code = document.getElementById("subject_code").value;
@@ -96,6 +96,7 @@ export const ClassesPage = () => {
 
       };
 
+// JOIN CLASSES
     function joinClass(classID) {
 
         const class_id = classID;
@@ -103,52 +104,44 @@ export const ClassesPage = () => {
         Axios.post("http://localhost:3001/api/joinClass", {
             class_id: class_id,
             user_id: accountID,
+        })
+        .then((response) => {
+            if (response.data != "No classes found.") {
+                setSearchCourseList(response.data);
+            } else {
+                setSearchCourseList([]);
+            }
+            window.location.reload(); // Refresh the page
+        })
+        .catch((error) => console.log("Error: ", error.message));
+
+        }
+
+    
+// LOAD CLASSES
+    const loadClasses = () => {
+
+        const user_id = accountID;
+
+        Axios.post("http://localhost:3001/api/loadClasses", {
+            user_id: user_id,
           })
           .then((response) => {
             if (response.data != "No classes found.") {
-              setSearchCourseList(response.data);
-            } else {
-              setSearchCourseList([]);
-            }
-          })
-          .catch((error) => console.log("Error: ", error.message));
-
-        }
-    /*
-    
-
-    const joinClass = () => {
-
-        // Get variables
-        const user_id = profile.user_id;
-        const class_id = 
-        
-        
-    }
-
-    const loadClass = () => {
-
-        const user_id = profile.user_id;
-
-        Axios.post("http://localhost:3001/api/loadClass", {
-            user_id: user_id,
-        })
-        .then((response) => {
-            if (response.data != "No matching notes found.") {
                 setLoadCourseList(response.data);
             } else {
                 setLoadCourseList([]);
             }
-        })
-        .catch((error) => console.log("Error: ", error.message));
+          })
+          .catch((error) => console.log("Error: ", error.message));
     }
-*/
+
 
     
 
 
     return (
-        <div>
+        <div onLoad={loadClasses}>
             <div>
                 <Navbar/>
             </div>
@@ -163,24 +156,21 @@ export const ClassesPage = () => {
             {loadCourselist.length > 0 ? (
                 <table>
                     <colgroup>
-                        <col width='32%' />
-                        <col width='17%' />
-                        <col width='14%' />
-                        <col width='37%' />
+                        <col width='30%' />
+                        <col width='20%' />
+                        <col width='50%' />
                     </colgroup>
                     <tbody>
                         <tr>
                             <th>Course Name</th>
-                            <th>Course Code</th>
-                            <th>Subject</th>
+                            <th>Class Code</th>
                             <th>Professor</th>
                         </tr>
                         {loadCourselist.map(course => (
                             <tr key={course.id}>
-                                <td>{course.name}</td>
-                                <td>{course.code}</td>
-                                <td>{course.subject}</td>
-                                <td>{course.professor}</td>
+                                <td>{course.class_name}</td>
+                                <td>{course.class_code}</td>
+                                <td>{course.user_id}</td>
                             </tr>
                         ))}
                     </tbody>

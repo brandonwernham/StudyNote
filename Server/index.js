@@ -324,7 +324,6 @@ app.post('/api/searchClass', async (req, res) => {
     function returnNoClasses() { 
         res.send("No classes found.");
     }
-
 })
 
 app.post('/api/joinClass', async (req, res) => {
@@ -347,25 +346,36 @@ app.post('/api/joinClass', async (req, res) => {
 });
 
 
-app.get('/api/loadClass', async (req, res) => {
+app.post('/api/loadClasses', async (req, res) => {
+    const { user_id } = req.body;
 
-    const user_id = req.body.user_id;
-
-    let query = ("SELECT * FROM classes WHERE user_id = ?", [class_code]);
-    database.query(query, (err, result) => {
-        if(err) {
-            res.send({err: err});
-        } else if(result.length > 0) {
-            const searchClassArray = result.map(r => ({
-                class_id: r.class_id,
-                user_id: r.user_id,
-                class_name: r.class_name,
-                class_code: r.class_code,
-            }));
-            res.send(searchClassArray);
+    database.getConnection().then(conn => {
+        const query = 'SELECT * FROM user_classes JOIN classes ON user_classes.class_id = classes.class_id WHERE user_classes.user_id = ?';
+        const params = [user_id];
+        const result = conn.query(query, params);
+        conn.release();
+        return result;
+      }).then(result => {
+        if (result[0].length === 0) {
+          // no classes found for the specified user_id
+          returnNoClasses();
+        } else {
+          returnFoundClasses(result);
         }
-    })
+      }).catch(err => {
+        res.send(err);
+      });
 
+    //respond to frontend with note data
+    function returnFoundClasses(result) {
+        const classesFoundArray = result[0];
+        res.send(classesFoundArray);
+    }
+
+    //if there is no matching notes to given request
+    function returnNoClasses() { 
+        res.send("No classes found.");
+    }
 })
 
 //note searching
