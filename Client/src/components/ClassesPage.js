@@ -8,7 +8,8 @@ import Axios from 'axios';
 export const ClassesPage = () => {
 
     const [searched, setSearched] = useState(false);
-    const [loadCourselist, setLoadCourseList] = useState([]);
+    const [loadCourseListStudent, setLoadCourseListStudent] = useState([]);
+    const [loadCourselistTeacher, setLoadCourseListTeacher] = useState([]);
     const [searchCourseList, setSearchCourseList] = useState([]);
     
     const { profile } = useUserContext();
@@ -20,22 +21,10 @@ export const ClassesPage = () => {
     const [courseCode, setCourseCode] = useState("");
 
 
-    /*
-    useEffect(() => {
-        axios.get('/api/courses')
-            .then(response => {
-            setCourses(response.data);
-        })
-            .catch(error => {
-            console.log(error);
-        });
-    }, []);
-    */
-
     useEffect(() => {
         if (profile != null) {
             setAccountType(profile.user_type);
-            setAccountID(profile.id);
+            setAccountID(profile.user_id);
         }
     }, [profile]);
 
@@ -113,7 +102,7 @@ export const ClassesPage = () => {
             } else {
                 setSearchCourseList([]);
             }
-            window.location.reload(); // Refresh the page
+            //window.location.reload(); // Refresh the page
         })
         .catch((error) => console.log("Error: ", error.message));
 
@@ -130,9 +119,9 @@ export const ClassesPage = () => {
           })
           .then((response) => {
             if (response.data != "No classes found.") {
-                setLoadCourseList(response.data);
+                setLoadCourseListStudent(response.data);
             } else {
-                setLoadCourseList([]);
+                setLoadCourseListStudent([]);
             }
           })
           .catch((error) => console.log("Error: ", error.message));
@@ -147,16 +136,16 @@ export const ClassesPage = () => {
           })
           .then((response) => {
             if (response.data != "No classes found.") {
-                setLoadCourseList(response.data);
+                setLoadCourseListTeacher(response.data);
             } else {
-                setLoadCourseList([]);
+                setLoadCourseListTeacher([]);
             }
           })
           .catch((error) => console.log("Error: ", error.message));
     }
 
     function loadAllClasses() {
-        loadClassesStudent()
+        loadClassesStudent();
         loadClassesTeacher();
     }
 
@@ -176,7 +165,7 @@ export const ClassesPage = () => {
                 </div>
             <div className='content'>
                 <div className='classes'>
-            {loadCourselist.length > 0 ? (
+            {loadCourseListStudent.length > 0 ? (
                 <table>
                     <colgroup>
                         <col width='30%' />
@@ -189,8 +178,8 @@ export const ClassesPage = () => {
                             <th>Class Code</th>
                             <th>Professor</th>
                         </tr>
-                        {loadCourselist.map(course => (
-                            <tr key={course.id}>
+                        {loadCourseListStudent.map(course => (
+                            <tr key={course.user_id}>
                                 <td>{course.class_name}</td>
                                 <td>{course.class_code}</td>
                                 <td>{course.user_id}</td>
@@ -243,6 +232,7 @@ export const ClassesPage = () => {
                         <div key={searchCourse.class_code} className='search-result'>
                             <h3>{searchCourse.class_name}</h3>
                             <p>{searchCourse.class_code}</p>
+                            <p>{searchCourse.class_id}</p>
                             <button type="submit" name='join-class' className='join-class-button' onClick={() => joinClass(searchCourse.class_id)}>Join</button>
                         </div>
                     ))}
@@ -259,7 +249,7 @@ export const ClassesPage = () => {
                     </div>
                 )}
             </div>
-            ) : (
+            ) : accountType == "teacher" ? (
                 // Teacher Page
                 <div className='container-page'>
                         <div className='header'>
@@ -267,7 +257,7 @@ export const ClassesPage = () => {
                         </div>
                     <div className='content'>
                         <div className='classes'>
-                            {loadCourselist.length > 0 ? (
+                            {loadCourselistTeacher.length > 0 ? (
                                 <table>
                                     <colgroup>
                                         <col width='30%' />
@@ -280,8 +270,8 @@ export const ClassesPage = () => {
                                             <th>Class Code</th>
                                             <th>Professor</th>
                                         </tr>
-                                        {loadCourselist.map(course => (
-                                            <tr key={course.id}>
+                                        {loadCourselistTeacher.map(course => (
+                                            <tr key={course.user_id}>
                                                 <td>{course.class_name}</td>
                                                 <td>{course.class_code}</td>
                                                 <td>{course.user_id}</td>
@@ -335,6 +325,10 @@ export const ClassesPage = () => {
                         </div>
                     </div>
                 </div>
+            ) : (
+                <div>
+                    <h1>Not logged in</h1>
+                </div>
             )}
 
             <div className='footer' align='center'>
@@ -345,39 +339,3 @@ export const ClassesPage = () => {
 }
 
 export default ClassesPage;
-
-/*
-
-
-                {courses.length > 0 ? (
-                    <table>
-                        <colgroup>
-                            <col width='32%' />
-                            <col width='17%' />
-                            <col width='14%' />
-                            <col width='37%' />
-                        </colgroup>
-                        <tbody>
-                            <tr>
-                                <th>Course Name</th>
-                                <th>Course Code</th>
-                                <th>Subject</th>
-                                <th>Professor</th>
-                            </tr>
-                            {courses.map(course => (
-                                <tr key={course.id}>
-                                    <td>{course.name}</td>
-                                    <td>{course.code}</td>
-                                    <td>{course.subject}</td>
-                                    <td>{course.professor}</td>
-                                </tr>
-                            ))}
-                        </tbody>
-                    </table>
-                ) : (
-                    <div className='no-classes'>
-                        <p>You have no classes yet, create a class now!</p>
-                    </div>
-                )}
-
-*/
