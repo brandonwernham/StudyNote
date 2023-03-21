@@ -83,14 +83,13 @@ app.post('/api/signUp', async (req, res) => {
 });
 
 app.post('/api/getUserType', async (req, res) => {
-    const email = req.email;
-  
+    const email = req.body.email;
     try {
-      const query = 'SELECT user_type FROM users WHERE email = ?';
+      const query = 'SELECT user_type, user_id FROM users WHERE email = ?';
       const [rows] = await database.query(query, [email]);
   
       if (rows.length > 0) {
-        res.status(200).json({ user_type: rows[0].user_type });
+        res.status(200).json({ user_type: rows[0].user_type , user_id: rows[0].user_id});
       } else {
         res.status(404).json({ message: 'User not found' });
       }

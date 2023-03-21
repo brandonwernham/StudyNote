@@ -41,14 +41,14 @@ export default function Navbar() {
           }
         })
         .then((res) => {
-          console.log(res.data)
           setProfile(res.data);
           Axios.post("http://localhost:3001/api/getUserType", {
             email: res.data.email
           })
             .then((response) => {
               if (response.data.user_type) {
-                setProfile((prevProfile) => ({ ...prevProfile, user_type: response.data.user_type }));
+                setProfile((prevProfile) => ({ ...prevProfile, user_type: response.data.user_type, user_id: response.data.user_id }));
+                console.log(profile)
               }
             })
             .catch((error) => console.log('Error fetching user type:', error.message));
