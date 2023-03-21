@@ -90,14 +90,15 @@ margin: 0 200px;
     position: relative;
     padding: 10px;
     height: 300px;
-    outline: 4px solid orange;
+    outline: 4px solid var(--color-primary);
     width: 200px;
-    border-radius: 5px;
+    border-radius: 10px;
     box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
     cursor: pointer;
     display: flex;
     background-color: rgb(255, 255, 255, 0.25);
     z-index: 0;
+    margin-top: 1rem;
   }
   
 .note-box:before {
@@ -107,7 +108,7 @@ margin: 0 200px;
     left: 0;
     right: 0;
     height: 40%;
-    background-color: orange;
+    background: linear-gradient(to bottom right, var(--color-primary), var(--color-primary-variant));
     z-index: -1;
 }
 

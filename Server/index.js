@@ -72,15 +72,15 @@ const userInClass = async (class_id, user_id) => {
 //sign up 
   
 app.post('/api/signUp', async (req, res) => {
-    const { email, password, user_type } = req.body;
+    const { user_id, email, password, user_type } = req.body;
     try {
       // Now it will see if the user exists and such
-      const exists = await userExists(email);
+      const exists = await userExists(user_id);
       if (exists) {
         res.status(200).json({ message: 'User already exists' });
       } else {
-        const query = 'INSERT INTO users (email, user_password, user_type) VALUES (?, ?, ?)';
-        const result = await database.query(query, [email, password, user_type]);
+        const query = 'INSERT INTO users (user_id, email, user_password, user_type) VALUES (?, ?, ?, ?)';
+        const result = await database.query(query, [user_id, email, password, user_type]);
         res.status(201).json({ message: 'User created', data: result });
       }
     } catch (error) {
@@ -417,7 +417,7 @@ app.post("/api/getNote", (req, res) => {
     //if no tags were entered, return all notes from the class selected
     if(tags == "") {
         database.getConnection().then(conn => {
-            const result = conn.query("SELECT * FROM notes WHERE class_name = ?", [class_code]);
+            const result = conn.query("SELECT * FROM notes WHERE class_code = ?", [class_code]);
             conn.release();
             return result;
         }).then(result => {
@@ -478,7 +478,7 @@ app.post("/api/getNote", (req, res) => {
 
     //respond to frontend with note data
     function returnFoundNotes(result) {
-        const resultsArray = result[0][0];
+        const resultsArray = result[0];
         res.send(resultsArray);
     }
     

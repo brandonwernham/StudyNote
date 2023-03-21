@@ -6,11 +6,14 @@ import Axios from "axios";
 export const SearchPage = () => {
   const [tags, setTags] = useState("");
   const [noteList, setNoteList] = useState([]);
+  const [searchPerformed, setSearchPerformed] = useState(false);
 
   const getNote = () => {
     const tags = document.getElementById("tags").value;
     const course_code = document.getElementById("course_code").value;
     const subject_code = document.getElementById("subject").value;
+    
+    setSearchPerformed(true);
 
     Axios.post("http://localhost:3001/api/getNote", {
       tags: tags,
@@ -75,23 +78,26 @@ export const SearchPage = () => {
             Search
           </button>
         </form>
-        <br></br>
-        {noteList.length > 0 ? (
-        <div className="note-list-wrapper">
-        <div className="note-list">
-          {noteList.map((note, index) => (
-            <div key={index} className="note-box" onClick={() => { /* do something */ }}>
-              <div className="note-box-bottom">
-                <div className="note-name">{note.note_name}</div>
-                <div className="note-code">{note.class_name}</div>
+        
+        {/* section for the note result list */}
+        {searchPerformed ? (
+          noteList.length > 0 ? (
+            <div className="note-list-wrapper">
+              <div className="note-list">
+                {noteList.map((note, index) => (
+                  <div key={index} className="note-box">
+                    <div className="note-box-bottom">
+                      <div className="note-name">{note.note_name}</div>
+                      <div className="note-code">{note.class_code}</div>
+                    </div>
+                  </div>
+                ))}
               </div>
             </div>
-          ))}
-        </div>
-      </div>
-        ) : (
-        <div>No matching notes found.</div>
-        )}
+          ) : (
+            <div>No matching notes found.</div>
+          )
+        ) : null}
       </div>
     </div>
   );
