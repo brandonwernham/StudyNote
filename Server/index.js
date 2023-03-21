@@ -6,6 +6,7 @@ const cors = require('cors');
 const cookieParser = require('cookie-parser');
 const session = require('express-session');
 const multer = require('multer');
+const { JSONCookie } = require('cookie-parser');
 
 const database = mysql.createPool({
     host: "localhost",
@@ -59,6 +60,12 @@ const classExists = async (classId) => {
 const classCodeExists = async (classCode) => {
     const query = 'SELECT COUNT(*) as count FROM classes WHERE class_code = ?';
     const [rows] = await database.query(query, [classCode]);
+    return rows[0].count > 0;
+}
+
+const userInClass = async (class_id, user_id) => {
+    const query = 'SELECT COUNT(*) as count FROM user_classes WHERE class_id = ? AND user_id = ?';
+    const [rows] = await database.query(query, [class_id, user_id]);
     return rows[0].count > 0;
 }
 
@@ -319,6 +326,26 @@ app.post('/api/searchClass', async (req, res) => {
     }
 
 })
+
+app.post('/api/joinClass', async (req, res) => {
+    const { class_id, user_id } = req.body;
+  
+    try {
+      const exists = await userExists(user_id);
+      const inClass = await userInClass(class_id, user_id);
+      if (exists && !inClass) {
+        const query = 'INSERT INTO user_classes (class_id, user_id) VALUES (?, ?)';
+        const result = await database.query(query, [class_id, user_id]);
+        res.status(201).json({ message: 'Class joined', data: result });
+      } else {
+        res.status(200).json({ message: 'User is already in class (or does not exist)' });
+      }
+    } catch (error) {
+      res.status(500).json({ message: 'Error occurred', error: error.message });
+    }
+
+});
+
 
 app.get('/api/loadClass', async (req, res) => {
 

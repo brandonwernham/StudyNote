@@ -12,6 +12,7 @@ export const ClassesPage = () => {
     
     const { profile } = useUserContext();
     const [accountType, setAccountType] = useState("");
+    const [accountID, setAccountID] = useState("");
 
     const [className, setClassName] = useState("");
     const [subjectCode, setSubjectCode] = useState("");
@@ -33,6 +34,7 @@ export const ClassesPage = () => {
     useEffect(() => {
         if (profile != null) {
             setAccountType(profile.user_type);
+            setAccountID(profile.id);
         }
     }, [profile]);
 
@@ -94,6 +96,24 @@ export const ClassesPage = () => {
 
       };
 
+    function joinClass(classID) {
+
+        const class_id = classID;
+        
+        Axios.post("http://localhost:3001/api/joinClass", {
+            class_id: class_id,
+            user_id: accountID,
+          })
+          .then((response) => {
+            if (response.data != "No classes found.") {
+              setSearchCourseList(response.data);
+            } else {
+              setSearchCourseList([]);
+            }
+          })
+          .catch((error) => console.log("Error: ", error.message));
+
+        }
     /*
     
 
@@ -205,18 +225,19 @@ export const ClassesPage = () => {
                 </div>
                 <br></br>
                 {searchCourseList.length > 0 ? (
-                    <div className='search-results'>
-                        {searchCourseList.map(searchCourse => (
-                        <div key={searchCourse.class_code} className='search-result'>
-                            <h3>{searchCourse.class_name}</h3>
-                            <p>{searchCourse.class_code}</p>
-                        </div>
-                        ))}
-                    </div> 
-                ) : (
-                    <div>
-                        <h1>hello</h1>
+                <div className='search-results'>
+                    {searchCourseList.map(searchCourse => (
+                    <div key={searchCourse.class_code} className='search-result'>
+                        <h3>{searchCourse.class_name}</h3>
+                        <p>{searchCourse.class_code}</p>
+                        <button type="submit" name='join-class' className='join-class-button' onClick={() => joinClass(searchCourse.class_id)}>Join</button>
                     </div>
+                    ))}
+                </div> 
+                ) : (
+                <div>
+                    <h1>hello</h1>
+                </div>
                 )}
             </div>
             ) : (
