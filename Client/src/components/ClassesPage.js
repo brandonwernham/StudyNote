@@ -43,8 +43,8 @@ export const ClassesPage = () => {
     const createClass = () => {
 
         // TEST VARIABLES DELETE LATER
-        const class_id = 4;
-        const user_id = 1;
+        const class_id = 12;
+        const user_id = accountID;
 
         // Get variables
         const class_name = document.getElementById("create_class_name").value;
@@ -63,9 +63,9 @@ export const ClassesPage = () => {
             class_name: class_name,
             course_code: course_code,
             subject_code: subject_code,
-
         }).then((res) => {
             console.log(res);
+            //window.location.reload(); // Refresh the page
         }).catch((err) => {
             console.log(err);
         }); 
@@ -121,11 +121,11 @@ export const ClassesPage = () => {
 
     
 // LOAD CLASSES
-    const loadClasses = () => {
+    const loadClassesStudent = () => {
 
         const user_id = accountID;
 
-        Axios.post("http://localhost:3001/api/loadClasses", {
+        Axios.post("http://localhost:3001/api/loadClassesStudent", {
             user_id: user_id,
           })
           .then((response) => {
@@ -138,12 +138,33 @@ export const ClassesPage = () => {
           .catch((error) => console.log("Error: ", error.message));
     }
 
+    const loadClassesTeacher = () => {
+
+        const user_id = accountID;
+
+        Axios.post("http://localhost:3001/api/loadClassesTeacher", {
+            user_id: user_id,
+          })
+          .then((response) => {
+            if (response.data != "No classes found.") {
+                setLoadCourseList(response.data);
+            } else {
+                setLoadCourseList([]);
+            }
+          })
+          .catch((error) => console.log("Error: ", error.message));
+    }
+
+    function loadAllClasses() {
+        loadClassesStudent()
+        loadClassesTeacher();
+    }
 
     
 
 
     return (
-        <div onLoad={loadClasses}>
+        <div onLoad={loadAllClasses}>
             <div>
                 <Navbar/>
             </div>
@@ -154,7 +175,7 @@ export const ClassesPage = () => {
                     <h1 className='classes-title'>Your Classes (Student): </h1>
                 </div>
             <div className='content'>
-            <div className='classes'>
+                <div className='classes'>
             {loadCourselist.length > 0 ? (
                 <table>
                     <colgroup>
@@ -241,10 +262,39 @@ export const ClassesPage = () => {
             ) : (
                 // Teacher Page
                 <div className='container-page'>
-                    <div className='header'>
-                        <h1 className='classes-title'>Your Classes (Teacher): </h1>
-                    </div>
+                        <div className='header'>
+                            <h1 className='classes-title'>Your Classes (Teacher): </h1>
+                        </div>
                     <div className='content'>
+                        <div className='classes'>
+                            {loadCourselist.length > 0 ? (
+                                <table>
+                                    <colgroup>
+                                        <col width='30%' />
+                                        <col width='20%' />
+                                        <col width='50%' />
+                                    </colgroup>
+                                    <tbody>
+                                        <tr>
+                                            <th>Course Name</th>
+                                            <th>Class Code</th>
+                                            <th>Professor</th>
+                                        </tr>
+                                        {loadCourselist.map(course => (
+                                            <tr key={course.id}>
+                                                <td>{course.class_name}</td>
+                                                <td>{course.class_code}</td>
+                                                <td>{course.user_id}</td>
+                                            </tr>
+                                        ))}
+                                    </tbody>
+                                </table>
+                            ) : (
+                                <div className='no-classes'>
+                                    <p>You have no classes yet, create a class now!</p>
+                                </div>
+                            )}
+                            </div>
                         <div className='create-classes' align='center'>
                             <h2>Create a Class</h2>
                             <input
@@ -283,36 +333,6 @@ export const ClassesPage = () => {
                                 Create Class
                             </button>
                         </div>
-                        {loadCourselist.length > 0 ? (
-                            <table>
-                                <colgroup>
-                                    <col width='32%' />
-                                    <col width='17%' />
-                                    <col width='14%' />
-                                    <col width='37%' />
-                                </colgroup>
-                                <tbody>
-                                    <tr>
-                                        <th>Course Name</th>
-                                        <th>Course Code</th>
-                                        <th>Subject</th>
-                                        <th>Professor</th>
-                                    </tr>
-                                    {loadCourselist.map(course => (
-                                        <tr key={course.id}>
-                                            <td>{course.name}</td>
-                                            <td>{course.code}</td>
-                                            <td>{course.subject}</td>
-                                            <td>{course.professor}</td>
-                                        </tr>
-                                    ))}
-                                </tbody>
-                            </table>
-                        ) : (
-                            <div className='no-classes'>
-                                <p>You have no classes yet, create a class now!</p>
-                            </div>
-                        )}
                     </div>
                 </div>
             )}
