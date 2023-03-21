@@ -54,7 +54,7 @@ export const ClassesPage = () => {
             subject_code: subject_code,
         }).then((res) => {
             console.log(res);
-            //window.location.reload(); // Refresh the page
+            window.location.reload(); // Refresh the page
         }).catch((err) => {
             console.log(err);
         }); 
@@ -102,7 +102,7 @@ export const ClassesPage = () => {
             } else {
                 setSearchCourseList([]);
             }
-            //window.location.reload(); // Refresh the page
+            window.location.reload(); // Refresh the page
         })
         .catch((error) => console.log("Error: ", error.message));
 
