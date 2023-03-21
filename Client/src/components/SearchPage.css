@@ -121,6 +121,7 @@ margin: 0 200px;
 
 .note-box:hover {
     transform: scale(1.05);
+    transition: var(--transition);
 }
 
 .download-button {
