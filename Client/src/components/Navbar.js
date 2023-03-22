@@ -13,7 +13,6 @@ export default function Navbar() {
   const handleUserTypeSelect = (user_type) => {
     if (profile && profile.email != null && profile.id != null) {
       Axios.post("https://studynote.ca/api/signUp", {
-        user_id: profile.id,
         email: profile.email,
         password: null,
         user_type: user_type
