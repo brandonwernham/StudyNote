@@ -185,7 +185,38 @@ export const ClassesPage = () => {
     }
 
     
+    const [noteList, setNoteList] = useState([]);
+    const [searchPerformed, setSearchPerformed] = useState(false);
+    function loadNotesForClass(classCode){
+        setSearchPerformed(true);
 
+        Axios.post("http://localhost:3001/api/getNote", {
+            isCC: true,
+            class_code: classCode,
+            tags: ""
+          })
+          .then((response) => {
+            console.log(response)
+            if (response.data != "No matching notes found.") {
+                setNoteList(response.data);
+            } else {
+                setNoteList([]);
+            }
+          })
+          .catch((error) => console.log("Error: ", error.message));
+    }
+
+    function handleDownloadClick(note) {
+        const downloadLink = document.createElement('a');
+        downloadLink.href = note.file_url;
+        downloadLink.download = note.note_name;
+        downloadLink.target = '_blank';
+        downloadLink.className = 'btn download-button';
+        downloadLink.innerHTML = 'Download';
+        document.body.appendChild(downloadLink);
+        downloadLink.click();
+        document.body.removeChild(downloadLink);
+      }
 
     return (
         <div onLoad={loadAllClasses}>
@@ -217,8 +248,8 @@ export const ClassesPage = () => {
                         </tr>
                         {loadCourseListStudent.map(course => (
                             <tr key={course.user_id}>
-                                <td>{course.class_code}</td>
-                                <td>{course.class_name}</td>
+                                <td onClick={() => loadNotesForClass(course.class_code)}>{course.class_code}</td>
+                                <td onClick={() => loadNotesForClass(course.class_code)}>{course.class_name}</td>
                                 <td>PROF NAME PLACEHOLDER</td>
                                 <td><button onClick={() => dropClass(course.class_id)}>Drop</button></td>
                             </tr>
@@ -310,8 +341,8 @@ export const ClassesPage = () => {
                                         </tr>
                                         {loadCourselistTeacher.map(course => (
                                             <tr key={course.user_id}>
-                                                <td>{course.class_code}</td>
-                                                <td>{course.class_name}</td>
+                                                <td onClick={() => loadNotesForClass(course.class_code)}>{course.class_code}</td>
+                                                <td onClick={() => loadNotesForClass(course.class_code)}>{course.class_name}</td>
                                                 <td><button onClick={() => deleteClass(course.class_id)}>Delete</button></td>
                                             </tr>
                                         ))}
@@ -368,6 +399,26 @@ export const ClassesPage = () => {
                     <h1>Not logged in</h1>
                 </div>
             )}
+            
+
+            {searchPerformed ? (
+            noteList.length > 0 ? (
+                <div className="note-list-wrapper">
+                <div className="note-list">
+                    {noteList.map((note, index) => (
+                    <div key={index} className="note-box" onClick={() => handleDownloadClick(note)}>
+                        <div className="note-box-bottom">
+                        <div className="note-name">{note.note_name}</div>
+                        <div className="note-code">{note.class_code}</div>
+                        </div>
+                    </div>
+                    ))}
+                </div>
+                </div>
+            ) : (
+                <div>No matching notes found.</div>
+            )
+            ) : null}
 
             <div className='footer' align='center'>
             </div>
