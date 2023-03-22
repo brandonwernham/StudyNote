@@ -45,7 +45,7 @@ app.use(session({
     },
 }));
 
-
+//
 
 const userExists = async (email) => {
     const query = 'SELECT COUNT(*) as count FROM users WHERE email = ?';
