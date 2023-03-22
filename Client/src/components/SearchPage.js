@@ -31,6 +31,18 @@ export const SearchPage = () => {
       
   };
 
+  function handleDownloadClick(note) {
+    const downloadLink = document.createElement('a');
+    downloadLink.href = note.file_url;
+    downloadLink.download = note.note_name;
+    downloadLink.target = '_blank';
+    downloadLink.className = 'btn download-button';
+    downloadLink.innerHTML = 'Download';
+    document.body.appendChild(downloadLink);
+    downloadLink.click();
+    document.body.removeChild(downloadLink);
+  }
+
   return (
     <div>
       <div>
@@ -85,13 +97,11 @@ export const SearchPage = () => {
             <div className="note-list-wrapper">
               <div className="note-list">
                 {noteList.map((note, index) => (
-                  <div key={index} className="note-box">
+                  <div key={index} className="note-box" onClick={() => handleDownloadClick(note)}>
                     <div className="note-box-bottom">
                       <div className="note-name">{note.note_name}</div>
                       <div className="note-code">{note.class_code}</div>
-                      <a href={note.file_url} download={`${note.note_name}`} className="btn download-button">Download</a>
                     </div>
-                    
                   </div>
                 ))}
               </div>
