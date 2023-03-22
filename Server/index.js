@@ -199,7 +199,7 @@ app.post("/api/upload", upload.single("note"), (req, res) => {
         if(result[0].length == 0) {
             //adds class to database if it doesnt exist
             database.getConnection().then(conn => {
-                const result = conn.query("INSERT INTO classes (class_name, class_code, user_id) VALUES (?, ?, ?)", ["no_name_provided", class_code, creator_id]);
+                const result = conn.query("INSERT INTO classes (class_code, user_id) VALUES ( ?, ?)", [class_code, creator_id]);
                 conn.release();
                 return result;
             }).then(result => {
@@ -282,7 +282,7 @@ app.post("/api/upload", upload.single("note"), (req, res) => {
 // Adding, joining, and loading classes
 
 app.post('/api/createClass', async (req, res) => {
-    const { user_id, class_name } = req.body;
+    const { user_id } = req.body;
     const subject_code = req.body.subject_code;
     const course_code = req.body.course_code;
 
@@ -293,8 +293,8 @@ app.post('/api/createClass', async (req, res) => {
       if (exists) {
         res.status(200).json({ message: 'Class already exists' });
       } else {
-        const query = 'INSERT INTO classes (user_id, class_name, class_code) VALUES (?, ?, ?)';
-        const result = await database.query(query, [user_id, class_name, class_code]);
+        const query = 'INSERT INTO classes (user_id, class_code) VALUES (?, ?)';
+        const result = await database.query(query, [user_id, class_code]);
         res.status(201).json({ message: 'Class created', data: result });
       }
     } catch (error) {
@@ -464,7 +464,7 @@ app.post("/api/getNote", (req, res) => {
                     } else {
                         const noteID = result[0][0].note_id;
                         database.getConnection().then(conn => {
-                            const result = conn.query("SELECT * FROM notes WHERE note_id = ? AND class_name = ?", [noteID, class_code]);
+                            const result = conn.query("SELECT * FROM notes WHERE note_id = ? AND class_code = ?", [noteID, class_code]);
                             conn.release();
                             return result;
                         }).then(result => {
