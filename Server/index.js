@@ -74,15 +74,16 @@ const userInClass = async (class_id, user_id) => {
 //sign up 
   
 app.post('/api/signUp', async (req, res) => {
-    const { email, password, user_type } = req.body;
+    const { email, user_name, user_type } = req.body;
+    console.log(user_name)
     try {
       // Now it will see if the user exists and such
       const exists = await userExists(email);
       if (exists) {
         res.status(200).json({ message: 'User already exists' });
       } else {
-        const query = 'INSERT INTO users (email, user_password, user_type) VALUES (?, ?, ?)';
-        const result = await database.query(query, [email, password, user_type]);
+        const query = 'INSERT INTO users (email, user_name, user_type) VALUES (?, ?, ?)';
+        const result = await database.query(query, [email, user_name, user_type]);
         res.status(201).json({ message: 'User created', data: result });
       }
     } catch (error) {

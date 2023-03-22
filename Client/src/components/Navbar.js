@@ -14,7 +14,7 @@ export default function Navbar() {
     if (profile && profile.email != null && profile.id != null) {
       Axios.post("http://localhost:3001/api/signUp", {
         email: profile.email,
-        password: null,
+        user_name: profile.name,
         user_type: user_type
       })
         .then((response) => {
