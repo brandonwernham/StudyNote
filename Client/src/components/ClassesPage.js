@@ -28,11 +28,14 @@ export const ClassesPage = () => {
         }
     }, [profile]);
 
+    // for classes page (only this page)
+    const class_type = "class";
+
 // CREATE CLASSES
     const createClass = () => {
 
-        // TEST VARIABLES DELETE LATER
-        const class_id = 12;
+        // PREVIOUS: TEST VARIABLES DELETE LATER
+        // CURRENT: is it?
         const user_id = accountID;
 
         // Get variables
@@ -47,11 +50,11 @@ export const ClassesPage = () => {
         
         // Axios Post to create class in database
         Axios.post("http://localhost:3001/api/createClass", {
-            class_id: class_id,
             class_name: class_name,
             course_code: course_code,
             subject_code: subject_code,
             user_id: user_id,
+            class_type: class_type
         }).then((res) => {
             console.log(res);
             window.location.reload(); // Refresh the page
@@ -75,6 +78,7 @@ export const ClassesPage = () => {
         Axios.post("http://localhost:3001/api/searchClass", {
           course_code: course_code,
           subject_code: subject_code,
+          class_type: class_type
         })
         .then((response) => {
           if (response.data != "No classes found.") {

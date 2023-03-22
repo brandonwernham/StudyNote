@@ -47,9 +47,13 @@ app.use(session({
 
 //
 
-const userExists = async (user_id) => {
-    const query = 'SELECT COUNT(*) as count FROM users WHERE user_id = ?';
-    const [rows] = await database.query(query, [user_id]);
+const userExists = async (passedVar, isEmail) => {
+    if(isEmail) {
+        const query = 'SELECT COUNT(*) as count FROM users WHERE email = ?';
+    } else {
+        const query = 'SELECT COUNT(*) as count FROM users WHERE user_id = ?';
+    }
+    const [rows] = await database.query(query, [passedVar]);
     return rows[0].count > 0;
 };
 
@@ -78,7 +82,7 @@ app.post('/api/signUp', async (req, res) => {
     console.log(user_name)
     try {
       // Now it will see if the user exists and such
-      const exists = await userExists(email);
+      const exists = await userExists(email, true);
       if (exists) {
         res.status(200).json({ message: 'User already exists' });
       } else {
@@ -283,6 +287,7 @@ app.post('/api/createClass', async (req, res) => {
     const { user_id, class_name } = req.body;
     const subject_code = req.body.subject_code;
     const course_code = req.body.course_code;
+    const class_type = req.body.class_type;
 
     const class_code = subject_code + course_code;
     
@@ -291,8 +296,8 @@ app.post('/api/createClass', async (req, res) => {
       if (exists) {
         res.status(200).json({ message: 'Class already exists' });
       } else {
-        const query = 'INSERT INTO classes (user_id, class_name, class_code) VALUES (?, ?, ?)';
-        const result = await database.query(query, [user_id, class_name, class_code]);
+        const query = 'INSERT INTO classes (user_id, class_name, class_code, class_type) VALUES (?, ?, ?, ?)';
+        const result = await database.query(query, [user_id, class_name, class_code, class_type]);
         res.status(201).json({ message: 'Class created', data: result });
       }
     } catch (error) {
@@ -303,11 +308,12 @@ app.post('/api/createClass', async (req, res) => {
 app.post('/api/searchClass', async (req, res) => {
     const subject_code = req.body.subject_code;
     const course_code = req.body.course_code;
+    const class_type = req.body.class_type;
 
     const class_code = subject_code + course_code;
 
     database.getConnection().then(conn => {
-        const result = conn.query("SELECT * FROM classes WHERE class_code = ?", [class_code]);
+        const result = conn.query("SELECT * FROM classes WHERE class_code = ? AND class_type = ?", [class_code, class_type]);
         conn.release();
         return result;
     }).then(result => {
@@ -337,7 +343,7 @@ app.post('/api/joinClass', async (req, res) => {
     const { class_id, user_id } = req.body;
   
     try {
-      const exists = await userExists(user_id);
+      const exists = await userExists(user_id, false);
       const inClass = await userInClass(class_id, user_id);
       if (exists && !inClass) {
         const query = 'INSERT INTO user_classes (class_id, user_id) VALUES (?, ?)';
@@ -352,7 +358,8 @@ app.post('/api/joinClass', async (req, res) => {
 
 });
 
-
+//TODO: there has to be a better way to function most of this stuff so it doesn't overlap with loadCLassesTeacher
+//ALSO, probably has to change to work with groups somehow since students can act as teachers for groups
 app.post('/api/loadClassesStudent', async (req, res) => {
     const { user_id } = req.body;
 
