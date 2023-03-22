@@ -179,7 +179,7 @@ export const ClassesPage = () => {
                         {loadCourseListStudent.map(course => (
                             <tr key={course.user_id}>
                                 <td>{course.class_code}</td>
-                                <td>{course.user_id}</td>
+                                <td>{course.user_name}</td>
                             </tr>
                         ))}
                     </tbody>
@@ -269,7 +269,7 @@ export const ClassesPage = () => {
                                             <tr key={course.user_id}>
                                                
                                                 <td>{course.class_code}</td>
-                                                <td>{course.user_id}</td>
+                                                <td>{course.user_name}</td>
                                             </tr>
                                         ))}
                                     </tbody>

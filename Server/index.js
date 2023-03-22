@@ -380,7 +380,24 @@ app.post('/api/loadClassesStudent', async (req, res) => {
     //respond to frontend with note data
     function returnFoundClasses(result) {
         const classesFoundArray = result[0];
-        res.send(classesFoundArray);
+
+        //gets username and adds it to result
+        database.getConnection().then(conn => {
+            const query = 'SELECT user_name FROM users WHERE user_id = ?';
+            const params = [user_id];
+            const result = conn.query(query, params);
+            conn.release();
+            return result;
+        }).then(result => {
+            classesFoundArray.forEach(element => 
+                element.user_name = result[0][0].user_name
+            );
+
+            console.log(classesFoundArray)
+            res.send(classesFoundArray);
+        }).catch(err => {
+            res.send(err);
+        });
     }
 
     //if there is no matching notes to given request
@@ -412,7 +429,24 @@ app.post('/api/loadClassesTeacher', async (req, res) => {
     //respond to frontend with note data
     function returnFoundClasses(result) {
         const classesFoundArray = result[0];
-        res.send(classesFoundArray);
+
+        //gets username and adds it to result
+        database.getConnection().then(conn => {
+            const query = 'SELECT user_name FROM users WHERE user_id = ?';
+            const params = [user_id];
+            const result = conn.query(query, params);
+            conn.release();
+            return result;
+        }).then(result => {
+            classesFoundArray.forEach(element => 
+                element.user_name = result[0][0].user_name
+            );
+
+            console.log(classesFoundArray)
+            res.send(classesFoundArray);
+        }).catch(err => {
+            res.send(err);
+        });
     }
 
     //if there is no matching notes to given request
