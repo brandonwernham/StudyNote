@@ -136,17 +136,19 @@ app.get("/api/login", (req, res) => {
 
 app.get("/api/showDB", (req, res) => {
 
-    const sqlInsert = "SELECT * FROM users"
-    database.query(sqlInsert, (err, result) => {
-        if (err){
-            res.send({err: err})
-        }
-        else if (result.length > 0){
-            res.send(result);
-        } else{
+    database.getConnection().then(conn => {
+        const result = conn.query("SELECT * FROM users");
+        conn.release();
+        return result
+    }).then(result => {
+        if(result[0].length == 0) {
             res.send({message: "DB empty"})
+        } else {
+            res.send(result);
         }
-    })    
+    }).catch(err => {
+        res.send(err);
+    })
 });
 
 app.get("/api/test", (req, res) => {
