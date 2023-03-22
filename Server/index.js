@@ -209,6 +209,8 @@ app.post("/api/upload", upload.single("note"), (req, res) => {
             conn.release();
             return result;
         }).then(result => {
+
+            console.log("try1")
             const noteID = result[0].insertId;
 
             //loops through every tag recieved from client
@@ -243,8 +245,8 @@ app.post("/api/upload", upload.single("note"), (req, res) => {
                 })
             })
         }).catch(err => {
-            res.send(err)
             console.log(err);
+            res.send(err)
         })
     }).catch(err => {
         res.send(err)
