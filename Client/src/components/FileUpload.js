@@ -11,7 +11,6 @@ const FileUpload = ({ files, setFiles, removeFile }) => {
   const [courseCode, setCourseCode] = useState("");
   const [noteName, setNoteName] = useState("");
   const { profile } = useUserContext();
-  console.log(profile);
   const [accountType, setAccountType] = useState("");
   const [accountID, setAccountID] = useState("");
 
