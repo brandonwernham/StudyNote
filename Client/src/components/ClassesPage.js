@@ -267,9 +267,9 @@ export const ClassesPage = () => {
                 {searched && searchCourseList.length > 0 ? (
                 <div className='search-results'>
                     {searchCourseList.map(searchCourse => (
-                        <div key={searchCourse.class_code} className='search-result'>
+                        <div key={searchCourse.class_id} className='search-result'>
+                            <p>{searchCourse.class_name}</p>
                             <p>{searchCourse.class_code}</p>
-                            <p>{searchCourse.class_id}</p>
                             <button type="submit" name='join-class' className='btn btn-create-class' onClick={() => joinClass(searchCourse.class_id)}>Join</button>
                         </div>
                     ))}
