@@ -36,6 +36,7 @@ export const ClassesPage = () => {
         const user_id = accountID;
 
         // Get variables
+        const class_name = document.getElementById("create_class_name").value;
         const subject_code = document.getElementById("create_subject_code").value;
         const course_code = document.getElementById("create_course_code").value; 
 
@@ -47,9 +48,10 @@ export const ClassesPage = () => {
         // Axios Post to create class in database
         Axios.post("http://localhost:3001/api/createClass", {
             class_id: class_id,
-            user_id: user_id,
+            class_name: class_name,
             course_code: course_code,
             subject_code: subject_code,
+            user_id: user_id,
         }).then((res) => {
             console.log(res);
             window.location.reload(); // Refresh the page
@@ -172,14 +174,14 @@ export const ClassesPage = () => {
                     </colgroup>
                     <tbody>
                         <tr>
-                            <th>Course Name</th>
                             <th>Class Code</th>
+                            <th>Class Name</th>
                             <th>Professor</th>
                         </tr>
                         {loadCourseListStudent.map(course => (
                             <tr key={course.user_id}>
                                 <td>{course.class_code}</td>
-                                <td>{course.user_name}</td>
+                                <td>{course.class_name}</td>
                             </tr>
                         ))}
                     </tbody>
@@ -263,13 +265,12 @@ export const ClassesPage = () => {
                                     <tbody>
                                         <tr>
                                             <th>Class Code</th>
-                                            <th>Professor</th>
+                                            <th>Class Name</th>
                                         </tr>
                                         {loadCourselistTeacher.map(course => (
                                             <tr key={course.user_id}>
-                                               
                                                 <td>{course.class_code}</td>
-                                                <td>{course.user_name}</td>
+                                                <td>{course.class_name}</td>
                                             </tr>
                                         ))}
                                     </tbody>
@@ -282,6 +283,14 @@ export const ClassesPage = () => {
                         </div>
                         <div className='create-classes' align='center'>
                             <h2>Create a Class</h2>
+                            <input
+                                className="class-input"
+                                type="text"
+                                id="create_class_name"
+                                placeholder="Class Name"
+                                value={className}
+                                onChange={(e) => setClassName(e.target.value)}
+                            />
                             <select
                                 placeholder="Subject Code"
                                 className="class-dropdown"
