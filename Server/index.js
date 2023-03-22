@@ -363,19 +363,41 @@ app.post('/api/dropClass', async (req, res) => {
     const { class_id, user_id } = req.body;
   
     try {
-      const exists = await userExists(user_id, false);
-      const inClass = await userInClass(class_id, user_id);
-      if (exists && inClass) {
-        const query = 'DELETE FROM user_classes WHERE class_id = ? AND user_id = ?';
-        const result = await database.query(query, [class_id, user_id]);
-        res.status(201).json({ message: 'Class dropped', data: result });
-      } else {
-        res.status(200).json({ message: 'User is already in class (or does not exist)' });
-      }
+        const exists = await userExists(user_id, false);
+        const inClass = await userInClass(class_id, user_id);
+        if (exists && inClass) {
+            const query = 'DELETE FROM user_classes WHERE class_id = ? AND user_id = ?';
+            const result = await database.query(query, [class_id, user_id]);
+            res.status(201).json({ message: 'Class dropped', data: result });
+        } else {
+            res.status(200).json({ message: 'User is already in class (or does not exist)' });
+        }
     } catch (error) {
-      res.status(500).json({ message: 'Error occurred', error: error.message });
+            res.status(500).json({ message: 'Error occurred', error: error.message });
     }
+});
 
+app.post('/api/deleteClass', async (req, res) => {
+    const { class_id } = req.body;
+  
+    try {
+      
+        const query1 = 'DELETE FROM user_classes WHERE class_id = ?';
+        const result1 = await database.query(query1, [class_id]);
+      
+        const query2 = 'DELETE FROM classes WHERE class_id = ?';
+        const result2 = await database.query(query2, [class_id]);
+      
+      
+        const response = {
+          result1,
+          result2,
+        };
+      
+        res.status(201).json({ message: 'Class dropped', data: response });
+      } catch (error) {
+        throw error;
+      }
 });
 
 //TODO: there has to be a better way to function most of this stuff so it doesn't overlap with loadCLassesTeacher

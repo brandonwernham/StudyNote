@@ -112,7 +112,7 @@ export const ClassesPage = () => {
 
         }
 
-        // DROP CLASSES
+    // DROP CLASSES
     function dropClass(classID) {
 
         const class_id = classID;
@@ -126,7 +126,22 @@ export const ClassesPage = () => {
         })
         .catch((error) => console.log("Error: ", error.message));
 
-        }
+    }
+
+    // DELETE CLASSES
+    function deleteClass(classID) {
+
+        const class_id = classID;
+        
+        Axios.post("http://localhost:3001/api/deleteClass", {
+            class_id: class_id,
+        })
+        .then((response) => {
+            window.location.reload(); // Refresh the page
+        })
+        .catch((error) => console.log("Error: ", error.message));
+
+    }
 
     
 // LOAD CLASSES
@@ -282,19 +297,22 @@ export const ClassesPage = () => {
                             {loadCourselistTeacher.length > 0 ? (
                                 <table>
                                     <colgroup>
-                                        <col width='30%' />
-                                        <col width='20%' />
-                                        <col width='50%' />
+                                        <col width='18%' />
+                                        <col width='28%' />
+                                        <col width='49%' />
+                                        <col width='5%' />
                                     </colgroup>
                                     <tbody>
                                         <tr>
                                             <th>Class Code</th>
                                             <th>Class Name</th>
+                                            <th></th>
                                         </tr>
                                         {loadCourselistTeacher.map(course => (
                                             <tr key={course.user_id}>
                                                 <td>{course.class_code}</td>
                                                 <td>{course.class_name}</td>
+                                                <td><button onClick={() => deleteClass(course.class_id)}>Delete</button></td>
                                             </tr>
                                         ))}
                                     </tbody>
