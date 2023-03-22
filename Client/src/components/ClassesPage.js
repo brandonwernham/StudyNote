@@ -100,7 +100,7 @@ export const ClassesPage = () => {
             } else {
                 setSearchCourseList([]);
             }
-            //window.location.reload(); // Refresh the page
+            window.location.reload(); // Refresh the page
         })
         .catch((error) => console.log("Error: ", error.message));
 
