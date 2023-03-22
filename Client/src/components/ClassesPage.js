@@ -178,7 +178,6 @@ export const ClassesPage = () => {
                         </tr>
                         {loadCourseListStudent.map(course => (
                             <tr key={course.user_id}>
-                                <td>{course.class_name}</td>
                                 <td>{course.class_code}</td>
                                 <td>{course.user_id}</td>
                             </tr>
@@ -228,7 +227,6 @@ export const ClassesPage = () => {
                 <div className='search-results'>
                     {searchCourseList.map(searchCourse => (
                         <div key={searchCourse.class_code} className='search-result'>
-                            <h3>{searchCourse.class_name}</h3>
                             <p>{searchCourse.class_code}</p>
                             <p>{searchCourse.class_id}</p>
                             <button type="submit" name='join-class' className='btn btn-create-class' onClick={() => joinClass(searchCourse.class_id)}>Join</button>
