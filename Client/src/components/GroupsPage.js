@@ -2,6 +2,8 @@ import React, {useState} from 'react';
 import Axios from 'axios';
 import "./GroupsPage.css";
 import Navbar from './Navbar';
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faPlus } from "@fortawesome/free-solid-svg-icons";
 
 export const GroupsPage = () => {
     const [dbData, setdbData] = useState([]);
@@ -50,11 +52,26 @@ export const GroupsPage = () => {
 
             <div className='groups-content'>
                 <div className='groups-side-bar'>
-                    <div className='groups-row'>Group 1</div>
-                    <div className='groups-row'>Group 1</div>
-                    <div className='groups-row'>Group 1</div>
-                    <div className='groups-row'>Group 1</div>
-                    <div className='groups-row'>Group 1</div>
+                    <div className='groups-row'>
+                        <button className='btn btn-groups-row'>
+                            <i className="groups-plus-icon">
+                                <FontAwesomeIcon icon={faPlus} />
+                            </i>
+                            Create StudyGroup
+                        </button>
+                    </div>
+                    <div className='groups-row'>
+                        <button className='btn btn-groups-row'>Group 1</button>
+                    </div>
+                    <div className='groups-row'>
+                        <button className='btn btn-groups-row'>Group 1</button>
+                    </div>
+                    <div className='groups-row'>
+                        <button className='btn btn-groups-row'>Group 1</button>
+                    </div>
+                    <div className='groups-row'>
+                        <button className='btn btn-groups-row'>Group 1</button>
+                    </div>
                 </div>
                 <div className='groups-group-container'>
                     <div>This is where each group will display</div>
