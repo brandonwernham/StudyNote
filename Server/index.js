@@ -480,6 +480,8 @@ app.post("/api/getNote", (req, res) => {
     function returnFoundNotes(result) {
         const resultsArray = result[0].map((note) => ({
         ...note,
+        //file path might be a bit weird, proxy for just / is port 3000
+        //studynote.ca therefore might not work
         file_url: `http://localhost:3001/${note.file_path}`,
         }));
         res.send(resultsArray);

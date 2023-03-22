@@ -46,7 +46,7 @@ export const ClassesPage = () => {
         console.log(courseCode);
         
         // Axios Post to create class in database
-        Axios.post("http://localhost:3001/api/createClass", {
+        Axios.post("http://studynote.ca/api/createClass", {
             class_id: class_id,
             user_id: user_id,
             class_name: class_name,
@@ -72,7 +72,7 @@ export const ClassesPage = () => {
         console.log(subject_code);
         console.log(course_code);
       
-        Axios.post("http://localhost:3001/api/searchClass", {
+        Axios.post("http://studynote.ca/api/searchClass", {
           course_code: course_code,
           subject_code: subject_code,
         })
@@ -92,7 +92,7 @@ export const ClassesPage = () => {
 
         const class_id = classID;
         
-        Axios.post("http://localhost:3001/api/joinClass", {
+        Axios.post("http://studynote.ca/api/joinClass", {
             class_id: class_id,
             user_id: accountID,
         })
@@ -114,7 +114,7 @@ export const ClassesPage = () => {
 
         const user_id = accountID;
 
-        Axios.post("http://localhost:3001/api/loadClassesStudent", {
+        Axios.post("http://studynote.ca/api/loadClassesStudent", {
             user_id: user_id,
           })
           .then((response) => {
@@ -131,7 +131,7 @@ export const ClassesPage = () => {
 
         const user_id = accountID;
 
-        Axios.post("http://localhost:3001/api/loadClassesTeacher", {
+        Axios.post("http://studynote.ca/api/loadClassesTeacher", {
             user_id: user_id,
           })
           .then((response) => {
