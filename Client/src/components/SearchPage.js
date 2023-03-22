@@ -43,6 +43,10 @@ export const SearchPage = () => {
     document.body.removeChild(downloadLink);
   }
 
+  function getExtension(filepath) {
+    return filepath.split('.').pop();
+  }
+
   return (
     <div>
       <div>
@@ -96,14 +100,21 @@ export const SearchPage = () => {
           noteList.length > 0 ? (
             <div className="note-list-wrapper">
               <div className="note-list">
-                {noteList.map((note, index) => (
-                  <div key={index} className="note-box" onClick={() => handleDownloadClick(note)}>
-                    <div className="note-box-bottom">
-                      <div className="note-name">{note.note_name}</div>
-                      <div className="note-code">{note.class_code}</div>
-                    </div>
-                  </div>
-                ))}
+              {noteList.map((note, index) => (
+              <div key={index} className="note-box" onClick={() => handleDownloadClick(note)}>
+                <div className="note-box-bottom">
+                  <div className="note-name">{note.note_name}</div>
+                  <div className="note-code">{note.class_code}</div>
+                </div>
+                
+                {getExtension(note.file_path) === 'jpg' || getExtension(note.file_path) === 'png' ?
+                // IF 'jpg' OR 'png
+                <img src={"http://localhost:3001/" + note.file_path} alt={note.note_name} className="note-box-preview" /> :
+                  <div className="note-placeholder"></div>
+                }
+                </div>
+              ))}
+
               </div>
             </div>
           ) : (
