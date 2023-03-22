@@ -244,7 +244,6 @@ app.post("/api/upload", upload.single("note"), (req, res) => {
             })
         }).catch(err => {
             res.send(err)
-            console.log(err);
         })
     }).catch(err => {
         res.send(err)
