@@ -1,0 +1,71 @@
+drop schema StudyNoteDB;
+create schema StudyNoteDB;
+
+use StudyNoteDB;
+
+Create Table users (
+  user_id bigint not null auto_increment primary key,
+  email varchar(254), 
+  user_password varchar(254),  
+  user_type varchar(254)
+);
+
+Create Table notes (
+  note_id int not null auto_increment primary key,
+  note_name varchar(254),
+  file_path varchar(254),
+  class_code varchar(254),
+  creator_id int
+);
+
+Create Table tags (
+  tag_id int not null auto_increment primary key,
+  tag_name varchar(254)
+);
+
+Create Table note_tags (
+  note_id int,
+  tag_id int,
+  foreign key (note_id) references notes (note_id),
+  foreign key (tag_id) references tags (tag_id)
+);
+
+Create Table classes (
+  class_id int not null auto_increment primary key,
+  class_code varchar(254),
+  user_id bigint
+);
+
+Create Table user_classes (
+  class_id int,
+  user_id bigint,
+  foreign key (class_id) references classes (class_id),
+  foreign key (user_id) references users (user_id)
+);
+
+Create Table study_groups (
+  group_id int not null auto_increment primary key,
+  group_name varchar(254),
+  user_id bigint
+);
+
+Create Table user_groups (
+  user_id bigint,
+  group_id int,
+  foreign key (user_id) references users (user_id),
+  foreign key (group_id) references study_groups (group_id)
+);
+
+Create Table user_created_notes (
+  user_id bigint,
+  note_id int,
+  foreign key (user_id) references users (user_id),
+  foreign key (note_id) references notes (note_id)
+);
+
+Create Table user_saved_notes (
+  user_id bigint,
+  note_id int,
+  foreign key (user_id) references users (user_id),
+  foreign key (note_id) references notes (note_id)
+);
