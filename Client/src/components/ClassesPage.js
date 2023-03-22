@@ -250,7 +250,7 @@ export const ClassesPage = () => {
                             <tr key={course.user_id}>
                                 <td onClick={() => loadNotesForClass(course.class_code)}>{course.class_code}</td>
                                 <td onClick={() => loadNotesForClass(course.class_code)}>{course.class_name}</td>
-                                <td>PROF NAME PLACEHOLDER</td>
+                                <td>{course.user_name}</td>
                                 <td><button onClick={() => dropClass(course.class_id)}>Drop</button></td>
                             </tr>
                         ))}
