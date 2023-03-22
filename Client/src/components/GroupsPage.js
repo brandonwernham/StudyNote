@@ -40,13 +40,27 @@ export const GroupsPage = () => {
             <div>
                 <h1 className='groups-title'>Groups</h1>
             </div>
-            <div>
+            {/* <div>
                 <button onClick={showDB}>See DB</button>
                 
             </div>
             <div>
             <button onClick={test}>Test</button>
+            </div> */}
+
+            <div className='groups-content'>
+                <div className='groups-side-bar'>
+                    <div className='groups-row'>Group 1</div>
+                    <div className='groups-row'>Group 1</div>
+                    <div className='groups-row'>Group 1</div>
+                    <div className='groups-row'>Group 1</div>
+                    <div className='groups-row'>Group 1</div>
+                </div>
+                <div className='groups-group-container'>
+                    <div>This is where each group will display</div>
+                </div>
             </div>
+
         </div>
     );
 }

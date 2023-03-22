@@ -2,3 +2,24 @@
     display: flex;
     justify-content: center;
 }
+
+.groups-content {
+    height: 50rem;
+    background: var(--color-bg);
+    border-radius: 20px;
+    display: flex;
+    flex-direction: row;
+    margin-left: 2rem;
+    margin-right: 2rem;
+}
+
+.groups-side-bar {
+    background: linear-gradient(to bottom right, var(--color-primary), var(--color-primary-variant));
+    margin: 1rem;
+    padding: 1rem;
+    border-radius: 20px;
+}
+
+.groups-row {
+    width: 20rem;
+}
