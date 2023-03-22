@@ -112,6 +112,22 @@ export const ClassesPage = () => {
 
         }
 
+        // DROP CLASSES
+    function dropClass(classID) {
+
+        const class_id = classID;
+        
+        Axios.post("http://localhost:3001/api/dropClass", {
+            class_id: class_id,
+            user_id: accountID,
+        })
+        .then((response) => {
+            window.location.reload(); // Refresh the page
+        })
+        .catch((error) => console.log("Error: ", error.message));
+
+        }
+
     
 // LOAD CLASSES
     const loadClassesStudent = () => {
@@ -172,20 +188,24 @@ export const ClassesPage = () => {
             {loadCourseListStudent.length > 0 ? (
                 <table>
                     <colgroup>
-                        <col width='30%' />
-                        <col width='20%' />
-                        <col width='50%' />
+                        <col width='18%' />
+                        <col width='28%' />
+                        <col width='49%' />
+                        <col width='5%' />
                     </colgroup>
                     <tbody>
                         <tr>
                             <th>Class Code</th>
                             <th>Class Name</th>
                             <th>Professor</th>
+                            <th></th>
                         </tr>
                         {loadCourseListStudent.map(course => (
                             <tr key={course.user_id}>
                                 <td>{course.class_code}</td>
                                 <td>{course.class_name}</td>
+                                <td>PROF NAME PLACEHOLDER</td>
+                                <td><button onClick={() => dropClass(course.class_id)}>Drop</button></td>
                             </tr>
                         ))}
                     </tbody>

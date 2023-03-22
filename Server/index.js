@@ -13,7 +13,7 @@ const fs = require('fs');
 const database = mysql.createPool({
     host: "localhost",
     user: "server",
-    password: "Rohan123",
+    password: "root",
     database: "StudyNoteDB",
 });
 
@@ -350,6 +350,25 @@ app.post('/api/joinClass', async (req, res) => {
         const query = 'INSERT INTO user_classes (class_id, user_id) VALUES (?, ?)';
         const result = await database.query(query, [class_id, user_id]);
         res.status(201).json({ message: 'Class joined', data: result });
+      } else {
+        res.status(200).json({ message: 'User is already in class (or does not exist)' });
+      }
+    } catch (error) {
+      res.status(500).json({ message: 'Error occurred', error: error.message });
+    }
+
+});
+
+app.post('/api/dropClass', async (req, res) => {
+    const { class_id, user_id } = req.body;
+  
+    try {
+      const exists = await userExists(user_id, false);
+      const inClass = await userInClass(class_id, user_id);
+      if (exists && inClass) {
+        const query = 'DELETE FROM user_classes WHERE class_id = ? AND user_id = ?';
+        const result = await database.query(query, [class_id, user_id]);
+        res.status(201).json({ message: 'Class dropped', data: result });
       } else {
         res.status(200).json({ message: 'User is already in class (or does not exist)' });
       }
