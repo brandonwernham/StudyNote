@@ -47,9 +47,15 @@ app.use(session({
 
 //
 
-const userExists = async (user_id) => {
+const userExistsID = async (user_id) => {
     const query = 'SELECT COUNT(*) as count FROM users WHERE user_id = ?';
     const [rows] = await database.query(query, [user_id]);
+    return rows[0].count > 0;
+};
+
+const userExistsEmail = async (email) => {
+    const query = 'SELECT COUNT(*) as count FROM users WHERE email = ?';
+    const [rows] = await database.query(query, [email]);
     return rows[0].count > 0;
 };
 
@@ -78,7 +84,7 @@ app.post('/api/signUp', async (req, res) => {
     console.log(user_name)
     try {
       // Now it will see if the user exists and such
-      const exists = await userExists(email);
+      const exists = await userExistsEmail(email);
       if (exists) {
         res.status(200).json({ message: 'User already exists' });
       } else {
@@ -337,7 +343,7 @@ app.post('/api/joinClass', async (req, res) => {
     const { class_id, user_id } = req.body;
   
     try {
-      const exists = await userExists(user_id);
+      const exists = await userExistsID(user_id);
       const inClass = await userInClass(class_id, user_id);
       if (exists && !inClass) {
         const query = 'INSERT INTO user_classes (class_id, user_id) VALUES (?, ?)';
