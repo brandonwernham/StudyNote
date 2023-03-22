@@ -194,6 +194,7 @@ app.post("/api/upload", upload.single("note"), (req, res) => {
     const tags = req.body.tags;
     const class_code = req.body.subject_code + req.body.course_code;
     const tagsArr = tags.split(",");
+    var okMessage = "";
 
 
     //search to see if class exists in the database
@@ -257,7 +258,10 @@ app.post("/api/upload", upload.single("note"), (req, res) => {
                     res.send(err)
                 })
             })
-        }).catch(err => {
+        }).then(() => {
+            res.send(okMessage)
+        })
+        .catch(err => {
             res.send(err)
         })
     }).catch(err => {
@@ -273,7 +277,7 @@ app.post("/api/upload", upload.single("note"), (req, res) => {
             conn.release();
             return result;
         }).then(result => {
-            res.send(result)
+            okMessage = okMessage + " || " + result
         }).catch(err => {
             console.log(err)
             res.send(err)
