@@ -13,7 +13,7 @@ const fs = require('fs');
 const database = mysql.createPool({
     host: "localhost",
     user: "server",
-    password: "root",
+    password: "Rohan123",
     database: "StudyNoteDB",
 });
 
@@ -508,8 +508,16 @@ app.post('/api/loadClassesTeacher', async (req, res) => {
 //note searching
 app.post("/api/getNote", (req, res) => {
     const tags = req.body.tags;
-    const class_code = req.body.subject_code + req.body.course_code;
-
+    const isCC = req.body.isCC;
+    var class_code
+    if (isCC == true){
+        class_code = req.body.class_code;
+    }   
+    else{
+        class_code = req.body.subject_code + req.body.course_code;
+    }
+    
+    console.log(class_code)
     //if no tags were entered, return all notes from the class selected
     if(tags == "") {
         database.getConnection().then(conn => {
@@ -517,6 +525,7 @@ app.post("/api/getNote", (req, res) => {
             conn.release();
             return result;
         }).then(result => {
+            console.log(result)
             if(result[0].length == 0) {
                 //no notes with the selected classes
                 returnNoNotes();
