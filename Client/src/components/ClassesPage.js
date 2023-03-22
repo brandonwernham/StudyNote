@@ -337,12 +337,14 @@ export const ClassesPage = () => {
                                         <tr>
                                             <th>Class Code</th>
                                             <th>Class Name</th>
+                                            <th>Professor Name</th>
                                             <th></th>
                                         </tr>
                                         {loadCourselistTeacher.map(course => (
                                             <tr key={course.user_id}>
                                                 <td onClick={() => loadNotesForClass(course.class_code)}>{course.class_code}</td>
                                                 <td onClick={() => loadNotesForClass(course.class_code)}>{course.class_name}</td>
+                                                <td>PROF NAME PLCAEHOLDERR</td>
                                                 <td><button onClick={() => deleteClass(course.class_id)}>Delete</button></td>
                                             </tr>
                                         ))}
