@@ -6,6 +6,7 @@ import GroupsPage from './components/GroupsPage';
 import UploadPage from './components/UploadPage';
 import LoginPage from './components/LoginPage';
 import RegisterPage from './components/RegisterPage';
+import GroupsTestPage from './components/GroupsTestPage';
 import { UserProvider } from "./components/UserContext";
 
 function App() {
@@ -17,6 +18,7 @@ function App() {
                 <Route path='classes' element={<ClassesPage />}></Route>
                 <Route path='groups' element={<GroupsPage />}></Route>
                 <Route path='upload' element={<UploadPage />}></Route>
+                <Route path='groupsTest' element={<GroupsTestPage />}></Route>
             </Routes>
         </UserProvider>
     );
