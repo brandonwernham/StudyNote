@@ -171,15 +171,15 @@ app.get("/api/test", (req, res) => {
 
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
-      cb(null, 'uploads/');
+      cb(null, 'notes/');
     },
     filename: function (req, file, cb) {
       cb(null, file.fieldname + '-' + Date.now() + path.extname(file.originalname));
     },
 });
-  
-const upload = multer({dest: "notes/"});
-  
+const upload = multer({ storage: storage })
+
+
 
 app.post("/api/upload", upload.single("note"), (req, res) => {
     const file_path = req.file.path;
@@ -492,7 +492,7 @@ app.post("/api/getNote", (req, res) => {
     function returnFoundNotes(result) {
         const resultsArray = result[0].map((note) => ({
           ...note,
-          file_url: `http://localhost:3001/${note.file_path}.pdf`,
+          file_url: `http://localhost:3001/${note.file_path}`,
         }));
         res.send(resultsArray);
     }      
