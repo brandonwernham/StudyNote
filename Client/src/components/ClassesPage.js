@@ -193,11 +193,11 @@ export const ClassesPage = () => {
                 </div>
             )}
             </div>
-                <div className='join-classes' align='center'>
+                <div className='create-classes' align='center'>
                     <h2>Join a Class</h2>
                         <select
                             placeholder="Subject Code"
-                            className="class-input"
+                            className="class-dropdown"
                             id="subject_code"
                             value={subjectCode}
                             onChange={(e) => setSubjectCode(e.target.value)}>
@@ -219,7 +219,7 @@ export const ClassesPage = () => {
                             value={courseCode}
                             onChange={(e) => setCourseCode(e.target.value)}
                         />
-                        <button type='submit' name='search' className='search-button' onClick={searchClass}>
+                        <button type='submit' name='search' className='btn btn-create-class' onClick={searchClass}>
                             Search Class
                         </button>
                         <br></br>
@@ -233,7 +233,7 @@ export const ClassesPage = () => {
                             <h3>{searchCourse.class_name}</h3>
                             <p>{searchCourse.class_code}</p>
                             <p>{searchCourse.class_id}</p>
-                            <button type="submit" name='join-class' className='join-class-button' onClick={() => joinClass(searchCourse.class_id)}>Join</button>
+                            <button type="submit" name='join-class' className='btn btn-create-class' onClick={() => joinClass(searchCourse.class_id)}>Join</button>
                         </div>
                     ))}
                 </div> 
@@ -252,9 +252,9 @@ export const ClassesPage = () => {
             ) : accountType == "teacher" ? (
                 // Teacher Page
                 <div className='container-page'>
-                        <div className='header'>
-                            <h1 className='classes-title'>Your Classes (Teacher): </h1>
-                        </div>
+                    <div className='header'>
+                        <h1 className='classes-title'>Your Classes (Teacher): </h1>
+                    </div>
                     <div className='content'>
                         <div className='classes'>
                             {loadCourselistTeacher.length > 0 ? (
@@ -284,7 +284,7 @@ export const ClassesPage = () => {
                                     <p>You have no classes yet, create a class now!</p>
                                 </div>
                             )}
-                            </div>
+                        </div>
                         <div className='create-classes' align='center'>
                             <h2>Create a Class</h2>
                             <input

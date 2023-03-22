@@ -2,21 +2,17 @@
     display: flex;
     justify-content: left;
     padding: 10px;
-}
-
-.container-page {
+    margin-left: 6rem;
 }
 
 .content {
     display: flex;
-    flex-direction: column;
 }
 
 .classes {
-    width: 900px;
-    float: left;
-    /* border: 3px solid white; */
-    /* background-color: rgba(255, 94, 0, 0.226); */
+    width: auto;
+    margin-left: 1rem;
+    margin-right: 1rem;
 }
 
 .join-classes,
@@ -29,7 +25,7 @@
     width: 20rem;
     border-radius: 20px;
     margin-left: auto; 
-    margin-right: 2rem;
+    margin-right: 10rem;
 }
 
 .footer {
@@ -65,23 +61,24 @@ input[type=text].class-input {
 }
 
 .no-classes {
-    margin-left: 1rem;
+    margin-left: 2rem;
 }
 
-table, th, td {
-    border: 1px solid black;
+table {
+    overflow: hidden;
     border-collapse: collapse;
-    padding: 20px;
-    color: white;
+    border-radius: 20px;
+    margin-left: 5rem;
 }
 
-table, th {
-    border-color: rgb(255, 94, 0);
-    background-color: rgb(255, 94, 0, 0.1);
+th, td {
+    padding: 1rem;
 }
 
-table, td {
-    border-color: grey;
-    background-color: rgba(128, 128, 128, 0.1);
-    font-weight: 5px;
+th {
+    background: var(--color-primary);
+}
+
+td {
+    background-color: rgba(207, 62, 0, 0.7);
 }
