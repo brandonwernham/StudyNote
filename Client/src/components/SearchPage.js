@@ -63,12 +63,6 @@ export const SearchPage = () => {
               setTags(e.target.value);
             }}
           ></input>
-          <input
-            type="text"
-            placeholder="Course Code"
-            className="course-code-input"
-            id="course_code"
-          ></input>
           <select type="text" className="subject-dropdown" id="subject">
             <option value="" selected>
               ANY
@@ -82,6 +76,12 @@ export const SearchPage = () => {
             <option value="se">SE</option>
             {/* FILL IN ALL SUBJECTS, USE SHORT FORM FOR CODES, SORT ALPHABETICALLY */}
           </select>
+          <input
+            type="text"
+            placeholder="Course Code"
+            className="course-code-input"
+            id="course_code"
+          ></input>
           <button
             type="button"
             className="btn searchPage-search-button"
