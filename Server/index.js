@@ -48,10 +48,11 @@ app.use(session({
 //
 
 const userExists = async (passedVar, isEmail) => {
+    const query = 'SELECT COUNT(*) as count FROM users WHERE ';
     if(isEmail) {
-        const query = 'SELECT COUNT(*) as count FROM users WHERE email = ?';
+        query = query + 'email = ?';
     } else {
-        const query = 'SELECT COUNT(*) as count FROM users WHERE user_id = ?';
+        query = query + 'user_id = ?';
     }
     const [rows] = await database.query(query, [passedVar]);
     return rows[0].count > 0;
