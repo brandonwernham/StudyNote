@@ -11,7 +11,8 @@ export const GroupsPage = () => {
         Axios.get("https://studynote.ca/api/showDB", {
         }).then((response)=> {
             if (response.data.message){
-                setdbData(response.data.message)
+                setdbData(response.data.message);
+                console.log(response.data.message);
             }else{
                 setdbData(response.data);
                 console.log(response);
