@@ -33,6 +33,7 @@ Create Table note_tags (
 Create Table classes (
   class_id int not null auto_increment primary key,
   class_code varchar(254),
+  class_type varchar(254),
   user_id bigint
 );
 
