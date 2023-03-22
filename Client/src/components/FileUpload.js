@@ -61,7 +61,7 @@ const FileUpload = ({ files, setFiles, removeFile }) => {
     <>
       <div className="file-box">
         <div className="file-input">
-          <input className="the-input" type="file" onChange={uploadHandler} />
+        <input className="the-input" type="file" accept="application/pdf" onChange={uploadHandler} />
           <button className="btn btn-upload">
             <i className="plus-icon">
               <FontAwesomeIcon icon={faPlus} />

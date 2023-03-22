@@ -7,6 +7,8 @@ const cookieParser = require('cookie-parser');
 const session = require('express-session');
 const multer = require('multer');
 const { JSONCookie } = require('cookie-parser');
+const path = require('path');
+const fs = require('fs');
 
 const database = mysql.createPool({
     host: "localhost",
@@ -167,8 +169,17 @@ app.get("/api/test", (req, res) => {
 })
 
 
-//file uploading
+const storage = multer.diskStorage({
+    destination: function (req, file, cb) {
+      cb(null, 'uploads/');
+    },
+    filename: function (req, file, cb) {
+      cb(null, file.fieldname + '-' + Date.now() + path.extname(file.originalname));
+    },
+});
+  
 const upload = multer({dest: "notes/"});
+  
 
 app.post("/api/upload", upload.single("note"), (req, res) => {
     const file_path = req.file.path;
@@ -479,11 +490,11 @@ app.post("/api/getNote", (req, res) => {
     //respond to frontend with note data
     function returnFoundNotes(result) {
         const resultsArray = result[0].map((note) => ({
-        ...note,
-        file_url: `http://localhost:3001/${note.file_path}`,
+          ...note,
+          file_url: `http://localhost:3001/${note.file_path}.pdf`,
         }));
         res.send(resultsArray);
-    }
+    }      
     
     //if there is no matching notes to given request
     function returnNoNotes() {
@@ -496,6 +507,19 @@ app.delete("/api/upload/delete", (req, res) => {
     return res.status(200).json({ result: true, msg: 'file was deleted'});
 });
 
+app.get("/notes/:id", (req, res) => {
+    const id = req.params.id;
+    const file_path = path.join(__dirname, "notes", id);
+  
+    fs.access(file_path, fs.constants.F_OK, (err) => {
+      if (err) {
+        console.error(`File not found: ${file_path}`);
+        res.status(404).send("File not found");
+      } else {
+        res.sendFile(file_path);
+      }
+    });
+});   
 
 app.use('/notes', express.static('notes'))
 app.listen(3001, () => {
