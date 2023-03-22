@@ -602,6 +602,33 @@ app.get("/notes/:id", (req, res) => {
     });
 });   
 
+app.get('api/searchEmails', async (req, res) => {
+    const { email } = req.query;
+    try {
+      const [rows] = await database.promise().query('SELECT email FROM users WHERE email LIKE ?', [`%${email}%`]);
+      res.json(rows);
+    } catch (error) {
+      res.status(500).json({ message: 'An error occurred while searching for emails.', error });
+    }
+});
+
+// Create a new group
+app.post('/api/CreateGroup', async (req, res) => {
+    const { groupName, usersToAdd } = req.body;
+    try {
+      const [result] = await database.promise().query('INSERT INTO study_groups (group_name) VALUES (?)', [groupName]);
+  
+      const groupId = result.insertId;
+      for (const user of usersToAdd) {
+        await database.promise().query('INSERT INTO study_groups (group_id, user_id) VALUES (?, ?)', [groupId, user.id]);
+      }
+  
+      res.json({ message: 'Group created successfully.' });
+    } catch (error) {
+      res.status(500).json({ message: 'An error occurred while creating the group.', error });
+    }
+});
+
 app.use('/notes', express.static('notes'))
 app.listen(3001, () => {
     console.log("running on port 3001");

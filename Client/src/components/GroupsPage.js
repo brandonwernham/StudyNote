@@ -1,85 +1,107 @@
-import React, {useState} from 'react';
+import React, { useState, useEffect } from 'react';
 import Axios from 'axios';
-import "./GroupsPage.css";
+import './GroupsPage.css';
 import Navbar from './Navbar';
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPlus } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faPlus } from '@fortawesome/free-solid-svg-icons';
 
 export const GroupsPage = () => {
-    const [dbData, setdbData] = useState([]);
+  const [dbData, setdbData] = useState([]);
+  const [showForm, setShowForm] = useState(false);
+  const [groupName, setGroupName] = useState('');
+  const [usersToAdd, setUsersToAdd] = useState([]);
+  const [emailInput, setEmailInput] = useState('');
 
+  useEffect(() => {
+    // Function to search for registered emails
+    const searchEmails = async () => {
+      if (emailInput.length > 2) {
+        try {
+            const response = await Axios.get(`http://localhost:3001/api/searchEmails?email=${emailInput}`);
+            setUsersToAdd(response.data);
+        } catch (error) {
+            console.error(error);
+        }
+      }
+    };
 
-    const showDB = () =>{
-        Axios.get("https://studynote.ca/api/showDB", {
-        }).then((response)=> {
-            if (response.data.message){
-                setdbData(response.data.message)
-            }else{
-                setdbData(response.data);
-                console.log(response);
-            }
-        })
+    searchEmails();
+  }, [emailInput]);
+
+  const createStudyGroup = async () => {
+    try {
+      const response = await Axios.post('http://localhost:3001/api/CreateGroup', { groupName, usersToAdd });
+      console.log(response);
+      setShowForm(false);
+    } catch (error) {
+      console.error(error);
     }
-    const test = () =>{
-        Axios.get("http://localhost:3001/api/test", {
-        }).then((response)=> {
-            if (response.data.message){
-                console.log(response);
-                setdbData(response.data.message)
-            }else{
-                setdbData(response.data);
-                console.log(response);
-            }
-        })
-    }
+  };
 
+  const handleFormSubmit = (e) => {
+    e.preventDefault();
+    createStudyGroup();
+  };
 
-    return (
-        <div>
-            <div>
-                <Navbar />
-            </div>
-            <div>
-                <h1 className='groups-title'>Groups</h1>
-            </div>
-            {/* <div>
-                <button onClick={showDB}>See DB</button>
-                
-            </div>
-            <div>
-            <button onClick={test}>Test</button>
-            </div> */}
-
-            <div className='groups-content'>
-                <div className='groups-side-bar'>
-                    <div className='groups-row'>
-                        <button className='btn btn-groups-row'>
-                            <i className="groups-plus-icon">
-                                <FontAwesomeIcon icon={faPlus} />
-                            </i>
-                            Create StudyGroup
-                        </button>
-                    </div>
-                    <div className='groups-row'>
-                        <button className='btn btn-groups-row'>Group 1</button>
-                    </div>
-                    <div className='groups-row'>
-                        <button className='btn btn-groups-row'>Group 1</button>
-                    </div>
-                    <div className='groups-row'>
-                        <button className='btn btn-groups-row'>Group 1</button>
-                    </div>
-                    <div className='groups-row'>
-                        <button className='btn btn-groups-row'>Group 1</button>
-                    </div>
-                </div>
-                <div className='groups-group-container'>
-                    <div>This is where each group will display</div>
-                </div>
-            </div>
-
+  return (
+    <div>
+      <div>
+        <Navbar />
+      </div>
+      <div>
+        <h1 className="groups-title">Groups</h1>
+      </div>
+      <div className="groups-content">
+        <div className="groups-side-bar">
+          <div className="groups-row">
+            <button className="btn btn-groups-row" onClick={() => setShowForm(!showForm)}>
+              <i className="groups-plus-icon">
+                <FontAwesomeIcon icon={faPlus} />
+              </i>
+              Create StudyGroup
+            </button>
+          </div>
+          {/* Other group rows */}
         </div>
-    );
-}
+        <div className="groups-group-container">
+          {showForm ? (
+            <form onSubmit={handleFormSubmit}>
+              <div>
+                <label htmlFor="groupName">Group Name:</label>
+                <input
+                  type="text"
+                  id="groupName"
+                  value={groupName}
+                  onChange={(e) => setGroupName(e.target.value)}
+                  required
+                />
+              </div>
+              <div>
+                <label htmlFor="usersToAdd">Users to Add:</label>
+                <input
+                  type="email"
+                  id="usersToAdd"
+                  value={emailInput}
+                  onChange={(e) => setEmailInput(e.target.value)}
+                  required
+                />
+                {usersToAdd.length > 0 && (
+                  <ul>
+                    {usersToAdd.map((user) => (
+                      <li key={user.email}>{user.email}</li>
+                    ))}
+                  </ul>
+                )}
+              </div>
+              <button type="submit">Create</button>
+            </form>
+          ) : (
+            <div>This is where each group will display</div>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+};
 
 export default GroupsPage;
