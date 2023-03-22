@@ -19,7 +19,7 @@ export const GroupsPage = () => {
         })
     }
     const test = () =>{
-        Axios.get("http://studynote.ca/api/test", {
+        Axios.get("https://studynote.ca/api/test", {
         }).then((response)=> {
             if (response.data.message){
                 console.log(response);
