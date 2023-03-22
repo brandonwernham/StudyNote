@@ -47,9 +47,9 @@ app.use(session({
 
 
 
-const userExists = async (user_id) => {
-    const query = 'SELECT COUNT(*) as count FROM users WHERE user_id = ?';
-    const [rows] = await database.query(query, [user_id]);
+const userExists = async (email) => {
+    const query = 'SELECT COUNT(*) as count FROM users WHERE email = ?';
+    const [rows] = await database.query(query, [email]);
     return rows[0].count > 0;
 };
 
@@ -74,15 +74,15 @@ const userInClass = async (class_id, user_id) => {
 //sign up 
   
 app.post('/api/signUp', async (req, res) => {
-    const { user_id, email, password, user_type } = req.body;
+    const { email, password, user_type } = req.body;
     try {
       // Now it will see if the user exists and such
-      const exists = await userExists(user_id);
+      const exists = await userExists(email);
       if (exists) {
         res.status(200).json({ message: 'User already exists' });
       } else {
-        const query = 'INSERT INTO users (user_id, email, user_password, user_type) VALUES (?, ?, ?, ?)';
-        const result = await database.query(query, [user_id, email, password, user_type]);
+        const query = 'INSERT INTO users (email, user_password, user_type) VALUES (?, ?, ?)';
+        const result = await database.query(query, [email, password, user_type]);
         res.status(201).json({ message: 'User created', data: result });
       }
     } catch (error) {
@@ -269,6 +269,7 @@ app.post("/api/upload", upload.single("note"), (req, res) => {
         }).then(result => {
             res.send(result)
         }).catch(err => {
+            console.log(err)
             res.send(err)
         })
     }

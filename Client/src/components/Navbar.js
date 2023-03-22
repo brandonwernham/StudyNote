@@ -13,7 +13,6 @@ export default function Navbar() {
   const handleUserTypeSelect = (user_type) => {
     if (profile && profile.email != null && profile.id != null) {
       Axios.post("http://localhost:3001/api/signUp", {
-        user_id: profile.id,
         email: profile.email,
         password: null,
         user_type: user_type
@@ -21,6 +20,7 @@ export default function Navbar() {
         .then((response) => {
           console.log(response);
           setProfile((prevProfile) => ({ ...prevProfile, user_type }));
+          window.location.reload();
         })
         .catch((error) => console.log("Error: ", error.message));
     }
