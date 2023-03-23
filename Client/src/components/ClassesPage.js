@@ -232,30 +232,32 @@ export const ClassesPage = () => {
             <div className='content'>
                 <div className='classes'>
             {loadCourseListStudent.length > 0 ? (
-                <table>
-                    <colgroup>
-                        <col width='18%' />
-                        <col width='28%' />
-                        <col width='49%' />
-                        <col width='5%' />
-                    </colgroup>
-                    <tbody>
-                        <tr>
-                            <th>Class Code</th>
-                            <th>Class Name</th>
-                            <th>Professor</th>
-                            <th></th>
-                        </tr>
-                        {loadCourseListStudent.map(course => (
-                            <tr key={course.user_id}>
-                                <td onClick={() => loadNotesForClass(course.class_code)}>{course.class_code}</td>
-                                <td onClick={() => loadNotesForClass(course.class_code)}>{course.class_name}</td>
-                                <td>{course.user_name}</td>
-                                <td><button onClick={() => dropClass(course.class_id)}>Drop</button></td>
+                <div className='classes-table'>
+                    <table>
+                        <colgroup>
+                            <col width='18%' />
+                            <col width='28%' />
+                            <col width='49%' />
+                            <col width='5%' />
+                        </colgroup>
+                        <tbody>
+                            <tr>
+                                <th>Class Code</th>
+                                <th>Class Name</th>
+                                <th>Professor</th>
+                                <th></th>
                             </tr>
-                        ))}
-                    </tbody>
-                </table>
+                            {loadCourseListStudent.map(course => (
+                                <tr key={course.user_id}>
+                                    <td onClick={() => loadNotesForClass(course.class_code)}>{course.class_code}</td>
+                                    <td onClick={() => loadNotesForClass(course.class_code)}>{course.class_name}</td>
+                                    <td>{course.user_name}</td>
+                                    <td><button onClick={() => dropClass(course.class_id)}>Drop</button></td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
+                </div>
             ) : (
                 <div className='no-classes'>
                     <p>You have no classes yet, join a class now!</p>
@@ -326,30 +328,32 @@ export const ClassesPage = () => {
                     <div className='content'>
                         <div className='classes'>
                             {loadCourselistTeacher.length > 0 ? (
-                                <table>
-                                    <colgroup>
-                                        <col width='18%' />
-                                        <col width='28%' />
-                                        <col width='49%' />
-                                        <col width='5%' />
-                                    </colgroup>
-                                    <tbody>
-                                        <tr>
-                                            <th>Class Code</th>
-                                            <th>Class Name</th>
-                                            <th>Professor Name</th>
-                                            <th></th>
-                                        </tr>
-                                        {loadCourselistTeacher.map(course => (
-                                            <tr key={course.user_id}>
-                                                <td onClick={() => loadNotesForClass(course.class_code)}>{course.class_code}</td>
-                                                <td onClick={() => loadNotesForClass(course.class_code)}>{course.class_name}</td>
-                                                <td>{course.user_name}</td>
-                                                <td><button onClick={() => deleteClass(course.class_id)}>Delete</button></td>
+                                <div className='classes-table'>
+                                    <table>
+                                        <colgroup>
+                                            <col width='18%' />
+                                            <col width='28%' />
+                                            <col width='49%' />
+                                            <col width='5%' />
+                                        </colgroup>
+                                        <tbody>
+                                            <tr>
+                                                <th>Class Code</th>
+                                                <th>Class Name</th>
+                                                <th>Professor Name</th>
+                                                <th></th>
                                             </tr>
-                                        ))}
-                                    </tbody>
-                                </table>
+                                            {loadCourselistTeacher.map(course => (
+                                                <tr key={course.user_id}>
+                                                    <td onClick={() => loadNotesForClass(course.class_code)}>{course.class_code}</td>
+                                                    <td onClick={() => loadNotesForClass(course.class_code)}>{course.class_name}</td>
+                                                    <td>{course.user_name}</td>
+                                                    <td><button onClick={() => deleteClass(course.class_id)}>Delete</button></td>
+                                                </tr>
+                                            ))}
+                                        </tbody>
+                                    </table>
+                                </div>
                             ) : (
                                 <div className='no-classes'>
                                     <p>You have no classes yet, create a class now!</p>
