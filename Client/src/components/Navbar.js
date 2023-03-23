@@ -84,9 +84,9 @@ export default function Navbar() {
           <a href="/classes" className={pathname === "/classes" ? "active" : ""}>
             Classes
           </a>
-          <a href="/groups" className={pathname === "/groups" ? "active" : ""}>
+          {/* <a href="/groups" className={pathname === "/groups" ? "active" : ""}>
             Groups
-          </a>
+          </a> */}
           <a href="/upload" className={pathname === "/upload" ? "active" : ""}>
             Upload
           </a>
