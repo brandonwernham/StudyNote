@@ -155,6 +155,7 @@ export const ClassesPage = () => {
           .then((response) => {
             if (response.data != "No classes found.") {
                 setLoadCourseListStudent(response.data);
+                console.log(response.data)
             } else {
                 setLoadCourseListStudent([]);
             }
