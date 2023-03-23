@@ -47,13 +47,13 @@ export const HomePage = () => {
                                 className="task-image"
                             ></img>
                         </Link>
-                        <Link className="btn btn-task" to="/groups">
+                        {/* <Link className="btn btn-task" to="/groups">
                             <img
                                 src={require("./../images/ask_question.png")}
                                 alt="Ask A Question"
                                 className="task-image"
                             ></img>
-                        </Link>
+                        </Link> */}
                     </div>
                 </div>
             </div>

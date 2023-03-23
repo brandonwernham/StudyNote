@@ -430,24 +430,37 @@ app.post('/api/loadClassesStudent', async (req, res) => {
     function returnFoundClasses(result) {
         const classesFoundArray = result[0];
 
-        //gets username and adds it to result
-        database.getConnection().then(conn => {
-            const query = 'SELECT user_name FROM users WHERE user_id = ?';
-            const params = [user_id];
-            const result = conn.query(query, params);
-            conn.release();
-            return result;
-        }).then(result => {
-            classesFoundArray.forEach(element => 
-                element.user_name = result[0][0].user_name
-            );
+        function waitForForeach(classesFoundArray) {
+            return new Promise((resolve, reject) => {
+                classesFoundArray.forEach((element, index) => {
+                database.getConnection().then(conn => {
+                    const query = 'SELECT user_name FROM users WHERE user_id = ?';
+                    const params = [element.user_id];
+                    const result = conn.query(query, params);
+                    conn.release();
+                    return result;
+                }).then(result => {
+                    element.user_name = result[0][0].user_name
 
-            console.log(classesFoundArray)
-            res.send(classesFoundArray);
-        }).catch(err => {
-            res.send(err);
+                    // If this is the last item in the array, resolve the Promise
+                    if (index === classesFoundArray.length - 1) {
+                        const classesFoundArrayNew = classesFoundArray
+                    resolve(classesFoundArrayNew);
+                    }
+                }).catch(err => {
+                    res.send(err);
+                })
+              });
+            });
+        }
+
+        waitForForeach(classesFoundArray).then((classesFoundArrayNew) => {
+            res.send(classesFoundArrayNew)
+            console.log(classesFoundArrayNew);
         });
     }
+
+
 
     //if there is no matching notes to given request
     function returnNoClasses() { 
