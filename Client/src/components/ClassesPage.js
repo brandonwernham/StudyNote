@@ -252,7 +252,7 @@ export const ClassesPage = () => {
                                     <td onClick={() => loadNotesForClass(course.class_code)}>{course.class_code}</td>
                                     <td onClick={() => loadNotesForClass(course.class_code)}>{course.class_name}</td>
                                     <td>{course.user_name}</td>
-                                    <td><button onClick={() => dropClass(course.class_id)}>Drop</button></td>
+                                    <td><button className='btn btn-delete-class' onClick={() => dropClass(course.class_id)}>Drop</button></td>
                                 </tr>
                             ))}
                         </tbody>
@@ -348,7 +348,7 @@ export const ClassesPage = () => {
                                                     <td onClick={() => loadNotesForClass(course.class_code)}>{course.class_code}</td>
                                                     <td onClick={() => loadNotesForClass(course.class_code)}>{course.class_name}</td>
                                                     <td>{course.user_name}</td>
-                                                    <td><button onClick={() => deleteClass(course.class_id)}>Delete</button></td>
+                                                    <td><button className='btn btn-delete-class' onClick={() => deleteClass(course.class_id)}>Delete</button></td>
                                                 </tr>
                                             ))}
                                         </tbody>
