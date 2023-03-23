@@ -22,7 +22,7 @@ export const RegisterPage = () => {
         }
 
         if(userType == "student" || userType == "instructor") {
-            Axios.post("http://localhost:3001/api/signUp", {
+            Axios.post("https://studynote.ca/api/signUp", {
                 email: email,
                 password: password,
                 userType: userType

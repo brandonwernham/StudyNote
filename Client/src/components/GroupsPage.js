@@ -17,7 +17,7 @@ export const GroupsPage = () => {
     const searchEmails = async () => {
       if (emailInput.length > 2) {
         try {
-            const response = await Axios.get(`http://localhost:3001/api/searchEmails?email=${emailInput}`);
+            const response = await Axios.get(`https://studynote.ca/api/searchEmails?email=${emailInput}`);
             setUsersToAdd(response.data);
         } catch (error) {
             console.error(error);
@@ -30,7 +30,7 @@ export const GroupsPage = () => {
 
   const createStudyGroup = async () => {
     try {
-      const response = await Axios.post('http://localhost:3001/api/CreateGroup', { groupName, usersToAdd });
+      const response = await Axios.post('https://studynote.ca/api/CreateGroup', { groupName, usersToAdd });
       console.log(response);
       setShowForm(false);
     } catch (error) {

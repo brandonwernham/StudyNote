@@ -58,7 +58,7 @@ export const GroupsTestPage = () => {
         console.log(class_type);
     
         // Axios Post to create class in database
-        Axios.post("http://localhost:3001/api/createClass", {
+        Axios.post("https://studynote.ca/api/createClass", {
             class_name: class_name,
             course_code: course_code,
             subject_code: subject_code,
@@ -68,7 +68,7 @@ export const GroupsTestPage = () => {
             console.log(res);
             const class_id = res.data.data[0].insertId;
 
-            Axios.post("http://localhost:3001/api/joinClass", {
+            Axios.post("https://studynote.ca/api/joinClass", {
                 class_id: class_id,
                 user_id: accountID,
             })

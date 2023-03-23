@@ -15,7 +15,7 @@ export const SearchPage = () => {
     
     setSearchPerformed(true);
 
-    Axios.post("http://localhost:3001/api/getNote", {
+    Axios.post("https://studynote.ca/api/getNote", {
       tags: tags,
       course_code: course_code,
       subject_code: subject_code,

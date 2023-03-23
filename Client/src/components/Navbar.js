@@ -12,7 +12,7 @@ export default function Navbar() {
 
   const handleUserTypeSelect = (user_type) => {
     if (profile && profile.email != null && profile.id != null) {
-      Axios.post("http://localhost:3001/api/signUp", {
+      Axios.post("https://studynote.ca/api/signUp", {
         email: profile.email,
         user_name: profile.name,
         user_type: user_type
@@ -42,7 +42,7 @@ export default function Navbar() {
         })
         .then((res) => {
           setProfile(res.data);
-          Axios.post("http://localhost:3001/api/getUserType", {
+          Axios.post("https://studynote.ca/api/getUserType", {
             email: res.data.email
           })
             .then((response) => {
